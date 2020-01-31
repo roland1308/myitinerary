@@ -1,0 +1,42 @@
+body {
+  padding: 10px;
+}
+
+.logo {
+  width: 90%;
+}
+
+.button {
+  width: 30%;
+}
+
+.landing {
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  flex-wrap: nowrap;
+  justify-content: space-between;
+  }
+ .landing>div {
+   text-align: center;
+}
+
+.landing h2 {
+  font-size: 3.5rem;
+}
+.landing h1 {
+  font-size: 6rem;
+}
+.landing a {
+  font-size: 4rem;
+}
+
+.home {
+  width: 20%;
+}
+
+.LogAccount {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-evenly;
+}
