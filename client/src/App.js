@@ -1,7 +1,11 @@
 import React from "react";
-import { BrowserRouter, Route, Switch } from "react-router-dom";
+import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 import LandingPage from "./views/LandingPage";
 import Cities from "./views/Cities";
+import Logo from "./components/Logo";
+import NavBar from "./components/NavBar";
+import LogIn from "./views/LogIn";
+import Carousel from "./views/Carousel";
 
 class App extends React.Component {
   constructor(props) {
@@ -10,15 +14,22 @@ class App extends React.Component {
   }
 
   render() {
+
     return (
-      <BrowserRouter>
-        <div className="App">
+      <div className="App">
+        <NavBar />
+        <div className="main.flex">
+        <Logo />
+        <Router>
           <Switch>
-            <Route exact path="/" component={ LandingPage } />
-            <Route path="/cities" component={ Cities } />
+            <Route exact path="/" component={LandingPage} />
+            <Route path="/cities" component={Cities} />
+            <Route path="/login" component={LogIn} />
           </Switch>
+        </Router>
+        <Carousel />
         </div>
-      </BrowserRouter>
+      </div>
     );
   }
 }
