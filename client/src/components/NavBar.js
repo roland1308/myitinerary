@@ -8,10 +8,10 @@ function NavBar() {
     return (
         <div className="flexNavbar">
             <Router>
-        <Link to="/LogIn">
-           <AccountCircleTwoToneIcon style={{ fontSize: 100 }} className="colorPrimary" />
-           </Link>
-           <MenuRoundedIcon style={{ fontSize: 100 }} className="colorPrimary" />
+                <Link to="/LogIn">
+                    <AccountCircleTwoToneIcon style={{ fontSize: 100 }} className="colorPrimary" />
+                </Link>
+                <MenuRoundedIcon style={{ fontSize: 100 }} className="colorPrimary" />
            </Router>
         </div>
     )

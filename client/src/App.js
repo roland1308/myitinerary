@@ -6,6 +6,7 @@ import Logo from "./components/Logo";
 import NavBar from "./components/NavBar";
 import LogIn from "./views/LogIn";
 import Carousel from "./views/Carousel";
+// import Foot from "./components/Foot";
 
 class App extends React.Component {
   constructor(props) {
@@ -28,6 +29,7 @@ class App extends React.Component {
           </Switch>
         </Router>
         <Carousel />
+        {/* <Foot /> */}
         </div>
       </div>
     );
