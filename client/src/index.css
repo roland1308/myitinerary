@@ -130,6 +130,6 @@ a.carousel-control-next {
   font-size: 111px !important;
 }
 
-a.controls {
-  text-decoration: none !important;
+svg {
+  color: black;
 }
