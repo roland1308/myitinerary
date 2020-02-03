@@ -3,7 +3,7 @@ const app = express();
 const port = process.env.PORT || 5000;
 
 const bodyParser = require("body-parser");
-const cors = require("cors");
+// const cors = require("cors");
 
 const db = require('./keys').mongoURI;
 const mongoose = require("mongoose");
@@ -17,7 +17,7 @@ app.use(
     extended: true
   })
 );
-app.use(cors());
+// app.use(cors());
 
 app.listen(port, () => {
   console.log("Server is running on " + port + " port");
