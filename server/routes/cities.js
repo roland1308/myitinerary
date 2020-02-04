@@ -68,6 +68,19 @@ router.put("/:name/:newname", (req, res) => {
       })
   });
 
+  router.delete("/:name", (req, res) => {
+    cityModel.findOneAndDelete({ name: req.params.name })
+    .then(result => {
+    if (result) {
+      console.log("Successful deletion");
+      res.send(result);
+    } else {
+      console.log("NON TROVATA");
+      res.send(result);
+    }
+  });
+})
+
 // router.get('/test',
 //     (req, res) => {
 //         res.send({
