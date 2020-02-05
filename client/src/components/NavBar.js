@@ -1,4 +1,4 @@
-import React from 'react'
+import React from 'react';
 import AccountCircleTwoToneIcon from '@material-ui/icons/AccountCircleTwoTone';
 import MenuRoundedIcon from '@material-ui/icons/MenuRounded';
 import { Link } from "react-router-dom";

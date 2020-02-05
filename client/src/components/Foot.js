@@ -1,9 +1,11 @@
 import React from 'react'
+import HomeTwoToneIcon from '@material-ui/icons/HomeTwoTone';
+
 
 function Foot() {
     return (
-        <div>
-            PIEDE
+        <div className="foot">
+            <HomeTwoToneIcon  style={{ fontSize: 100 }} />
         </div>
     )
 }

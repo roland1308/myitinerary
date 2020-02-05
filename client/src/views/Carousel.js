@@ -1,9 +1,13 @@
 import React from "react";
-import NavigateBeforeTwoToneIcon from '@material-ui/icons/NavigateBeforeTwoTone';
-import NavigateNextTwoToneIcon from '@material-ui/icons/NavigateNextTwoTone';
+import NavigateBeforeTwoToneIcon from "@material-ui/icons/NavigateBeforeTwoTone";
+import NavigateNextTwoToneIcon from "@material-ui/icons/NavigateNextTwoTone";
 
 function Carousel() {
   return (
+    <div>
+      <div>
+      <h2 className="padding17">Popular MYtineraries</h2>
+      </div>
     <div
       id="carousel-with-lb"
       className="carousel slide carousel-multi-item"
@@ -13,51 +17,28 @@ function Carousel() {
         <div id="mdb-lightbox-ui"></div>
         <div className=" carousel-item active text-center">
           <figure className="col-md-6 d-md-inline-block">
-            <a
-              href="https://mdbootstrap.com/img/Photos/Horizontal/Nature/4-col/img%20(2).jpg"
-              data-size="1600x1067"
-            >
-              <img
+            <img
                 src="https://mdbootstrap.com/img/Photos/Horizontal/Nature/4-col/img%20(2).jpg"
                 className="img-fluid"
               />
-            </a>
           </figure>
-
           <figure className="col-md-6 d-md-inline-block">
-            <a
-              href="https://mdbootstrap.com/img/Photos/Horizontal/Nature/4-col/img%20(4).jpg"
-              data-size="1600x1067"
-            >
-              <img
+            <img
                 src="https://mdbootstrap.com/img/Photos/Horizontal/Nature/4-col/img%20(4).jpg"
                 className="img-fluid"
               />
-            </a>
           </figure>
-
           <figure className="col-md-6 d-md-inline-block">
-            <a
-              href="https://mdbootstrap.com/img/Photos/Horizontal/Nature/4-col/img%20(6).jpg"
-              data-size="1600x1067"
-            >
               <img
                 src="https://mdbootstrap.com/img/Photos/Horizontal/Nature/4-col/img%20(6).jpg"
                 className="img-fluid"
               />
-            </a>
           </figure>
-
           <figure className="col-md-6 d-md-inline-block">
-            <a
-              href="https://mdbootstrap.com/img/Photos/Horizontal/Nature/4-col/img%20(10).jpg"
-              data-size="1600x1067"
-            >
               <img
                 src="https://mdbootstrap.com/img/Photos/Horizontal/Nature/4-col/img%20(10).jpg"
                 className="img-fluid"
               />
-            </a>
           </figure>
         </div>
         <div className="carousel-item text-center">
@@ -72,7 +53,6 @@ function Carousel() {
               />
             </a>
           </figure>
-
           <figure className="col-md-6 d-md-inline-block">
             <a
               href="https://mdbootstrap.com/img/Photos/Horizontal/Nature/4-col/img%20(31).jpg"
@@ -119,7 +99,6 @@ function Carousel() {
               />
             </a>
           </figure>
-
           <figure className="col-md-6 d-md-inline-block">
             <a
               href="https://mdbootstrap.com/img/Photos/Horizontal/Nature/4-col/img%20(53).jpg"
@@ -161,31 +140,32 @@ function Carousel() {
             <NavigateBeforeTwoToneIcon className="controls" />
           </a>
         </div>
-          <ol className="carousel-indicators">
-            <li
-              data-target="#carousel-with-lb"
-              data-slide-to="0"
-              className="active secondary-color"
-            ></li>
-            <li
-              data-target="#carousel-with-lb"
-              data-slide-to="1"
-              className="secondary-color"
-            ></li>
-            <li
-              data-target="#carousel-with-lb"
-              data-slide-to="2"
-              className="secondary-color"
-            ></li>
-          </ol>
+        <ol className="carousel-indicators">
+          <li
+            data-target="#carousel-with-lb"
+            data-slide-to="0"
+            className="active secondary-color"
+          ></li>
+          <li
+            data-target="#carousel-with-lb"
+            data-slide-to="1"
+            className="secondary-color"
+          ></li>
+          <li
+            data-target="#carousel-with-lb"
+            data-slide-to="2"
+            className="secondary-color"
+          ></li>
+        </ol>
         <div className="">
           <a href="#carousel-with-lb" data-slide="next">
-          <NavigateNextTwoToneIcon className="controls" />
+            <NavigateNextTwoToneIcon className="controls" />
           </a>
-          
         </div>
       </div>
     </div>
+    </div>
+
   );
 }
 

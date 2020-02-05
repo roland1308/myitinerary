@@ -9,7 +9,7 @@ body {
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  padding: 10px;
+  padding: 12px;
   width: 100vw;
 }
 
@@ -24,17 +24,39 @@ body {
 .button {
   width: 25%;
 }
-
-.landing {
-   text-align: center;
-   padding: 0 40px;
-   margin: 20px 0;
+.cities {
+  overflow-y: scroll;
+  height: auto;
+}
+.single {
+  margin: 40px 10px;
+  width: 100%;
+  height: 200px;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
 }
 
-.landing h2 {
+.landing,
+.cities {
+   text-align: center;
+   padding: 0;
+   margin: 0;
+}
+
+.logo {
+  width: 90%;
+}
+
+.padding17 {
+  padding: 0 17px;
+  text-align: left;
+}
+
+ h2 {
   font-size: 2.5rem;
 }
-.landing h1 {
+ h1 {
   font-size: 5rem;
 }
 
@@ -89,35 +111,6 @@ body {
   background-color: black;
 }
 
-/* .controls-top {
-  position: relative;
-}
-
-.carousel-control-prev,
-.carousel-control-next {
-  color: black;
-}
-
-.carousel-control-prev-icon,
-.carousel-control-next-icon {
-  height: 58px;
-  width: 100%;
-}
-
-a.carousel-control-prev,
-a.carousel-control-next {
-  opacity: 1;
-  height: 90px;
-  position: relative;
-}
-.controls,
-.controls>div {
-  width: 100%;
-  margin: 0;
-  padding: 0;
-  height: 58px;
-} */
-
 .controls-row {
   width: 100%;
   display: flex;
@@ -132,4 +125,17 @@ a.carousel-control-next {
 
 svg {
   color: black;
+}
+
+.foot {
+  text-align: center;
+  font-size: 100px;
+  line-height: 0;
+}
+.nomeCitta {
+  font-size: 5rem;
+  height: 200px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
