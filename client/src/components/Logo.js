@@ -4,7 +4,7 @@ import logo from "../images/MYtineraryLogo.png";
 function Logo() {
   return (
     <div className="logo">
-      <img src={logo} />
+      <img src={ logo } alt="MYtinerary" />
     </div>
   );
 }

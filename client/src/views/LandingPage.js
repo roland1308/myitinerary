@@ -5,7 +5,6 @@ import Logo from "../components/Logo";
 
 import { Link } from "react-router-dom";
 
-
 function LandingPage() {
   return (
     <div className="landing">
@@ -16,17 +15,15 @@ function LandingPage() {
           cities.
         </h2>
       </div>
-        <Link to="./cities">
-      <div>
-        <h1>Start Browsing</h1>
-        
-      </div>
-      <div>
-        <img className="button" src={start} alt="Start Browsing" />
-      </div>
+      <Link to="./cities" className="linkNoDecoration">
+        <div>
+          <h1>Start Browsing</h1>
+        </div>
+        <div>
+          <img className="button" src={start} alt="Start Browsing" />
+        </div>
       </Link>
       <Carousel />
-      
     </div>
   );
 }

@@ -6,6 +6,7 @@ import NavBar from "./components/NavBar";
 import LogIn from "./views/LogIn";
 import Foot from "./components/Foot";
 
+
 class App extends React.Component {
   constructor(props) {
     super(props);
@@ -26,25 +27,23 @@ class App extends React.Component {
 
   render() {
     return (
-      <div>
-      <div className="App">
-        <NavBar />
-        <Router>
-          <Switch>
-            <Route exact path="/" component={LandingPage} />
-            <Route path="/cities"
-              render={props => (
-                <Cities
-                  data={this.state.data}
-                  {...props}
-                />
-            )}/>
-            <Route path="/login" component={LogIn} />
-          </Switch>
-        </Router>
-        <Foot />
+        <div className="App">
+          <NavBar />
+          <Router>
+            <Switch>
+              <Route exact path="/" component={LandingPage} />
+              <Route path="/cities"
+                render={props => (
+                  <Cities
+                    data={this.state.data}
+                    {...props}
+                  />
+              )}/>
+              <Route path="/login" component={LogIn} />
+            </Switch>
+          </Router>
+          <Foot />
         </div>
-      </div>
     );
   }
 }
