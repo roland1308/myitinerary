@@ -5,46 +5,30 @@ import Cities from "./views/Cities";
 import NavBar from "./components/NavBar";
 import LogIn from "./views/LogIn";
 import Foot from "./components/Foot";
-
+import { connect } from "react-redux";
 
 class App extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      data: {}
-    };
-  }
-
-  componentDidMount() {
-    fetch("/cities/all")
-    .then(response => response.json())
-    .then(result => 
-      this.setState({
-        data: result
-      }))
-    .catch(e => console.log(e));
-  }
 
   render() {
+    const { homeLink } = this.props;
     return (
         <div className="App">
           <NavBar />
           <Router>
             <Switch>
               <Route exact path="/" component={LandingPage} />
-              <Route path="/cities"
-                render={props => (
-                  <Cities
-                    data={this.state.data}
-                    {...props}
-                  />
-              )}/>
+              <Route path="/cities" component={Cities} />
               <Route path="/login" component={LogIn} />
             </Switch>
           </Router>
-          <Foot />
+          {homeLink && <Foot />}
         </div>
     );
   }
 }
-export default App;
+
+const mapStateToProps = state => ({
+  homeLink: state.app.homeLink
+});
+
+export default connect(mapStateToProps)(App);

@@ -1,8 +1,8 @@
 import {
-    FETCH_CITIES_BEGIN,
-    FETCH_CITIES_SUCCESS,
-    FETCH_CITIES_FAILURE
-  } from '../actions/cityActions';
+    FETCH_POPULARS_BEGIN,
+    FETCH_POPULARS_SUCCESS,
+    FETCH_POPULARS_FAILURE
+  } from '../actions/popularActions';
   
   const initialState = {
     items: ["milano", "roma"],
@@ -10,9 +10,9 @@ import {
     error: null
   };
   
-  export default function citiesReducer(state = initialState, action) {
+  export default function popularsReducer(state = initialState, action) {
     switch(action.type) {
-      case FETCH_CITIES_BEGIN:
+      case FETCH_POPULARS_BEGIN:
         // Mark the state as "loading" so we can show a spinner or something
         // Also, reset any errors. We're starting fresh.
         return {
@@ -21,16 +21,16 @@ import {
           error: null
         };
   
-      case FETCH_CITIES_SUCCESS:
+      case FETCH_POPULARS_SUCCESS:
         // All done: set loading "false".
         // Also, replace the items with the ones from the server
         return {
           ...state,
           loading: false,
-          items: action.payload.cities
+          items: action.payload.populars
         };
   
-      case FETCH_CITIES_FAILURE:
+      case FETCH_POPULARS_FAILURE:
         // The request failed. It's done. So set loading to "false".
         // Save the error, so we can display it somewhere.
         // Since it failed, we don't have items to display anymore, so set `items` empty.

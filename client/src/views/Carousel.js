@@ -1,16 +1,18 @@
 import React from "react";
 import NavigateBeforeTwoToneIcon from "@material-ui/icons/NavigateBeforeTwoTone";
 import NavigateNextTwoToneIcon from "@material-ui/icons/NavigateNextTwoTone";
+import { fetchPopulars } from "../store/actions/popularActions";
+import { connect } from "react-redux";
+import Loading from "../components/Loading";
 
 class Carousel extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      carouselBlocks:[],
-    };
+  
+// When mounts the view, fetches the first 12 popular elements from Itinerary
+  componentDidMount() {
+    this.props.dispatch(fetchPopulars());
   }
 
-// Function to create 3 sub arrays of 4 elements for the Carousel 
+  // Function to create 3 sub arrays of 4 elements for the Carousel 
   splitIntoSubArray = (arr, count) => {
     let newArray = [];
     while (arr.length > 0) {
@@ -19,18 +21,15 @@ class Carousel extends React.Component {
     return newArray;
   }
 
-// When mounts teh view, fetches the first 12 popular elements from Itinerary
-  componentDidMount() {
-    fetch("/cities/carousel")
-    .then(response => response.json())
-    .then(result => 
-      this.setState({
-        carouselBlocks: this.splitIntoSubArray(result, 4)
-      }))
-    .catch(e => console.log(e));
-  }
-
   render() {
+    const { error, loading, items } = this.props;
+    let carouselBlocks = this.splitIntoSubArray(items, 4);
+    if (error) {
+      return <div>Error! {error.message}</div>;
+    }
+    if (loading) {
+      return <Loading />
+    }
     return (
       <div>
         <div
@@ -39,7 +38,7 @@ class Carousel extends React.Component {
           data-ride="carousel"        >
           <h2 className="padding17">Popular MYtineraries</h2>
           <div className="carousel-inner mdb-lightbox" role="listbox">
-              {this.state.carouselBlocks.map((subArray, i) => {
+              {carouselBlocks.map((subArray, i) => {
                 return i === 0 ? (<div key={i} className="carousel-item active text-center">
                   {subArray.map((citta, f) => {
                   return (
@@ -101,4 +100,10 @@ class Carousel extends React.Component {
   }
 }
 
-export default Carousel;
+const mapStateToProps = state => ({
+  items: state.populars.items,
+  loading: state.populars.loading,
+  error: state.populars.error
+});
+
+export default connect(mapStateToProps)(Carousel);

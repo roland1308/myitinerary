@@ -81,6 +81,7 @@ router.put("/:name/:newname", (req, res) => {
     });
 });
 
+/*delete one city DELETE*/
 router.delete("/:name", (req, res) => {
   cityModel.findOneAndDelete({ name: req.params.name }).then(result => {
     if (result) {

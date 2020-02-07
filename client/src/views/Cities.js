@@ -1,19 +1,32 @@
 import React from "react";
+import Loading from "../components/Loading";
+
 import FadeIn from "react-fade-in";
 
+import { fetchCities } from "../store/actions/cityActions";
+import { homeOn } from "../store/actions/appActions"
+import { connect } from "react-redux";
+
 class Cities extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      nuovaLista: props.data
-    };
+
+  componentDidMount() {
+    this.props.dispatch(fetchCities());
   }
 
   render() {
+    const { error, loading, items } = this.props;
+    this.props.dispatch(homeOn());
+    if (error) {
+      return <div>Error! {error.message}</div>;
+    }
+    if (loading) {
+      return <Loading />;
+    }
+
     return (
       <div className="cities">
         <FadeIn>
-          {this.state.nuovaLista.map((dato, i) => {
+          {items.map((dato, i) => {
             return (
               <div
                 key={i}
@@ -26,10 +39,17 @@ class Cities extends React.Component {
               </div>
             );
           })}
-      </FadeIn>
-        </div>
+        </FadeIn>
+      </div>
     );
   }
 }
 
-export default Cities;
+const mapStateToProps = state => ({
+  items: state.cities.items,
+  loading: state.cities.loading,
+  error: state.cities.error,
+  homeLink: state.app.homeLink
+});
+
+export default connect(mapStateToProps)(Cities);

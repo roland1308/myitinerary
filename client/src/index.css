@@ -18,7 +18,7 @@ body {
   margin: auto;
 }
 .logo>img {
-  width: 73%;
+  width: 100%;
 }
 
 .button {
@@ -184,4 +184,13 @@ svg {
   object-fit: cover !important;
   height: 300px !important;
   padding: 0 !important;
+}
+
+.loading {
+  width: 70%;
+  margin: auto;
+}
+
+.loading>img {
+  width: 100%;
 }
