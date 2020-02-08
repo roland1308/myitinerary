@@ -5,7 +5,7 @@ import {
   } from '../actions/cityActions';
   
   const initialState = {
-    items: ["milano", "roma"],
+    items: [],
     loading: false,
     error: null
   };

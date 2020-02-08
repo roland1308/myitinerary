@@ -3,7 +3,7 @@
 # dependencies
 client/node_modules
 server/node_modules
-C:\Users\Renato\Desktop\Ubiqum\myitinerary\node_modules
+/node_modules
 /.pnp
 .pnp.js
 

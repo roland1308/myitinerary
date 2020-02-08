@@ -5,11 +5,13 @@ import Logo from "../components/Logo";
 
 import { Link } from "react-router-dom";
 import { homeOff } from "../store/actions/appActions";
+import { searchOff } from "../store/actions/appActions";
 import { connect } from "react-redux";
 
 class LandingPage extends React.Component {
   render() {
     this.props.dispatch(homeOff());
+    this.props.dispatch(searchOff());
 
     return (
       <div className="landing">
@@ -20,8 +22,8 @@ class LandingPage extends React.Component {
             cities.
           </h2>
         </div>
-        <Link to="./cities" className="linkNoDecoration">
-          <div>
+        <Link to="./cities">
+          <div className="linkNoDecoration">
             <h1>Start Browsing</h1>
           </div>
           <div>
@@ -35,7 +37,8 @@ class LandingPage extends React.Component {
 }
 
 const mapStateToProps = state => ({
-  homeLink: state.app.homeLink
+  homeLink: state.app.homeLink,
+  searchDiv: state.app.searchDiv
 });
 
 export default connect(mapStateToProps)(LandingPage);

@@ -35,7 +35,8 @@ class Carousel extends React.Component {
         <div
           id="carousel-with-lb"
           className="carousel slide carousel-multi-item"
-          data-ride="carousel"        >
+          data-ride="carousel"
+          data-interval="3000">
           <h2 className="padding17">Popular MYtineraries</h2>
           <div className="carousel-inner mdb-lightbox" role="listbox">
               {carouselBlocks.map((subArray, i) => {
@@ -88,7 +89,7 @@ class Carousel extends React.Component {
                 className="secondary-color"
               ></li>
             </ol>
-            <div className="">
+            <div>
               <a href="#carousel-with-lb" data-slide="next">
                 <NavigateNextTwoToneIcon className="controls" />
               </a>

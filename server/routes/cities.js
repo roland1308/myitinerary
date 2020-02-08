@@ -23,7 +23,7 @@ router.get("/all", (req, res) => {
 });
 
 /*add a City if not existing already CREATE*/
-router.post("/", (req, res) => {
+router.post("/add", (req, res) => {
   cityModel.findOne({ name: req.body.name }).then(exists => {
     if (exists) {
       console.log("Cittá esistente", exists);
@@ -48,12 +48,11 @@ router.post("/", (req, res) => {
   });
 });
 
-/*get one city READ*/
-router.get("/:name", (req, res) => {
+/*get one city by name READ*/
+router.get("/:id", (req, res) => {
   cityModel
-    .find({ name: req.params.name })
+    .findOne({ _id: req.params.id })
     .then(files => {
-      console.log(files);
       res.send(files);
     })
     .catch(err => console.log(err));

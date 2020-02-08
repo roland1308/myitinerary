@@ -16,6 +16,21 @@ export function fetchCities() {
         .catch(error => dispatch(fetchCitiesFailure(error)));
     };
   }
+
+  export function fetchOneCityId(id) {
+    return dispatch => {
+      dispatch(fetchCitiesBegin());
+      let url = "/cities/" + id;
+      return fetch(url)
+        .then(handleErrors)
+        .then(res => res.json())
+        .then(json => {
+          dispatch(fetchCitiesSuccess(json));
+          return json;
+        })
+        .catch(error => dispatch(fetchCitiesFailure(error)));
+    };
+  }
   
   // Handle HTTP errors since fetch won't.
   function handleErrors(response) {
