@@ -7,8 +7,7 @@ export function fetchItinerary(city_id) {
   return dispatch => {
     dispatch(fetchItineraryBegin());
     let url = "/itineraries/" + city_id;
-    console.log(url)
-;    return fetch(url)
+      return fetch(url)
       .then(handleErrors)
       .then(res => res.json())
       .then(json => {
@@ -17,7 +16,7 @@ export function fetchItinerary(city_id) {
       })
       .catch(error => dispatch(fetchItineraryFailure(error)));
   };
-}
+};
 
 // Handle HTTP errors since fetch won't.
 function handleErrors(response) {

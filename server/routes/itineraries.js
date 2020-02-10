@@ -20,7 +20,7 @@ router.post("/add", (req, res) => {
         city_id: req.body.city_id,
         country: req.body.country,
         username: req.body.username,
-        photo: req.body.username,
+        photo: req.body.photo,
         rating: req.body.rating,
         duration: req.body.duration,
         price: req.body.price,
@@ -35,7 +35,7 @@ router.post("/add", (req, res) => {
         });
       });
 
-/*get one Itinerary READ*/
+/*get Itineraries for a city READ*/
 router.get("/:id", (req, res) => {
   itineraryModel
     .find({ city_id: req.params.id })
@@ -43,6 +43,21 @@ router.get("/:id", (req, res) => {
       res.send(files);
     })
     .catch(err => console.log(err));
+});
+
+/*get one itinerary by id and POPULATE activities READ*/
+router.get("/populate/:id", (req, res) => {
+  itineraryModel
+    .findOne({ _id: req.params.id })
+    .populate("activities", "name photo")
+    .exec(function (err, itinerary) {
+      if (err) {
+        console.log("errore", err,"Itinerario", itinerary)
+        return
+      }
+      res.send(itinerary);
+      return
+    })
 });
 
 module.exports = router;

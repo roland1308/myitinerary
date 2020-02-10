@@ -1,4 +1,5 @@
 const mongoose = require('mongoose')
+const Schema = mongoose.Schema
 const itinerarySchema = new mongoose.Schema({
     name: {
         type: String,
@@ -41,6 +42,8 @@ const itinerarySchema = new mongoose.Schema({
     hashtags: {
         type: String
     },
+    activities: 
+        [{ type: Schema.Types.ObjectId, ref: 'activity' }],
 })
 
 //name of module is the singular version (itinerary) of the database name (itineraries)

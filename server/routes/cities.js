@@ -48,7 +48,7 @@ router.post("/add", (req, res) => {
   });
 });
 
-/*get one city by name READ*/
+/*get one city by id READ*/
 router.get("/:id", (req, res) => {
   cityModel
     .findOne({ _id: req.params.id })
