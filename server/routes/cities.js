@@ -2,7 +2,7 @@ const express = require("express");
 const router = express.Router();
 const cityModel = require("../model/cityModel");
 
-// get first 12 popular itineraries
+// get first 12 popular itineraries (City at the moment)
 router.get("/carousel", (req, res) => {
   cityModel
     .find({}, null, {limit: 12, sort: {'name': 1}})
@@ -58,7 +58,7 @@ router.get("/:id", (req, res) => {
     .catch(err => console.log(err));
 });
 
-/*update one city UPDATE*/
+/*update one city's name UPDATE*/
 router.put("/:name/:newname", (req, res) => {
   cityModel
     .findOneAndUpdate(
@@ -67,7 +67,10 @@ router.put("/:name/:newname", (req, res) => {
         $set: {
           name: req.params.newname
         }
-      }
+      },
+        {
+          new: true
+        }
     )
     .then(old => {
       if (old !== null) {

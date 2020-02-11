@@ -28,7 +28,7 @@ const itinerarySchema = new mongoose.Schema({
         // required: true
     },
     rating: {
-        type: Number,
+        type: String,
         // required: true
     },
     duration: {
