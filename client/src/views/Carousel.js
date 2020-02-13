@@ -36,7 +36,9 @@ class Carousel extends React.Component {
           id="carousel-with-lb"
           className="carousel slide carousel-multi-item"
           data-ride="carousel"
-          data-interval="3000">
+          data-interval="3000"
+          touch="true"
+          pause="false">
           <h2 className="padding17">Popular MYtineraries</h2>
           <div className="carousel-inner mdb-lightbox" role="listbox">
               {carouselBlocks.map((subArray, i) => {

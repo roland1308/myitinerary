@@ -1,34 +1,36 @@
 import React from "react";
 import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
+import { connect } from "react-redux";
+
 import LandingPage from "./views/LandingPage";
 import Cities from "./views/Cities";
-import NavBar from "./components/NavBar";
 import LogIn from "./views/LogIn";
-// import AddItinerary from "./views/AddItinerary";
+import CreateAccount from "./views/CreateAccount";
 import Itinerary from "./views/Itinerary";
+
+import NavBar from "./components/NavBar";
 import Foot from "./components/Foot";
 import SearchBar from "./components/SearchBar";
-import { connect } from "react-redux";
+import ListUsers from "./components/ListUsers";
 
 class App extends React.Component {
   render() {
     const { homeLink, searchDiv } = this.props;
     return (
       <div className="App">
-        <NavBar />
-        {searchDiv && <SearchBar />}
-        {/* <div className="principale"> */}
-          <Router>
-            <Switch>
-              <Route exact path="/" component={LandingPage} />
-              <Route path="/cities" component={Cities} />
-              <Route path="/login" component={LogIn} />
-              <Route path="/itinerary/:idcitta" component={Itinerary} />
-              {/* <Route path="/additinerary/:idcitta" component={AddItinerary} /> */}
-            </Switch>
-          </Router>
+        <Router>
+          <NavBar />
+          {searchDiv && <SearchBar />}
+          <Switch>
+            <Route exact path="/" component={LandingPage} />
+            <Route path="/cities" component={Cities} />
+            <Route path="/login" component={LogIn} />
+            <Route path="/createaccount" component={CreateAccount} />
+            <Route path="/itinerary/:idcitta" component={Itinerary} />
+            <Route path="/listusers" component={ListUsers} />
+          </Switch>
           {homeLink && <Foot />}
-        {/* </div> */}
+        </Router>
       </div>
     );
   }

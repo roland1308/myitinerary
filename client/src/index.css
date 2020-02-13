@@ -17,6 +17,7 @@ body {
 .logo {
   margin: auto;
 }
+
 .logo>img {
   width: 100%;
 }
@@ -24,10 +25,12 @@ body {
 .button {
   width: 25%;
 }
+
 .cities {
   height: 80vh;
   overflow-y: scroll;
 }
+
 .single {
   display: flex;
   align-items: center;
@@ -42,9 +45,9 @@ body {
 
 .landing,
 .cities {
-   text-align: center;
-   padding: 0;
-   margin: 0;
+  text-align: center;
+  padding: 0;
+  margin: 0;
 }
 
 .landing {
@@ -60,10 +63,11 @@ body {
   text-align: left;
 }
 
- h2 {
+h2 {
   font-size: 2.5rem;
 }
- h1 {
+
+h1 {
   font-size: 5rem;
 }
 
@@ -86,8 +90,8 @@ body {
 }
 
 #carousel-example-generic {
-	height: auto;
-	width: 100vw;
+  height: auto;
+  width: 100vw;
 }
 
 .carousel-inner img {
@@ -130,6 +134,7 @@ body {
 .controls {
   font-size: 111px !important;
 }
+
 .controls:hover,
 .carousel-indicators:hover {
   cursor: pointer;
@@ -145,6 +150,7 @@ svg {
   line-height: 0;
   height: 6vh;
 }
+
 .nomeCitta {
   font-family: "Avant Garde", Avantgarde, "Century Gothic", CenturyGothic, "AppleGothic", sans-serif;
   font-size: 92px;
@@ -153,34 +159,34 @@ svg {
   text-rendering: optimizeLegibility;
   color: white;
   letter-spacing: .1em;
-  text-shadow: 
-      1px -1px 0 black, 
-      -1px -1px 0 black, 
-      2px 1px 0 black, 
-      -2px 1px 0 black, 
-      0 0 20px black, 
-      0 1px 0 #2e2e2e, 
-      0 2px 0 #2c2c2c, 
-      0 3px 0 #2a2a2a, 
-      0 4px 0 #282828, 
-      0 5px 0 #262626, 
-      0 6px 0 #242424, 
-      0 7px 0 #222, 
-      0 8px 0 #202020, 
-      0 9px 0 #1e1e1e, 
-      0 10px 0 #1c1c1c, 
-      0 11px 0 #1a1a1a, 
-      0 12px 0 #181818, 
-      0 13px 0 #161616, 
-      0 14px 0 #141414, 
-      0 15px 0 #121212, 
-      0 22px 30px rgba(0, 0, 0, 0.9);
+  text-shadow:
+    1px -1px 0 black,
+    -1px -1px 0 black,
+    2px 1px 0 black,
+    -2px 1px 0 black,
+    0 0 20px black,
+    0 1px 0 #2e2e2e,
+    0 2px 0 #2c2c2c,
+    0 3px 0 #2a2a2a,
+    0 4px 0 #282828,
+    0 5px 0 #262626,
+    0 6px 0 #242424,
+    0 7px 0 #222,
+    0 8px 0 #202020,
+    0 9px 0 #1e1e1e,
+    0 10px 0 #1c1c1c,
+    0 11px 0 #1a1a1a,
+    0 12px 0 #181818,
+    0 13px 0 #161616,
+    0 14px 0 #141414,
+    0 15px 0 #121212,
+    0 22px 30px rgba(0, 0, 0, 0.9);
 }
 
 .linkNoDecoration {
   color: black;
   cursor: pointer;
-  text-decoration: none;
+  text-decoration: none !important;
 }
 
 .img-fluid {
@@ -191,6 +197,7 @@ svg {
 
 .loading {
   width: 70%;
+  height: 80vh;
   margin: auto;
 }
 
@@ -198,7 +205,7 @@ svg {
   width: 100%;
 }
 
- .searchCity {
+.searchCity {
   width: 80%;
   margin: 10px auto;
   height: 5vh;
@@ -208,9 +215,9 @@ svg {
 #standard-search-label,
 #standard-search {
   font-size: 2.5rem !important;
-  margin: 5px;
+  margin: 5px !important;
   line-height: 1rem !important;
-} 
+}
 
 .PrivateNotchedOutline-root-70 {
   border-width: 2px !important;
@@ -236,26 +243,87 @@ svg {
 .avatar {
   text-align: center;
   font-size: 2rem;
-  box-shadow: 7px 9px 26px 3px rgba(0,0,0,0.75);
+  box-shadow: 7px 9px 26px 3px rgba(0, 0, 0, 0.75);
+  padding: 10px !important;
+  margin-bottom: 10px;
+}
+.accountAvatar {
+  text-align: center;
+  font-size: 2rem;
   padding: 10px !important;
   margin-bottom: 10px;
 }
 
-.activitiesButton {
+.openingButton,
+.closingButton {
   text-align: center;
   width: 100%;
   font-size: 2rem !important;
   text-transform: capitalize !important;
 }
 
-h3 {
-  background-color: blue;
+.closingButton.MuiButton-containedSizeLarge {
+  margin-top: 20px !important;
 }
 
-.activity {
-  width: 100%;
-  height: 500px !important;
+.innerSlide {
   background-position: center;
   background-repeat: no-repeat;
   background-size: cover;
+}
+
+.nomeActivity {
+  overflow: hidden;
+  border: 5px white solid;
+  height: 200px !important;
+  font-family: "Avant Garde", Avantgarde, "Century Gothic", CenturyGothic, "AppleGothic", sans-serif;
+  font-size: 3.5rem;
+  text-align: center;
+  text-transform: capitalize !important;
+  color: white;
+  letter-spacing: .1.5em;
+  text-shadow: 2px 2px 0 black, 2px -2px 0 black, -2px 2px 0 black, -2px -2px 0 black, 2px 0px 0 black, 0px 2px 0 black, -2px 0px 0 black, 0px -2px 0 black;
+}
+
+* {
+  min-height: 0;
+  min-width: 0;
+}
+
+.itineraryContainer {
+  border-bottom: 1px black solid;
+}
+
+.account {
+  height: 86vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  font-size: 3rem;
+}
+
+.accountForm {
+  background-color: rgb(212, 206, 206);
+  margin: 30px 50px;
+  padding: 30px;
+}
+
+input, label {
+  width: 820px;
+  margin-top: 10px;
+}
+
+.MuiButtonBase-root {
+  font-size: 4rem !important;
+}
+
+.logItems {
+  font-size: 5.5rem !important;
+  padding: 0 10px;
+}
+
+.accountForm,
+.loginForm {
+  box-shadow: 7px 9px 26px 3px rgba(0, 0, 0, 0.75);
+  border-radius: 20px;
 }

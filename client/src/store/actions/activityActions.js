@@ -12,7 +12,6 @@ export function fetchActivities(itinerary_id) {
       .then(res => res.json())
       .then(json => {
         dispatch(fetchActivitySuccess(json.activities));
-        console.log(json);
         return json;
       })
       .catch(error => dispatch(fetchActivityFailure(error)));

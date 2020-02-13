@@ -10,7 +10,6 @@ import { homeOn, backOff, searchOn } from "../store/actions/appActions";
 import { connect } from "react-redux";
 
 class Cities extends React.Component {
-
   componentDidMount() {
     this.props.dispatch(fetchCities());
     this.props.dispatch(homeOn());
@@ -32,17 +31,19 @@ class Cities extends React.Component {
         return dato.name.toLowerCase().includes(campoCerca);
       });
     }
-    // else {
-    //   nuovaLista = items;
-    // }
+     else {
+       nuovaLista = items;
+     }
     return (
       <div className="cities">
         <FadeIn>
           {nuovaLista.map((dato, i) => {
             return (
-              <Link key={i} to={"/itinerary/:" + dato._id}>
-              {/* <Link key={i} to={"/additinerary/:" + dato._id}> */}
-
+              <Link
+                className="linkNoDecoration"
+                key={i}
+                to={"/itinerary/" + dato._id}
+              >
                 <div
                   className="single"
                   style={{ backgroundImage: "url(" + dato.url + ")" }}

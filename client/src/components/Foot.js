@@ -1,25 +1,34 @@
 import React from "react";
-import HomeTwoToneIcon from "@material-ui/icons/HomeTwoTone";
-import ArrowBackIosTwoToneIcon from '@material-ui/icons/ArrowBackIosTwoTone';
 import { connect } from "react-redux";
 
+import { Link } from "react-router-dom";
+
+import HomeTwoToneIcon from "@material-ui/icons/HomeTwoTone";
+import ArrowBackIosTwoToneIcon from "@material-ui/icons/ArrowBackIosTwoTone";
+
 class Foot extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {};
+  }
 
   render() {
-    const { goBack } = this.props;
+    const history = require("browser-history");
+    const { goPrev } = this.props;
     return (
       <div className="row">
         <div className="col-sm-4 back">
-        {goBack && (<a href="/cities">
-          <ArrowBackIosTwoToneIcon
-            style={{ fontSize: 100 }}
-          />
-          </a>)}
+          {goPrev && (
+            <ArrowBackIosTwoToneIcon
+              style={{ fontSize: 100 }}
+              onClick={() => history(-1)}
+            />
+          )}
         </div>
         <div className="col-sm-4 home">
-          <a href="/">
+          <Link to={"/"}>
             <HomeTwoToneIcon style={{ fontSize: 100 }} />
-          </a>
+          </Link>
         </div>
       </div>
     );
@@ -27,7 +36,7 @@ class Foot extends React.Component {
 }
 
 const mapStateToProps = state => ({
-  goBack: state.app.goBack
+  goPrev: state.app.goPrev
 });
 
 export default connect(mapStateToProps)(Foot);

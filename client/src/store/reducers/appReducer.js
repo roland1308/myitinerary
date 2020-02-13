@@ -8,7 +8,7 @@ const initialState = {
   homeLink: false,
   searchDiv: false,
   campoCerca: "",
-  goBack: true
+  goPrev: true
 };
 
 export default function popularsReducer(state = initialState, action) {
@@ -27,12 +27,12 @@ export default function popularsReducer(state = initialState, action) {
       case BACK_ON:
       return {
         ...state,
-        goBack: true
+        goPrev: true
       };
     case BACK_OFF:
       return {
         ...state,
-        goBack: false
+        goPrev: false
       };
 
       case SEARCH_ON:

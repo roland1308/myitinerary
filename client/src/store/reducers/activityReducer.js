@@ -6,38 +6,38 @@ import {
 
 const initialState = {
   items: [],
-  loading: false,
-  error: null
+  loadingAct: false,
+  errorAct: null
 };
 
 export default function activityReducer(state = initialState, action) {
   switch (action.type) {
     case FETCH_ACTIVITY_BEGIN:
-      // Mark the state as "loading" so we can show a spinner or something
-      // Also, reset any errors. We're starting fresh.
+      // Mark the state as "loadingAct" so we can show a spinner or something
+      // Also, reset any errorActs. We're starting fresh.
       return {
         ...state,
-        loading: true,
-        error: null
+        loadingAct: true,
+        errorAct: null
       };
 
     case FETCH_ACTIVITY_SUCCESS:
-      // All done: set loading "false".
+      // All done: set loadingAct "false".
       // Also, replace the items with the ones from the server
       return {
         ...state,
-        loading: false,
+        loadingAct: false,
         items: action.payload.activity
       };
 
     case FETCH_ACTIVITY_FAILURE:
-      // The request failed. It's done. So set loading to "false".
-      // Save the error, so we can display it somewhere.
+      // The request failed. It's done. So set loadingAct to "false".
+      // Save the errorAct, so we can display it somewhere.
       // Since it failed, we don't have items to display anymore, so set `items` empty.
       return {
         ...state,
-        loading: false,
-        error: true,
+        loadingAct: false,
+        errorAct: true,
         items: [{}]
       };
 

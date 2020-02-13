@@ -22,9 +22,9 @@ class LandingPage extends React.Component {
             cities.
           </h2>
         </div>
-        <Link to="./cities">
-          <div className="linkNoDecoration">
-            <h1>Start Browsing</h1>
+        <Link className="linkNoDecoration" to="./cities">
+          <div>
+            <h1 className="linkNoDecoration">Start Browsing</h1>
           </div>
           <div>
             <img className="button" src={start} alt="Start Browsing" />

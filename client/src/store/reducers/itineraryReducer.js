@@ -6,38 +6,38 @@ import {
 
 const initialState = {
   items: [],
-  loading: false,
-  error: null
+  loadingItin: false,
+  errorItin: null
 };
 
 export default function itineraryReducer(state = initialState, action) {
   switch (action.type) {
     case FETCH_ITINERARY_BEGIN:
-      // Mark the state as "loading" so we can show a spinner or something
-      // Also, reset any errors. We're starting fresh.
+      // Mark the state as "loadingItin" so we can show a spinner or something
+      // Also, reset any errorItins. We're starting fresh.
       return {
         ...state,
-        loading: true,
-        error: null
+        loadingItin: true,
+        errorItin: null
       };
 
     case FETCH_ITINERARY_SUCCESS:
-      // All done: set loading "false".
+      // All done: set loadingItin "false".
       // Also, replace the items with the ones from the server
       return {
         ...state,
-        loading: false,
+        loadingItin: false,
         items: action.payload.itinerary
       };
 
     case FETCH_ITINERARY_FAILURE:
-      // The request failed. It's done. So set loading to "false".
-      // Save the error, so we can display it somewhere.
+      // The request failed. It's done. So set loadingItin to "false".
+      // Save the errorItin, so we can display it somewhere.
       // Since it failed, we don't have items to display anymore, so set `items` empty.
       return {
         ...state,
-        loading: false,
-        error: true,
+        loadingItin: false,
+        errorItin: true,
         items: [{}]
       };
 
