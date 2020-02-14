@@ -7,7 +7,7 @@ class LogIn extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      value: "",
+      userName: "",
       pw: ""
     };
   }
@@ -18,15 +18,24 @@ class LogIn extends React.Component {
   }
 
   handleChange = event => {
-    console.log(event.target);
-    this.setState({
-      value: event.target.value,
-      pw: event.target.pw
-    });
+    switch (event.target.type) {
+      case "text":
+        this.setState({
+          userName: event.target.value
+        });
+        break;
+      case "password":
+        this.setState({
+          pw: event.target.value
+        });
+        break;
+      default:
+        break;
+    }
   };
 
   handleSubmit = event => {
-    alert("A name was submitted: " + this.state.value);
+    alert("A name was submitted: " + this.state.pw);
     event.preventDefault();
   };
 
@@ -39,7 +48,8 @@ class LogIn extends React.Component {
             Username:
             <input
               type="text"
-              value={this.state.value}
+              value={this.state.userName}
+              required="required"
               onChange={this.handleChange}
             />
           </label>
@@ -48,6 +58,7 @@ class LogIn extends React.Component {
             <input
               type="password"
               value={this.state.pw}
+              required="required"
               onChange={this.handleChange}
             />
           </label>

@@ -54,7 +54,7 @@ class CreateAccount extends React.Component {
           <div className="accountAvatar">
         <Avatar alt={this.state.userName} src={this.state.picture} />
         </div>
-        <h2>Create New Account</h2>
+        <h1>Create New Account</h1>
         <form className="accountForm" onSubmit={this.handleSubmit}>
           <label>
             Username*:

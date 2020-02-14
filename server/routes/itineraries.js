@@ -55,7 +55,7 @@ router.get("/populate/:id", (req, res) => {
     .populate("activities", "name photo")
     .exec(function(err, itinerary) {
       if (err) {
-        console.log("errore", err, "Itinerario", itinerary);
+        console.log("errore", err);
         return;
       }
       res.send(itinerary);

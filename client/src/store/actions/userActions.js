@@ -42,8 +42,13 @@ export const addUser = ( user ) => {
     dispatch(addUserBegin());
     axios
       .post("/users/add", {
-        body: user
-      })
+        headers: {
+        'content-type': 'application/x-www-form-urlencoded'
+        },
+        userName: user.userName,
+        email: user.email,
+        picture: user.picture,
+        pw: user.pw})
       .then(res => {
         dispatch(addUserSuccess(res.data));
       })
