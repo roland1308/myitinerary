@@ -14,7 +14,15 @@ const key = require("../keys.js");
 const jwt = require("jsonwebtoken");
 
 const multer = require("multer");
-const upload = multer({dest: "uploads/"});
+const storage = multer.diskStorage({
+  destination: function(req, file, cb) {
+    cb(null, "uploads/");
+  },
+  filename: function(re, file, cb) {
+    cb(null, new Date().toISOString() + file.originalname);
+  }
+});
+const upload = multer({storage: storage});
 
 /*get all users*/
 router.get("/all", (req, res) => {
@@ -31,13 +39,13 @@ router.post(
   "/add",
   [
     // email must be an email
-    check("email").isEmail(),
+    // check("email").isEmail(),
     // password must be at least 5 chars long
-    check("pw").isLength({ min: 5 }),
+    // check("pw").isLength({ min: 5 }),
     upload.single("picture")
   ],
   (req, res) => {
-    console.log(req.file);
+    console.log(req.file, req.body.email);
     // console.log(req.body);
     // console.log(req.headers);
     // Finds the validation errors in this request and wraps them in an object with handy functions
@@ -47,7 +55,7 @@ router.post(
     }
     userModel
       .findOne({
-        userName: req.body.userName
+        userName: req.body.username
       })
       .then(exists => {
         if (exists) {
@@ -66,7 +74,7 @@ router.post(
                 bcrypt.hash(req.body.pw, saltRounds).then(function(hash) {
                   // Store hash in your password DB.
                   const newUser = new userModel({
-                    userName: req.body.userName,
+                    userName: req.body.username,
                     email: req.body.email,
                     picture: req.body.picture,
                     pw: hash
@@ -93,7 +101,7 @@ router.post(
 router.post("/login", (req, res) => {
   userModel
     .findOne({
-      userName: req.body.userName
+      username: req.body.username
     })
     .then(user => {
       // provide error if user does not correspond with email of one user in the database
@@ -110,7 +118,7 @@ router.post("/login", (req, res) => {
             // create JWT payload, sign token and send it back
             const payload = {
               _id: user._id,
-              userName: user.userName,
+              username: user.username,
               picture: user.picture
             };
             // expires in one week

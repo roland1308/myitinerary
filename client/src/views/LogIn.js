@@ -42,7 +42,7 @@ class LogIn extends React.Component {
   render() {
     return (
       <div className="account">
-        <h2>Login</h2>
+        <h1>Login</h1>
         <form className="accountForm" onSubmit={this.handleSubmit}>
           <label>
             Username:

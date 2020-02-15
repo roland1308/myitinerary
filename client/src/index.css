@@ -238,6 +238,13 @@ svg {
   font-size: 4.5vh !important;
   border: 1px solid black;
   margin: 0 auto;
+  z-index: 10;
+  box-shadow: 7px 9px 26px 3px rgba(0, 0, 0, 0.75);
+}
+.big {
+  width: 13vh !important;
+  height: 13vh !important;
+  box-shadow: 7px 9px 26px 3px rgba(0, 0, 0, 0.75);
 }
 
 .avatar {
@@ -306,6 +313,10 @@ svg {
   background-color: rgb(212, 206, 206);
   margin: 30px 50px;
   padding: 30px;
+}
+
+.translateNewForm {
+  transform: translateY(-130px);
 }
 
 input, label {

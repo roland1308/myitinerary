@@ -12,7 +12,7 @@ class CreateAccount extends React.Component {
     this.state = {
       userName: "",
       email: "",
-      picture: "https://source.unsplash.com/640x480/?face",
+      picture: "",
       pw: ""
     };
   }
@@ -22,23 +22,24 @@ class CreateAccount extends React.Component {
     this.props.dispatch(searchOff());
   }
 
-  handleUser = (e) => {
+  handleUser = e => {
     this.setState({
-      userName: e.target.value,
+      userName: e.target.value
     });
   };
-  handleEmail = (e) => {
+  handleEmail = e => {
     this.setState({
-      email: e.target.value,
+      email: e.target.value
     });
   };
-  handlePicture = (e) => {
+  handlePicture = e => {
     this.setState({
-      picture: e.target.value,
+      picture: e.target.value
     });
-  };  handlePw = (e) => {
+  };
+  handlePw = e => {
     this.setState({
-      pw: e.target.value,
+      pw: e.target.value
     });
   };
 
@@ -51,11 +52,11 @@ class CreateAccount extends React.Component {
   render() {
     return (
       <div className="account">
-          <div className="accountAvatar">
-        <Avatar alt={this.state.userName} src={this.state.picture} />
-        </div>
         <h1>Create New Account</h1>
-        <form className="accountForm" onSubmit={this.handleSubmit}>
+        <div className="accountAvatar">
+          <Avatar className="big" alt={this.state.userName} src={this.state.picture} />
+        </div>
+        <form className="accountForm translateNewForm" onSubmit={this.handleSubmit}>
           <label>
             Username*:
             <input
@@ -77,8 +78,7 @@ class CreateAccount extends React.Component {
           <label>
             Profile Picture*:
             <input
-              type="url"
-              value={this.state.picture}
+              type="file"
               required="required"
               onChange={this.handlePicture}
             />
