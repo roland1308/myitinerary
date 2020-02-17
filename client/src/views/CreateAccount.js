@@ -1,18 +1,22 @@
 import React from "react";
-import { homeOn, backOn, searchOff } from "../store/actions/appActions";
-import { addUser } from "../store/actions/userActions";
-
-import Avatar from "@material-ui/core/Avatar";
 
 import { connect } from "react-redux";
+
+import { Link } from "react-router-dom";
+
+import { homeOn, backOn, searchOff } from "../store/actions/appActions";
+import { addUser, resetError } from "../store/actions/userActions";
+
+import Avatar from "@material-ui/core/Avatar";
+import Button from "@material-ui/core/Button";
 
 class CreateAccount extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      userName: "",
+      username: "",
       email: "",
-      picture: "",
+      picture: null,
       pw: ""
     };
   }
@@ -22,48 +26,54 @@ class CreateAccount extends React.Component {
     this.props.dispatch(searchOff());
   }
 
-  handleUser = e => {
-    this.setState({
-      userName: e.target.value
-    });
-  };
-  handleEmail = e => {
-    this.setState({
-      email: e.target.value
-    });
-  };
-  handlePicture = e => {
-    this.setState({
-      picture: e.target.value
-    });
-  };
-  handlePw = e => {
-    this.setState({
-      pw: e.target.value
-    });
+  handleChange = e => {
+    switch (e.target.name) {
+      case "selectedFile":
+        this.setState({ picture: e.target.files[0] });
+        break;
+      default:
+        this.setState({ [e.target.name]: e.target.value });
+    }
   };
 
-  handleSubmit = event => {
-    console.log(JSON.stringify(this.state));
-    this.props.dispatch(addUser(this.state));
-    event.preventDefault();
+  handleSubmit = e => {
+    e.preventDefault();
+    const { username, email, picture, pw } = this.state;
+    let formResult = new FormData();
+    formResult.append("username", username);
+    formResult.append("email", email);
+    formResult.append("picture", picture);
+    formResult.append("pw", pw);
+    this.props.dispatch(addUser(formResult));
+  };
+
+  closeError = () => {
+    this.props.dispatch(resetError());
   };
 
   render() {
+    const { error, success, avatar } = this.props;
     return (
       <div className="account">
         <h1>Create New Account</h1>
         <div className="accountAvatar">
-          <Avatar className="big" alt={this.state.userName} src={this.state.picture} />
+          <Avatar className="big" alt={this.state.username} src={avatar} />
         </div>
-        <form className="accountForm translateNewForm" onSubmit={this.handleSubmit}>
+        <form
+          id="myForm"
+          className="accountForm translateNewForm"
+          method="post"
+          encType="multipart/form-data"
+          onSubmit={this.handleSubmit}
+        >
           <label>
             Username*:
             <input
               type="text"
-              value={this.state.userName}
+              value={this.state.username}
               required="required"
-              onChange={this.handleUser}
+              name="username"
+              onChange={this.handleChange}
             />
           </label>
           <label>
@@ -72,15 +82,18 @@ class CreateAccount extends React.Component {
               type="email"
               value={this.state.email}
               required="required"
-              onChange={this.handleEmail}
+              name="email"
+              onChange={this.handleChange}
             />
           </label>
           <label>
             Profile Picture*:
             <input
               type="file"
+              name="selectedFile"
+              // value={this.state.picture}
               required="required"
-              onChange={this.handlePicture}
+              onChange={this.handleChange}
             />
           </label>
           <label>
@@ -89,14 +102,53 @@ class CreateAccount extends React.Component {
               type="password"
               value={this.state.pw}
               required="required"
-              onChange={this.handlePw}
+              minLength="5"
+              name="pw"
+              onChange={this.handleChange}
             />
           </label>
           <input type="submit" value="Register" />
         </form>
+        {error && (
+          <div className="backgroundGrey">
+            <div className="errorInput">
+              {error === "ESISTE UTENTE" && (
+                <h1>Sorry: this username already exists!</h1>
+              )}
+              {error === "ESISTE EMAIL" && (
+                <h1>Sorry: this e-mail address already exists!</h1>
+              )}
+              <Button
+                onClick={this.closeError}
+                size="large"
+                variant="contained"
+              >
+                close
+              </Button>
+            </div>
+          </div>
+        )}
+        {success && (
+          <div className="backgroundGrey">
+            <div className="popupInput">
+              <h1>GREAT! New user added</h1>
+              <Link to={"/"} className = "linkNoDecoration">
+                <Button size="large" variant="contained">
+                  home
+                </Button>
+              </Link>
+            </div>
+          </div>
+        )}
       </div>
     );
   }
 }
 
-export default connect()(CreateAccount);
+const mapStateToProps = state => ({
+  error: state.users.error,
+  success: state.users.success,
+  avatar: state.users.avatar
+});
+
+export default connect(mapStateToProps)(CreateAccount);

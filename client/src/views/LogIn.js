@@ -7,7 +7,7 @@ class LogIn extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      userName: "",
+      username: "",
       pw: ""
     };
   }
@@ -21,7 +21,7 @@ class LogIn extends React.Component {
     switch (event.target.type) {
       case "text":
         this.setState({
-          userName: event.target.value
+          username: event.target.value
         });
         break;
       case "password":
@@ -48,7 +48,7 @@ class LogIn extends React.Component {
             Username:
             <input
               type="text"
-              value={this.state.userName}
+              value={this.state.username}
               required="required"
               onChange={this.handleChange}
             />

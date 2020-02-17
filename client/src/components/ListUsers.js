@@ -23,7 +23,7 @@ componentDidMount() {
             <ol>
                 {items.map((user, i) => {
                 return (
-                    <li key={i}>{user.userName}</li>
+                    <li key={i}>{user.username}</li>
                 )}
                  ) }
             </ol>

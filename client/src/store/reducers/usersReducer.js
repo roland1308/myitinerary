@@ -5,13 +5,17 @@ import {
 
   ADD_USER_BEGIN,
   ADD_USER_SUCCESS,
-  ADD_USER_FAILURE
+  ADD_USER_FAILURE,
+
+  RESET_ERROR
 } from "../actions/userActions";
 
 const initialState = {
   items: [],
   loading: false,
-  error: null
+  error: null,
+  success: false,
+  avatar: ""
 };
 
 export default function usersReducer(state = initialState, action) {
@@ -41,20 +45,31 @@ export default function usersReducer(state = initialState, action) {
       return {
         ...state,
         loading: true,
-        error: null
+        error: null,
+        success: false
       };
     case ADD_USER_SUCCESS:
       return {
         ...state,
         loading: false,
-        items: [...state.items, action.payload]
+        items: [...state.items, action.payload],
+        avatar: action.payload.picture,
+        error: false,
+        success: true
       };
     case ADD_USER_FAILURE:
       return {
         ...state,
         loading: false,
-        error: true
+        error: action.payload.error,
+        success: false
       };
+
+      case RESET_ERROR:
+        return {
+          ...state,
+          error: null
+        };
 
     default:
       // ALWAYS have a default case in a reducer

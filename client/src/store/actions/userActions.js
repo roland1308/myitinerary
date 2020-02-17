@@ -7,6 +7,8 @@ export const ADD_USER_BEGIN = "ADD_USER_BEGIN";
 export const ADD_USER_SUCCESS = "ADD_USER_SUCCESS";
 export const ADD_USER_FAILURE = "ADD_USER_FAILURE";
 
+export const RESET_ERROR = "RESET_ERROR";
+
 const axios = require("axios");
 
 export const fetchUsers = () => {
@@ -35,26 +37,20 @@ export const fetchUsersFailure = error => ({
   payload: { error }
 });
 
-
-export const addUser = ( user ) => {
-  console.log(user);
-  return dispatch => {
+export const addUser = user => {
+  return async dispatch => {
     dispatch(addUserBegin());
-    axios
-      .post("/users/add", {
-        headers: {
-        'content-type': 'application/x-www-form-urlencoded'
-        },
-        userName: user.userName,
-        email: user.email,
-        picture: user.picture,
-        pw: user.pw})
-      .then(res => {
-        dispatch(addUserSuccess(res.data));
-      })
-      .catch(err => {
-        dispatch(addUserFailure(err.message));
-      });
+    try {
+      const response = await axios.post("/users/add", user);
+      if (typeof response.data === "string") {
+        dispatch(addUserFailure(response.data));
+      } else {
+        dispatch(addUserSuccess(response.data));
+      }
+    } catch (error) {
+      dispatch(addUserFailure(error.message));
+    }
+    return "done";
   };
 };
 
@@ -74,4 +70,9 @@ const addUserFailure = error => ({
   payload: {
     error
   }
+});
+
+
+export const resetError = () => ({
+  type: RESET_ERROR
 });

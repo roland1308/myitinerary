@@ -2,6 +2,11 @@ const express = require("express");
 const router = express.Router();
 const userModel = require("../model/userModel");
 
+const fs = require("fs");
+const { promisify } = require("util");
+
+const unlinkAsync = promisify(fs.unlink);
+
 const bcrypt = require("bcrypt");
 const saltRounds = 10;
 
@@ -16,13 +21,15 @@ const jwt = require("jsonwebtoken");
 const multer = require("multer");
 const storage = multer.diskStorage({
   destination: function(req, file, cb) {
-    cb(null, "uploads/");
+    cb(null, "./uploads/");
   },
-  filename: function(re, file, cb) {
-    cb(null, new Date().toISOString() + file.originalname);
+  filename: function(req, file, cb) {
+    const now = new Date().toISOString();
+    const date = now.replace(/:/g, "-");
+    cb(null, date + file.originalname);
   }
 });
-const upload = multer({storage: storage});
+const upload = multer({ storage: storage });
 
 /*get all users*/
 router.get("/all", (req, res) => {
@@ -38,29 +45,26 @@ router.get("/all", (req, res) => {
 router.post(
   "/add",
   [
-    // email must be an email
-    // check("email").isEmail(),
-    // password must be at least 5 chars long
-    // check("pw").isLength({ min: 5 }),
-    upload.single("picture")
+    upload.single("picture"),
+    check("email").isEmail(),
+    check("pw").isLength({ min: 5 })
   ],
   (req, res) => {
-    console.log(req.file, req.body.email);
-    // console.log(req.body);
-    // console.log(req.headers);
+    console.log(req.body);
     // Finds the validation errors in this request and wraps them in an object with handy functions
-    const errors = validationResult(req);
+    const errors = validationResult(req.body);
     if (!errors.isEmpty()) {
       return res.status(422).json({ errors: errors.array() });
     }
     userModel
       .findOne({
-        userName: req.body.username
+        username: req.body.username
       })
       .then(exists => {
         if (exists) {
           console.log("Nome utente esistente", exists);
           res.send("ESISTE UTENTE");
+          unlinkAsync(req.file.path);
         } else {
           userModel
             .findOne({
@@ -70,13 +74,15 @@ router.post(
               if (exists) {
                 console.log("Indirizzo email esistente", exists);
                 res.send("ESISTE EMAIL");
+                unlinkAsync(req.file.path);
               } else {
                 bcrypt.hash(req.body.pw, saltRounds).then(function(hash) {
                   // Store hash in your password DB.
                   const newUser = new userModel({
-                    userName: req.body.username,
+                    username: req.body.username,
                     email: req.body.email,
-                    picture: req.body.picture,
+                    picture:
+                      "http://localhost:5000/uploads/" + req.file.filename,
                     pw: hash
                   });
                   console.log("Utente aggiunto");
