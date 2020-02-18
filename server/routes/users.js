@@ -4,7 +4,6 @@ const userModel = require("../model/userModel");
 
 const fs = require("fs");
 const { promisify } = require("util");
-
 const unlinkAsync = promisify(fs.unlink);
 
 const bcrypt = require("bcrypt");
@@ -15,8 +14,10 @@ const app = express();
 
 app.use(express.json());
 
-const key = require("../keys.js");
+const key = require("../config/keys.js");
 const jwt = require("jsonwebtoken");
+
+const passport = require("passport");
 
 const multer = require("multer");
 const storage = multer.diskStorage({
@@ -45,17 +46,16 @@ router.get("/all", (req, res) => {
 router.post(
   "/add",
   [
-    upload.single("picture"),
-    check("email").isEmail(),
-    check("pw").isLength({ min: 5 })
+    upload.single("picture")
+    // check("email").isEmail(),
+    // check("pw").isLength({ min: 5 })
   ],
   (req, res) => {
-    console.log(req.body);
     // Finds the validation errors in this request and wraps them in an object with handy functions
-    const errors = validationResult(req.body);
-    if (!errors.isEmpty()) {
-      return res.status(422).json({ errors: errors.array() });
-    }
+    // const errors = validationResult(req.body);
+    // if (!errors.isEmpty()) {
+    //   return res.status(422).json({ errors: errors.array() });
+    // }
     userModel
       .findOne({
         username: req.body.username
@@ -81,8 +81,7 @@ router.post(
                   const newUser = new userModel({
                     username: req.body.username,
                     email: req.body.email,
-                    picture:
-                      "http://localhost:5000/uploads/" + req.file.filename,
+                    picture: "uploads/" + req.file.filename,
                     pw: hash
                   });
                   console.log("Utente aggiunto");
@@ -147,5 +146,43 @@ router.post("/login", (req, res) => {
       }
     });
 });
+
+// JWT Authentication
+router.get(
+  "/aut",
+  passport.authenticate("jwt", { session: false }),
+  (req, res) => {
+    userModel
+      .findOne({ _id: req.user.id })
+      .then(user => {
+        res.json(user);
+      })
+      .catch(err => res.status(404).json({ error: "User does not exist!" }));
+  }
+);
+
+//GOOGLE Authentication
+router.get(
+  "/google",
+  passport.authenticate("google", {
+    scope: ["profile", "email"]
+  })
+);
+
+// router.get(
+//   "/google/redirect",
+//   passport.authenticate("google", {
+//     failureRedirect: "http://localhost:3000/"
+//   }),
+//   function(req, res) {
+//     console.log("OK");
+//     // Successful authentication, redirect home.
+//     res.redirect("http://localhost:3000/");
+//   }
+// );
+
+router.get("/google/redirect", passport.authenticate("google"), (req, res) => {
+  res.send("RAGGIUNTO REDIRECT")
+})
 
 module.exports = router;
