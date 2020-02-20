@@ -1,61 +1,75 @@
-import React from "react";
 import { Link } from "react-router-dom";
+import Avatar from "@material-ui/core/Avatar";
 
-import Button from "@material-ui/core/Button";
-import Menu from "@material-ui/core/Menu";
-import MenuItem from "@material-ui/core/MenuItem";
+import { IoIosLogIn } from "react-icons/io";
+import { IoIosSettings } from "react-icons/io";
+import { IoIosPower } from "react-icons/io";
+import { FaPenNib } from "react-icons/fa";
 
 import AccountCircleTwoToneIcon from "@material-ui/icons/AccountCircleTwoTone";
 import MenuRoundedIcon from "@material-ui/icons/MenuRounded";
-import ExitToAppTwoToneIcon from "@material-ui/icons/ExitToAppTwoTone";
-import CreateTwoToneIcon from "@material-ui/icons/CreateTwoTone";
 
-export default function SimpleMenu() {
-  const [anchorEl, setAnchorEl] = React.useState(null);
+import React, { Component } from "react";
+import { connect } from "react-redux";
 
-  const handleClick = event => {
-    setAnchorEl(event.currentTarget);
-  };
-
-  const handleClose = () => {
-    setAnchorEl(null);
-  };
-
-  return (
-    <div className="flexNavbar">
-      <Button
-        aria-controls="simple-menu"
-        aria-haspopup="true"
-        onClick={handleClick}
-      >
-        <AccountCircleTwoToneIcon
-          style={{ fontSize: 100 }}
-          className="colorPrimary"
-        />
-      </Button>
-      <Link to={"ListUsers"}>
-      <MenuRoundedIcon style={{ fontSize: 100 }} className="colorPrimary" />
-      </Link>
-      <Menu
-        id="simple-menu"
-        anchorEl={anchorEl}
-        keepMounted
-        open={Boolean(anchorEl)}
-        onClose={handleClose}
-      >
-        <Link to={"/login"} className="linkNoDecoration">
-          <MenuItem onClick={handleClose}>
-            Login
-            <ExitToAppTwoToneIcon className="logItems" />
-          </MenuItem>
+export class NavBar extends Component {
+  render() {
+    const { loggedIn, avatar } = this.props;
+    console.log("LOGGED", loggedIn);
+    return (
+      <div className="flexNavbar">
+        {loggedIn === true ? (
+          <div className="dropdown">
+            <Avatar alt="USER" src={avatar} data-toggle="dropdown" />
+            <div className="dropdown-menu">
+              <Link
+                to={"/login"}
+                className="dropdown-item linkNoDecoration menuText"
+              >
+                Preferences <IoIosSettings />
+              </Link>
+              <Link
+                to={"/releasetoken"}
+                className="dropdown-item linkNoDecoration menuText"
+              >
+                Logout <IoIosPower />
+              </Link>
+            </div>
+          </div>
+        ) : (
+          <div className="dropdown">
+            <AccountCircleTwoToneIcon
+              style={{ fontSize: 100 }}
+              className="colorPrimary"
+              data-toggle="dropdown"
+            />
+            <div className="dropdown-menu">
+              <Link
+                to={"/login"}
+                className="dropdown-item linkNoDecoration menuText"
+              >
+                Login <IoIosLogIn />
+              </Link>
+              <Link
+                to={"/createaccount"}
+                className="dropdown-item linkNoDecoration menuText"
+              >
+                Register <FaPenNib />
+              </Link>
+            </div>
+          </div>
+        )}
+        <Link to={"ListUsers"}>
+          <MenuRoundedIcon style={{ fontSize: 100 }} className="colorPrimary" />
         </Link>
-        <Link to={"/createAccount"} className="linkNoDecoration">
-          <MenuItem onClick={handleClose}>
-            Register
-            <CreateTwoToneIcon className="logItems" />
-          </MenuItem>
-        </Link>
-      </Menu>
-    </div>
-  );
+      </div>
+    );
+  }
 }
+
+const mapStateToProps = state => ({
+  avatar: state.users.avatar,
+  loggedIn: state.app.loggedIn
+});
+
+export default connect(mapStateToProps)(NavBar);

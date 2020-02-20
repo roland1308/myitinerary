@@ -1,8 +1,14 @@
 const JwtStrategy = require("passport-jwt").Strategy;
 const ExtractJwt = require("passport-jwt").ExtractJwt;
-const User = require("../model/userModel");
-const key = require("./keys");
+
+const GoogleStrategy = require("passport-google-oauth20").Strategy;
 const passport = require("passport");
+
+const key = require("./keys");
+const jwt = require("jsonwebtoken");
+
+const User = require("../model/userModel");
+const userModel = require("../model/userModel");
 
 //JWT Strategy
 const opts = {};
@@ -23,21 +29,47 @@ module.exports = passport.use(
 );
 
 //GOOGLE Strategy
-var GoogleStrategy = require("passport-google-oauth20").Strategy;
 
-passport.use(
+module.exports = passport.use(
   new GoogleStrategy(
     {
       clientID: key.google.ID_client,
       clientSecret: key.google.Client_Secret,
       callbackURL: "http://localhost:5000/users/google/redirect"
     },
-    (accessToken, refreshToken, profile, cb) => {
-      console.log("passport callback function");
-      console.log(profile);
-      // User.findOrCreate({ googleId: profile.id }, function(err, user) {
-      //   return cb(err, user);
-      // });
+    async function(accessToken, refreshToken, profile, done) {
+      let payload = {};
+      const checkId = "Google" + profile.id;
+      let user = await userModel.findOne({ externalid: checkId });
+      if (user) {
+        console.log("CHECKED", user);
+        // User exists
+        payload = {
+          _id: user._id,
+          username: user.username,
+          picture: user.picture
+        };
+      } else {
+        console.log("NOT EXISTS", profile);
+        const newUser = new userModel({
+          username: profile.name.givenName,
+          email: profile.emails[0].value,
+          picture: profile.photos[0].value,
+          pw: null,
+          externalid: checkId
+        });
+        let nuovoUtente = await newUser.save();
+        console.log("GOOGLE AGGIUNTO", nuovoUtente);
+        payload = {
+          _id: nuovoUtente._id,
+          username: nuovoUtente.username,
+          picture: nuovoUtente.picture
+        };
+      }
+      const options = { expiresIn: 604800 };
+      const token = jwt.sign(payload, key.secretOrKey, options);
+      console.log("TOKEN", token)
+      done(null, token);
     }
   )
 );

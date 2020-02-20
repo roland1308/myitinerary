@@ -2,12 +2,14 @@ import {
   FETCH_USERS_BEGIN,
   FETCH_USERS_SUCCESS,
   FETCH_USERS_FAILURE,
-
   ADD_USER_BEGIN,
   ADD_USER_SUCCESS,
   ADD_USER_FAILURE,
-
-  RESET_ERROR
+  RESET_ERROR,
+  RESET_ADDED,
+  LOGIN_USER_BEGIN,
+  LOGIN_USER_SUCCESS,
+  LOGIN_USER_FAILURE
 } from "../actions/userActions";
 
 const initialState = {
@@ -15,11 +17,11 @@ const initialState = {
   loading: false,
   error: null,
   success: false,
-  avatar: ""
+  avatar: "",
+  errorlogging: false
 };
 
 export default function usersReducer(state = initialState, action) {
-
   switch (action.type) {
     case FETCH_USERS_BEGIN:
       return {
@@ -41,7 +43,7 @@ export default function usersReducer(state = initialState, action) {
         items: [{}]
       };
 
-      case ADD_USER_BEGIN:
+    case ADD_USER_BEGIN:
       return {
         ...state,
         loading: true,
@@ -65,11 +67,40 @@ export default function usersReducer(state = initialState, action) {
         success: false
       };
 
-      case RESET_ERROR:
+    case RESET_ERROR:
+      return {
+        ...state,
+        error: null
+      };
+    case RESET_ADDED:
+      return {
+        ...state,
+        success: false
+      };
+
+      case LOGIN_USER_BEGIN:
         return {
           ...state,
-          error: null
+          loading: true,
+          errorlogging: null,
+          success: false
         };
+    case LOGIN_USER_SUCCESS:
+      return {
+        ...state,
+        items: [action.payload],
+        avatar: action.payload.picture,
+        loading: false,
+        errorlogging: false,
+        success: true
+      };
+    case LOGIN_USER_FAILURE:
+      return {
+        ...state,
+        loading: false,
+        errorlogging: action.payload.error,
+        success: false
+      };
 
     default:
       // ALWAYS have a default case in a reducer

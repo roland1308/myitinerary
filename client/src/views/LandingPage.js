@@ -2,16 +2,42 @@ import React from "react";
 import start from "../images/circled-right-2.png";
 import Carousel from "../views/Carousel";
 import Logo from "../components/Logo";
+import Loading from "../components/Loading";
 
 import { Link } from "react-router-dom";
-import { homeOff } from "../store/actions/appActions";
-import { searchOff } from "../store/actions/appActions";
+
+import {
+  homeOff,
+  searchOff,
+  logInOn,
+  logInOff
+} from "../store/actions/appActions";
+import { checkToken } from "../store/actions/userActions";
+
 import { connect } from "react-redux";
 
 class LandingPage extends React.Component {
+
+  componentDidMount = () => {
+    const token = window.localStorage.token;
+    this.props.dispatch(checkToken(token));
+  };
+
   render() {
     this.props.dispatch(homeOff());
     this.props.dispatch(searchOff());
+
+    const { errorlogging, loading } = this.props;
+
+    if (loading) {
+      return <Loading />;
+    }
+
+    if (!errorlogging) {
+      this.props.dispatch(logInOn());
+    } else {
+      this.props.dispatch(logInOff());
+    }
 
     return (
       <div className="landing">
@@ -22,7 +48,7 @@ class LandingPage extends React.Component {
             cities.
           </h2>
         </div>
-        <Link className="linkNoDecoration" to="./cities">
+        <Link to="./cities" className="linkNoDecoration">
           <div>
             <h1 className="linkNoDecoration">Start Browsing</h1>
           </div>
@@ -37,8 +63,8 @@ class LandingPage extends React.Component {
 }
 
 const mapStateToProps = state => ({
-  homeLink: state.app.homeLink,
-  searchDiv: state.app.searchDiv
+  errorlogging: state.users.errorlogging,
+  loading: state.users.loading
 });
 
 export default connect(mapStateToProps)(LandingPage);

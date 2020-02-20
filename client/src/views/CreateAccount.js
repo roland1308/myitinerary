@@ -2,10 +2,8 @@ import React from "react";
 
 import { connect } from "react-redux";
 
-import { Link } from "react-router-dom";
-
 import { homeOn, backOn, searchOff } from "../store/actions/appActions";
-import { addUser, resetError } from "../store/actions/userActions";
+import { addUser, resetError, resetAdded } from "../store/actions/userActions";
 
 import Avatar from "@material-ui/core/Avatar";
 import Button from "@material-ui/core/Button";
@@ -44,12 +42,18 @@ class CreateAccount extends React.Component {
     formResult.append("email", email);
     formResult.append("picture", picture);
     formResult.append("pw", pw);
+    formResult.append("externalid", null);
     this.props.dispatch(addUser(formResult));
   };
 
   closeError = () => {
     this.props.dispatch(resetError());
   };
+
+  closeAdded = () => {
+    this.props.dispatch(resetAdded());
+    this.props.history.push("/");
+  }
 
   render() {
     const { error, success, avatar } = this.props;
@@ -109,9 +113,21 @@ class CreateAccount extends React.Component {
           </label>
           <input type="submit" value="Register" />
         </form>
+        <div className="translateNewForm">
+          <a
+            className="linkNoDecoration"
+            href="http://localhost:5000/users/google"
+          >
+            <h1>or</h1>
+            <img
+              src={require("../images/googlesignup.jpg")}
+              alt="GOOGLE SIGN UP"
+            />
+          </a>
+        </div>
         {error && (
           <div className="backgroundGrey">
-            <div className="errorInput">
+            <div className="popupInput">
               {error === "ESISTE UTENTE" && (
                 <h1>Sorry: this username already exists!</h1>
               )}
@@ -132,11 +148,13 @@ class CreateAccount extends React.Component {
           <div className="backgroundGrey">
             <div className="popupInput">
               <h1>GREAT! New user added</h1>
-              <Link to={"/"} className = "linkNoDecoration">
-                <Button size="large" variant="contained">
+                <Button
+                onClick={this.closeAdded}
+                size="large"
+                variant="contained"
+                >
                   home
                 </Button>
-              </Link>
             </div>
           </div>
         )}

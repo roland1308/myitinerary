@@ -25,6 +25,7 @@ export function fetchOneCityId(id) {
       .then(handleErrors)
       .then(res => res.json())
       .then(json => {
+        console.log("JSON", json.stringify(json));
         dispatch(fetchCitiesSuccess(json));
         return json;
       })

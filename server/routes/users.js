@@ -64,6 +64,7 @@ router.post(
         if (exists) {
           console.log("Nome utente esistente", exists);
           res.send("ESISTE UTENTE");
+          // Delete uploaded avatar
           unlinkAsync(req.file.path);
         } else {
           userModel
@@ -82,7 +83,8 @@ router.post(
                     username: req.body.username,
                     email: req.body.email,
                     picture: "uploads/" + req.file.filename,
-                    pw: hash
+                    pw: hash,
+                    externalid: req.body.externalid
                   });
                   console.log("Utente aggiunto");
                   newUser
@@ -148,16 +150,25 @@ router.post("/login", (req, res) => {
 });
 
 // JWT Authentication
+// router.get(
+//   "/aut",
+//   passport.authenticate("jwt", { session: false }),
+//   (req, res) => {
+//     userModel
+//       .findOne({ _id: req.user.idççç })
+//       .then(user => {
+//         res.json(user);
+//       })
+//       .catch(err => res.status(404).json({ error: "User does not exist!" }));
+//   }
+// );
+
+// JWT Translation
 router.get(
-  "/aut",
+  "/check",
   passport.authenticate("jwt", { session: false }),
   (req, res) => {
-    userModel
-      .findOne({ _id: req.user.id })
-      .then(user => {
-        res.json(user);
-      })
-      .catch(err => res.status(404).json({ error: "User does not exist!" }));
+    res.json(req.user);
   }
 );
 
@@ -169,20 +180,16 @@ router.get(
   })
 );
 
-// router.get(
-//   "/google/redirect",
-//   passport.authenticate("google", {
-//     failureRedirect: "http://localhost:3000/"
-//   }),
-//   function(req, res) {
-//     console.log("OK");
-//     // Successful authentication, redirect home.
-//     res.redirect("http://localhost:3000/");
-//   }
-// );
-
-router.get("/google/redirect", passport.authenticate("google"), (req, res) => {
-  res.send("RAGGIUNTO REDIRECT")
-})
+router.get(
+  "/google/redirect",
+  passport.authenticate("google", {
+    failureRedirect: "http://localhost:3000/createaccount",
+    session: false
+  }),
+  function(req, res) {
+    console.log("REQ", req.user);
+    res.redirect("http://localhost:3000/storetoken/?token=" + req.user);
+  }
+);
 
 module.exports = router;

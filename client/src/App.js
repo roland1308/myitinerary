@@ -12,6 +12,8 @@ import NavBar from "./components/NavBar";
 import Foot from "./components/Foot";
 import SearchBar from "./components/SearchBar";
 import ListUsers from "./components/ListUsers";
+import StoreToken from "./components/StoreToken";
+import ReleaseToken from "./components/ReleaseToken";
 
 class App extends React.Component {
   render() {
@@ -28,6 +30,8 @@ class App extends React.Component {
             <Route path="/createaccount" component={CreateAccount} />
             <Route path="/itinerary/:idcitta" component={Itinerary} />
             <Route path="/listusers" component={ListUsers} />
+            <Route path="/storetoken" component={StoreToken} />
+            <Route path="/releasetoken" component={ReleaseToken} />
           </Switch>
           {homeLink && <Foot />}
         </Router>
