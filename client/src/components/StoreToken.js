@@ -7,7 +7,6 @@ export default class StoreToken extends Component {
 
     componentDidMount= () => {
         const token = (this.props.location.search.substring(7));
-        console.log("TOKEN", token);
         window.localStorage.setItem("token", token);
         this.props.history.push("/");
     }

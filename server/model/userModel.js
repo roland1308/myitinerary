@@ -14,9 +14,6 @@ const userSchema = new mongoose.Schema({
     },
     pw: {
         type: String
-    },
-    externalid: {
-        type: String
     }
 })
 

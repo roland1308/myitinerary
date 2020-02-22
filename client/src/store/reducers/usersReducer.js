@@ -5,20 +5,24 @@ import {
   ADD_USER_BEGIN,
   ADD_USER_SUCCESS,
   ADD_USER_FAILURE,
-  RESET_ERROR,
-  RESET_ADDED,
   LOGIN_USER_BEGIN,
   LOGIN_USER_SUCCESS,
-  LOGIN_USER_FAILURE
+  LOGIN_USER_FAILURE,
+  TOKEN_BEGIN,
+  TOKEN_SUCCESS,
+  TOKEN_FAILURE,
+  ADD_TOKEN,
+  USER_LOGOUT,
+  RESET_ADDED
 } from "../actions/userActions";
 
 const initialState = {
-  items: [],
+  user: {},
   loading: false,
-  error: null,
-  success: false,
-  avatar: "",
-  errorlogging: false
+  errorMsg: "",
+  credentials: true,
+  loggedIn: false,
+  token: ""
 };
 
 export default function usersReducer(state = initialState, action) {
@@ -27,79 +31,109 @@ export default function usersReducer(state = initialState, action) {
       return {
         ...state,
         loading: true,
-        error: null
+        errorMsg: null
       };
     case FETCH_USERS_SUCCESS:
       return {
         ...state,
         loading: false,
-        items: action.payload.users
+        user: action.payload.users
       };
     case FETCH_USERS_FAILURE:
       return {
         ...state,
         loading: false,
-        error: true,
-        items: [{}]
+        errorMsg: true,
+        user: [{}]
       };
 
     case ADD_USER_BEGIN:
       return {
         ...state,
         loading: true,
-        error: null,
+        errorMsg: "",
         success: false
       };
     case ADD_USER_SUCCESS:
       return {
         ...state,
         loading: false,
-        items: [...state.items, action.payload],
-        avatar: action.payload.picture,
-        error: false,
+        user: action.payload,
+        errorMsg: "",
         success: true
       };
     case ADD_USER_FAILURE:
       return {
         ...state,
         loading: false,
-        error: action.payload.error,
+        errorMsg: action.payload.error,
         success: false
       };
 
-    case RESET_ERROR:
-      return {
-        ...state,
-        error: null
-      };
     case RESET_ADDED:
       return {
         ...state,
-        success: false
+        success: true
       };
 
-      case LOGIN_USER_BEGIN:
-        return {
-          ...state,
-          loading: true,
-          errorlogging: null,
-          success: false
-        };
+    case TOKEN_BEGIN:
+      return {
+        ...state,
+        loading: true
+      };
+    case TOKEN_SUCCESS:
+      return {
+        ...state,
+        user: action.payload.user,
+        loading: false,
+        loggedIn: true
+      };
+    case TOKEN_FAILURE:
+      return {
+        ...state,
+        loading: false,
+        loggedIn: false
+      };
+
+    case LOGIN_USER_BEGIN:
+      return {
+        ...state,
+        loading: true,
+        credentials: true,
+        loggedIn: false
+      };
     case LOGIN_USER_SUCCESS:
       return {
         ...state,
-        items: [action.payload],
-        avatar: action.payload.picture,
+        user: action.payload.user,
         loading: false,
-        errorlogging: false,
-        success: true
+        credentials: true,
+        loggedIn: true
       };
     case LOGIN_USER_FAILURE:
       return {
         ...state,
         loading: false,
-        errorlogging: action.payload.error,
-        success: false
+        credentials: false,
+        loggedIn: false
+      };
+
+    case ADD_TOKEN:
+      return {
+        ...state,
+        token: action.payload.token,
+        loggedIn: true
+      };
+
+    case USER_LOGOUT:
+      return {
+        ...state,
+        user: {},
+        loading: false,
+        errorMsg: "",
+        credentials: true,
+        loggedIn: false,
+        token: ""
       };
 
     default:

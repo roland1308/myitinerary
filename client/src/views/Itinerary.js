@@ -5,9 +5,11 @@ import Button from "@material-ui/core/Button";
 import ActivityCarousel from "./ActivityCarousel";
 import Loading from "../components/Loading";
 
+import { fetchOneCityId } from "../store/actions/cityActions";
 import { fetchItinerary } from "../store/actions/itineraryActions";
 import { fetchActivities } from "../store/actions/activityActions";
 import { homeOn, backOn, searchOff } from "../store/actions/appActions";
+import { checkToken } from "../store/actions/userActions";
 
 import { connect } from "react-redux";
 
@@ -19,14 +21,24 @@ class Itinerary extends React.Component {
     };
   }
 
-  // Fetch of all Itineraries with city_id = props.match.params.idcitta
-  componentDidMount() {
-    //fetch to retrieve the itineraries for that city
-    this.props.dispatch(fetchItinerary(this.props.match.params.idcitta));
+  componentDidMount = () => {
+    const token = window.localStorage.token;
+    this.props.dispatch(checkToken(token));
+    let fetchId = "";
+    if (this.props.match.params.idcitta) {
+      fetchId = this.props.match.params.idcitta;
+      window.localStorage.setItem("idcitta", fetchId);
+    } else if (window.localStorage.idcitta) {
+      fetchId = window.localStorage.idcitta;
+    } else {
+      this.props.history.push("/");
+    };
+    this.props.dispatch(fetchOneCityId(fetchId));
+    this.props.dispatch(fetchItinerary(fetchId));
     this.props.dispatch(homeOn());
     this.props.dispatch(backOn());
     this.props.dispatch(searchOff());
-  }
+  };
 
   handleActivity = (itinerario, i) => {
     this.props.dispatch(fetchActivities(itinerario));
@@ -44,28 +56,26 @@ class Itinerary extends React.Component {
   };
 
   render() {
-    const { errorItin, loadingItin, itineraries, cities } = this.props;
+    const { errorItin, loadingItin, itineraries, selectedCity } = this.props;
     const { errorAct, loadingAct } = this.props;
-    const findId = this.props.match.params.idcitta;
-    const citta = cities.find(function(city) {
-      return city._id === findId;
-    });
-    if (errorItin) {
-      return <div>Error! {errorItin.message}</div>;
+    const { errorCit, loadingCit } = this.props;
+    const { loadingUser } = this.props;
+    const { loggedIn } = this.props;
+    if (errorItin || errorAct || errorCit) {
+      return <div>Error!
+        {errorItin} , {errorAct} , {errorCit}
+      </div>;
     }
-    if (loadingItin) {
+    if (loadingItin || loadingAct || loadingCit || loadingUser) {
       return <Loading />;
-    }
-    if (errorAct) {
-      return <div>Error! {errorAct.message}</div>;
     }
     return (
       <div className="itinerary">
         <div
           className="single"
-          style={{ backgroundImage: "url(" + citta.url + ")" }}
+          style={{ backgroundImage: "url(" + selectedCity.url + ")" }}
         >
-          <p className="nomeCitta">{citta.name}</p>
+          <p className="nomeCitta">{selectedCity.name}</p>
         </div>
         <h2 className="padding17">Available MYtineraries</h2>
         {itineraries.map((itinerary, i) => {
@@ -86,7 +96,7 @@ class Itinerary extends React.Component {
                   <div>{itinerary.hashtags}</div>
                 </div>
               </div>
-              {!this.state.showAll[i] && (
+              {!this.state.showAll[i] && loggedIn && (
                 <Button
                   className="openingButton"
                   variant="contained"
@@ -118,12 +128,17 @@ class Itinerary extends React.Component {
 }
 
 const mapStateToProps = state => ({
-  cities: state.cities.items,
+  selectedCity: state.cities.selectedCity,
   itineraries: state.itineraries.items,
   loadingItin: state.itineraries.loadingItin,
   errorItin: state.itineraries.errorItin,
   loadingAct: state.activities.loadingAct,
-  errorAct: state.activities.errorAct
+  errorAct: state.activities.errorAct,
+  loadingCit: state.cities.loading,
+  errorCit: state.cities.error,
+  errorlogging: state.users.errorlogging,
+  loadingUser: state.users.loading,
+  loggedIn: state.users.loggedIn
 });
 
 export default connect(mapStateToProps)(Itinerary);

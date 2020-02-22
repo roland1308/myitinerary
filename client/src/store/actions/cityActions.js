@@ -2,6 +2,7 @@
 export const FETCH_CITIES_BEGIN = "FETCH_CITIES_BEGIN";
 export const FETCH_CITIES_SUCCESS = "FETCH_CITIES_SUCCESS";
 export const FETCH_CITIES_FAILURE = "FETCH_CITIES_FAILURE";
+export const FETCH_ONE_CITY_SUCCESS = "FETCH_ONE_CITY_SUCCESS";
 
 export function fetchCities() {
   return dispatch => {
@@ -21,12 +22,15 @@ export function fetchOneCityId(id) {
   return dispatch => {
     dispatch(fetchCitiesBegin());
     let url = "/cities/" + id;
+    console.log(url);
     return fetch(url)
       .then(handleErrors)
       .then(res => res.json())
       .then(json => {
-        console.log("JSON", json.stringify(json));
-        dispatch(fetchCitiesSuccess(json));
+        // let cities = [];
+        // cities.push(json);
+        // console.log(cities);
+        dispatch(fetchOneCitySuccess(json));
         return json;
       })
       .catch(error => dispatch(fetchCitiesFailure(error)));
@@ -51,4 +55,9 @@ export const fetchCitiesSuccess = cities => ({
 export const fetchCitiesFailure = error => ({
   type: FETCH_CITIES_FAILURE,
   payload: { error }
+});
+
+export const fetchOneCitySuccess = city => ({
+  type: FETCH_ONE_CITY_SUCCESS,
+  payload: { city }
 });

@@ -39,10 +39,8 @@ module.exports = passport.use(
     },
     async function(accessToken, refreshToken, profile, done) {
       let payload = {};
-      const checkId = "Google" + profile.id;
-      let user = await userModel.findOne({ externalid: checkId });
+      let user = await userModel.findOne({ email: profile.emails[0].value });
       if (user) {
-        console.log("CHECKED", user);
         // User exists
         payload = {
           _id: user._id,
@@ -55,8 +53,7 @@ module.exports = passport.use(
           username: profile.name.givenName,
           email: profile.emails[0].value,
           picture: profile.photos[0].value,
-          pw: null,
-          externalid: checkId
+          pw: null
         });
         let nuovoUtente = await newUser.save();
         console.log("GOOGLE AGGIUNTO", nuovoUtente);
@@ -68,7 +65,6 @@ module.exports = passport.use(
       }
       const options = { expiresIn: 604800 };
       const token = jwt.sign(payload, key.secretOrKey, options);
-      console.log("TOKEN", token)
       done(null, token);
     }
   )

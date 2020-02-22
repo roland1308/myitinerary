@@ -1,14 +1,10 @@
 import React from "react";
-import {
-  homeOn,
-  backOn,
-  searchOff,
-  loginUser
-} from "../store/actions/appActions";
-import { resetError, resetLogged } from "../store/actions/appActions";
+import { homeOn, backOn, searchOff } from "../store/actions/appActions";
+import { loginUser, logInUserOff } from "../store/actions/userActions";
 
 import Button from "@material-ui/core/Button";
 
+import { Link } from "react-router-dom";
 import { connect } from "react-redux";
 
 class LogIn extends React.Component {
@@ -35,17 +31,11 @@ class LogIn extends React.Component {
   };
 
   closeError = () => {
-    this.props.dispatch(resetError());
+    this.props.dispatch(logInUserOff());
   };
 
-  closeAdded = () => {
-    this.props.dispatch(resetLogged());
-    this.props.history.push("storetoken/?token=" + this.props.token);
-  }
-
-
   render() {
-    const { error, success } = this.props;
+    const { loggedIn, credentials } = this.props;
     return (
       <div className="account">
         <h1>Login</h1>
@@ -84,10 +74,10 @@ class LogIn extends React.Component {
             />
           </a>
         </div>
-        {error && (
+        {!credentials && (
           <div className="backgroundGrey">
             <div className="popupInput">
-                <h1>Sorry: unknown credentials!</h1>
+              <h1>Sorry: unknown credentials!</h1>
               <Button
                 onClick={this.closeError}
                 size="large"
@@ -98,17 +88,19 @@ class LogIn extends React.Component {
             </div>
           </div>
         )}
-        {success && (
+        {loggedIn && (
           <div className="backgroundGrey">
             <div className="popupInput">
               <h1>GREAT! You are logged in!</h1>
+              <Link to="/">
                 <Button
-                onClick={this.closeAdded}
-                size="large"
-                variant="contained"
+                  onClick={this.closeLogged}
+                  size="large"
+                  variant="contained"
                 >
                   home
                 </Button>
+              </Link>
             </div>
           </div>
         )}
@@ -118,9 +110,10 @@ class LogIn extends React.Component {
 }
 
 const mapStateToProps = state => ({
-  error: state.app.error,
-  success: state.app.success,
-  token: state.app.token
+  errorMsg: state.users.errorMsg,
+  credentials: state.users.credentials,
+  loggedIn: state.users.loggedIn,
+  token: state.users.token
 });
 
 export default connect(mapStateToProps)(LogIn);

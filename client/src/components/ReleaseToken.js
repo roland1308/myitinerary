@@ -1,11 +1,15 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
 import Button from "@material-ui/core/Button";
+import { logInAppOff } from "../store/actions/appActions";
+import { logInUserOff } from "../store/actions/userActions";
 
 export class ReleaseToken extends Component {
   logOut = () => {
     window.localStorage.setItem("token", "");
-
+    window.localStorage.setItem("idcitta", "");
+    this.props.dispatch(logInUserOff());
+    this.props.dispatch(logInAppOff());
     this.props.history.push("/");
   };
 

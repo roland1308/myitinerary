@@ -6,13 +6,7 @@ import {
   SET_CERCA,
   BACK_ON,
   BACK_OFF,
-  LOGIN_USER_BEGIN,
-  LOGIN_USER_SUCCESS,
-  LOGIN_USER_FAILURE,
-  RESET_ERROR,
-  RESET_LOGGED,
-  USER_LOGOUT,
-  USER_LOGIN
+  APP_LOGOUT
 } from "../actions/appActions";
 
 const initialState = {
@@ -20,10 +14,8 @@ const initialState = {
   searchDiv: false,
   campoCerca: "",
   goPrev: true,
-  token: "",
-  error: null,
-  success: null,
-  loggedIn: false
+  error: false,
+  success: false
 };
 
 export default function popularsReducer(state = initialState, action) {
@@ -66,50 +58,15 @@ export default function popularsReducer(state = initialState, action) {
         campoCerca: action.payload.campoCerca
       };
 
-    case LOGIN_USER_BEGIN:
+    case APP_LOGOUT:
       return {
         ...state,
-        loading: true,
-        error: null,
-        success: false
-      };
-    case LOGIN_USER_SUCCESS:
-      return {
-        ...state,
-        token: action.payload.token,
-        loading: false,
+        homeLink: false,
+        searchDiv: false,
+        campoCerca: "",
+        goPrev: true,
         error: false,
-        success: true
-      };
-    case LOGIN_USER_FAILURE:
-      return {
-        ...state,
-        loading: false,
-        success: false,
-        error: true
-      };
-
-    case RESET_ERROR:
-      return {
-        ...state,
-        error: null
-      };
-    case RESET_LOGGED:
-      return {
-        ...state,
         success: false
-      };
-
-    case USER_LOGIN:
-      return {
-        ...state,
-        loggedIn: true
-      };
-    case USER_LOGOUT:
-      return {
-        ...state,
-        loggedIn: false,
-        error: false
       };
 
     default:

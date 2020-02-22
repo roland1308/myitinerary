@@ -379,3 +379,12 @@ div.dropdown-menu.show {
 svg {
   transform: translateY(10px) !important;
 }
+
+.avatarName {
+  overflow: hidden;
+  width: 80%;
+  height: 7vh;
+  text-align: center;
+  font-family: cursive;
+  font-size: 7.5vw;
+}

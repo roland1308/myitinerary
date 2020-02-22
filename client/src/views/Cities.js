@@ -5,13 +5,7 @@ import { Link } from "react-router-dom";
 import FadeIn from "react-fade-in";
 
 import { fetchCities } from "../store/actions/cityActions";
-import {
-  homeOn,
-  backOff,
-  searchOn,
-  logInOn,
-  logInOff
-} from "../store/actions/appActions";
+import { homeOn, backOff, searchOn } from "../store/actions/appActions";
 import { checkToken } from "../store/actions/userActions";
 
 import { connect } from "react-redux";
@@ -28,16 +22,9 @@ class Cities extends React.Component {
 
   render() {
     const { error, loading, items, campoCerca } = this.props;
-    const { errorlogging, loadingUser } = this.props;
+    const { loadingUser } = this.props;
     if (error) {
       return <div>Error! {error.message}</div>;
-    }
-    if (!errorlogging) {
-      this.props.dispatch(logInOn());
-      console.log("LOGGATO", this.props);
-    } else {
-      this.props.dispatch(logInOff());
-      console.log("NOOOOOOOO");
     }
     if (loading || loadingUser) {
       return <Loading />;

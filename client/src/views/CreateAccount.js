@@ -14,7 +14,7 @@ class CreateAccount extends React.Component {
     this.state = {
       username: "",
       email: "",
-      picture: null,
+      picture: "/",
       pw: ""
     };
   }
@@ -42,7 +42,6 @@ class CreateAccount extends React.Component {
     formResult.append("email", email);
     formResult.append("picture", picture);
     formResult.append("pw", pw);
-    formResult.append("externalid", null);
     this.props.dispatch(addUser(formResult));
   };
 
@@ -53,15 +52,19 @@ class CreateAccount extends React.Component {
   closeAdded = () => {
     this.props.dispatch(resetAdded());
     this.props.history.push("/");
-  }
+  };
 
   render() {
-    const { error, success, avatar } = this.props;
+    const { errorMsg, success } = this.props;
     return (
       <div className="account">
         <h1>Create New Account</h1>
         <div className="accountAvatar">
-          <Avatar className="big" alt={this.state.username} src={avatar} />
+          <Avatar
+            className="big"
+            alt={this.state.username}
+            src={this.state.picture}
+          />
         </div>
         <form
           id="myForm"
@@ -125,13 +128,13 @@ class CreateAccount extends React.Component {
             />
           </a>
         </div>
-        {error && (
+        {errorMsg && (
           <div className="backgroundGrey">
             <div className="popupInput">
-              {error === "ESISTE UTENTE" && (
+              {errorMsg === "ESISTE UTENTE" && (
                 <h1>Sorry: this username already exists!</h1>
               )}
-              {error === "ESISTE EMAIL" && (
+              {errorMsg === "ESISTE EMAIL" && (
                 <h1>Sorry: this e-mail address already exists!</h1>
               )}
               <Button
@@ -144,17 +147,18 @@ class CreateAccount extends React.Component {
             </div>
           </div>
         )}
-        {success && (
+        {success && errorMsg === "" && (
           <div className="backgroundGrey">
             <div className="popupInput">
               <h1>GREAT! New user added</h1>
-                <Button
-                onClick={this.closeAdded}
+
+              <Button
                 size="large"
                 variant="contained"
-                >
-                  home
-                </Button>
+                onClick={this.closeAdded}
+              >
+                home
+              </Button>
             </div>
           </div>
         )}
@@ -164,9 +168,8 @@ class CreateAccount extends React.Component {
 }
 
 const mapStateToProps = state => ({
-  error: state.users.error,
-  success: state.users.success,
-  avatar: state.users.avatar
+  errorMsg: state.users.errorMsg,
+  success: state.users.success
 });
 
 export default connect(mapStateToProps)(CreateAccount);

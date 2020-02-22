@@ -14,13 +14,12 @@ import { connect } from "react-redux";
 
 export class NavBar extends Component {
   render() {
-    const { loggedIn, avatar } = this.props;
-    console.log("LOGGED", loggedIn);
+    const { loggedIn, user } = this.props;
     return (
       <div className="flexNavbar">
         {loggedIn === true ? (
           <div className="dropdown">
-            <Avatar alt="USER" src={avatar} data-toggle="dropdown" />
+            <Avatar alt="USER" src={user.picture} data-toggle="dropdown" />
             <div className="dropdown-menu">
               <Link
                 to={"/login"}
@@ -59,6 +58,7 @@ export class NavBar extends Component {
             </div>
           </div>
         )}
+        {loggedIn && <div className="avatarName">{user.username}</div>}
         <Link to={"ListUsers"}>
           <MenuRoundedIcon style={{ fontSize: 100 }} className="colorPrimary" />
         </Link>
@@ -68,8 +68,8 @@ export class NavBar extends Component {
 }
 
 const mapStateToProps = state => ({
-  avatar: state.users.avatar,
-  loggedIn: state.app.loggedIn
+  loggedIn: state.users.loggedIn,
+  user: state.users.user
 });
 
 export default connect(mapStateToProps)(NavBar);

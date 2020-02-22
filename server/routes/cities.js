@@ -52,7 +52,7 @@ router.post("/add", (req, res) => {
 router.get("/:id", (req, res) => {
   cityModel
     .findOne({ _id: req.params.id })
-    .then(files => {
+    .then(files => {;
       res.send(files);
     })
     .catch(err => console.log(err));

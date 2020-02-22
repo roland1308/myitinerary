@@ -6,18 +6,12 @@ import Loading from "../components/Loading";
 
 import { Link } from "react-router-dom";
 
-import {
-  homeOff,
-  searchOff,
-  logInOn,
-  logInOff
-} from "../store/actions/appActions";
+import { homeOff, searchOff } from "../store/actions/appActions";
 import { checkToken } from "../store/actions/userActions";
 
 import { connect } from "react-redux";
 
 class LandingPage extends React.Component {
-
   componentDidMount = () => {
     const token = window.localStorage.token;
     this.props.dispatch(checkToken(token));
@@ -27,16 +21,10 @@ class LandingPage extends React.Component {
     this.props.dispatch(homeOff());
     this.props.dispatch(searchOff());
 
-    const { errorlogging, loading } = this.props;
+    const { loading } = this.props;
 
     if (loading) {
       return <Loading />;
-    }
-
-    if (!errorlogging) {
-      this.props.dispatch(logInOn());
-    } else {
-      this.props.dispatch(logInOff());
     }
 
     return (

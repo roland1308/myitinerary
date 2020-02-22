@@ -83,13 +83,12 @@ router.post(
                     username: req.body.username,
                     email: req.body.email,
                     picture: "uploads/" + req.file.filename,
-                    pw: hash,
-                    externalid: req.body.externalid
+                    pw: hash
                   });
-                  console.log("Utente aggiunto");
                   newUser
                     .save()
                     .then(user => {
+                      //   });
                       res.send(user);
                     })
                     .catch(err => {
@@ -123,26 +122,7 @@ router.post("/login", (req, res) => {
             res.send("PW ERRATA");
           } else {
             // create JWT payload, sign token and send it back
-            const payload = {
-              _id: user._id,
-              username: user.username,
-              picture: user.picture
-            };
-            // expires in one week
-            const options = { expiresIn: 604800 };
-            jwt.sign(payload, key.secretOrKey, options, (err, token) => {
-              if (err) {
-                res.json({
-                  success: false,
-                  token: "There was an error"
-                });
-              } else {
-                res.json({
-                  success: true,
-                  token: token
-                });
-              }
-            });
+            res.send(user);
           }
         });
       }
@@ -150,20 +130,20 @@ router.post("/login", (req, res) => {
 });
 
 // JWT Authentication
-// router.get(
-//   "/aut",
-//   passport.authenticate("jwt", { session: false }),
-//   (req, res) => {
-//     userModel
-//       .findOne({ _id: req.user.idççç })
-//       .then(user => {
-//         res.json(user);
-//       })
-//       .catch(err => res.status(404).json({ error: "User does not exist!" }));
-//   }
-// );
+router.get(
+  "/aut",
+  passport.authenticate("jwt", { session: false }),
+  (req, res) => {
+    userModel
+      .findOne({ _id: req.user.id })
+      .then(user => {
+        res.json(user);
+      })
+      .catch(err => res.status(404).json({ error: "User does not exist!" }));
+  }
+);
 
-// JWT Translation
+// JWT TOKEN Translation
 router.get(
   "/check",
   passport.authenticate("jwt", { session: false }),
@@ -187,9 +167,19 @@ router.get(
     session: false
   }),
   function(req, res) {
-    console.log("REQ", req.user);
     res.redirect("http://localhost:3000/storetoken/?token=" + req.user);
   }
 );
+
+router.post("/token", (req, res) => {
+  const payload = {
+    _id: req.body._id,
+    username: req.body.username,
+    picture: req.body.picture
+  };
+  const options = { expiresIn: 604800 };
+  const token = jwt.sign(payload, key.secretOrKey, options);
+  res.send(token);
+});
 
 module.exports = router;
