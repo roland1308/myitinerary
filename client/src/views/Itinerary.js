@@ -3,7 +3,6 @@ import Avatar from "@material-ui/core/Avatar";
 import Button from "@material-ui/core/Button";
 
 import ActivityCarousel from "./ActivityCarousel";
-import Loading from "../components/Loading";
 
 import { fetchOneCityId } from "../store/actions/cityActions";
 import { fetchItinerary } from "../store/actions/itineraryActions";
@@ -56,18 +55,14 @@ class Itinerary extends React.Component {
   };
 
   render() {
-    const { errorItin, loadingItin, itineraries, selectedCity } = this.props;
+    const { errorItin, itineraries, selectedCity } = this.props;
     const { errorAct, loadingAct } = this.props;
-    const { errorCit, loadingCit } = this.props;
-    const { loadingUser } = this.props;
+    const { errorCit } = this.props;
     const { loggedIn } = this.props;
     if (errorItin || errorAct || errorCit) {
       return <div>Error!
         {errorItin} , {errorAct} , {errorCit}
       </div>;
-    }
-    if (loadingItin || loadingAct || loadingCit || loadingUser) {
-      return <Loading />;
     }
     return (
       <div className="itinerary">
@@ -89,9 +84,9 @@ class Itinerary extends React.Component {
                 <div className="col-sm-8 avatar">
                   <div>{itinerary.name}</div>
                   <div className="row">
-                    <div className="col-sm">Rate: {itinerary.rating}</div>
-                    <div className="col-sm">Hours:{itinerary.duration}</div>
-                    <div className="col-sm">Price: {itinerary.price}</div>
+                    <div className="col-sm-4">Rate: {itinerary.rating}</div>
+                    <div className="col-sm-4">Hours:{itinerary.duration}</div>
+                    <div className="col-sm-4">Price: {itinerary.price}</div>
                   </div>
                   <div>{itinerary.hashtags}</div>
                 </div>
@@ -100,7 +95,7 @@ class Itinerary extends React.Component {
                 <Button
                   className="openingButton"
                   variant="contained"
-                  size="large"
+                  // size="large"
                   onClick={() => this.handleActivity(itinerary._id, i)}
                 >
                   View all activities
@@ -130,14 +125,11 @@ class Itinerary extends React.Component {
 const mapStateToProps = state => ({
   selectedCity: state.cities.selectedCity,
   itineraries: state.itineraries.items,
-  loadingItin: state.itineraries.loadingItin,
   errorItin: state.itineraries.errorItin,
   loadingAct: state.activities.loadingAct,
   errorAct: state.activities.errorAct,
-  loadingCit: state.cities.loading,
   errorCit: state.cities.error,
   errorlogging: state.users.errorlogging,
-  loadingUser: state.users.loading,
   loggedIn: state.users.loggedIn
 });
 

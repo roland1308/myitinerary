@@ -76,6 +76,7 @@ class CreateAccount extends React.Component {
           <label>
             Username*:
             <input
+              autoFocus={true}
               type="text"
               value={this.state.username}
               required="required"

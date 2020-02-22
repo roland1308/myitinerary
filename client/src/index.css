@@ -35,12 +35,17 @@ body {
   display: flex;
   align-items: center;
   justify-content: center;
-  margin: 40px 10px;
+  margin: 40px 0px;
   width: 100%;
   height: 200px;
   background-position: center;
   background-repeat: no-repeat;
   background-size: cover;
+}
+
+.row.activityOpt {
+  margin: 0 !important;
+  padding: 0 !important;
 }
 
 .landing,
@@ -206,18 +211,33 @@ svg {
   width: 100%;
 }
 
-.searchCity {
-  width: 80%;
+.searchCity,
+.commentItinerary {
+  width: 100%;
   margin: 10px auto;
   height: 5vh;
   align-self: flex-start;
 }
 
-#standard-search-label,
+.MuiOutlinedInput-multiline {
+  height: 200px;
+}
+.MuiInputLabel-outlined.MuiInputLabel-shrink {
+  line-height: 2rem;
+transform: translate( 16px, -25px) scale(0.75) !important;
+}
+
+#standard-search-label {
+  font-size: 3rem !important;
+  height: 65px !important;
+  /* line-height: 1rem !important; */
+}
+
 #standard-search {
-  font-size: 2.5rem !important;
+  font-size: 3rem !important;
+  height: 165px !important;
   margin: 5px !important;
-  line-height: 1rem !important;
+  line-height: 3rem !important;
 }
 
 .PrivateNotchedOutline-root-70 {
@@ -302,6 +322,10 @@ svg {
   border-bottom: 1px black solid;
 }
 
+.itineraryInside {
+  height: 25vh;
+}
+
 .account {
   height: 86vh;
   display: flex;
@@ -368,6 +392,14 @@ input, label {
 .menuText {
   font-size: 4rem !important;
   line-height: 0;
+}
+
+.activityIcon {
+  transform: translateY(-40px) !important;
+  font-size: 5rem !important;
+  text-align: center;
+  margin: 0 4px 20px;
+  color: red;
 }
 
 div.dropdown-menu.show {

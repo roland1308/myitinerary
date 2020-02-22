@@ -6,10 +6,14 @@ import { connect } from "react-redux";
 
 import TextField from "@material-ui/core/TextField";
 
-class ActivityCarousel extends React.Component {
+import { IconContext } from "react-icons";
+import { MdFavorite } from "react-icons/md";
+import { MdSend } from "react-icons/md";
+import { MdStarBorder } from "react-icons/md";
 
+class ActivityCarousel extends React.Component {
   handleComment(e) {
-    console.log(e.key)
+    console.log(e.key);
   }
 
   render() {
@@ -28,7 +32,7 @@ class ActivityCarousel extends React.Component {
     };
 
     return (
-      <div>
+      <div className="itineraryInside">
         <Slider {...settings}>
           {activities.map((activity, i) => {
             return (
@@ -37,27 +41,40 @@ class ActivityCarousel extends React.Component {
                   className="linkNoDecoration"
                   to={"/activity/:" + activity._id}
                 >
-                    <div
-                      className="activity"
-                      style={{ backgroundImage: "url(" + activity.photo + ")" }}
-                    >
-                      <p className="nomeActivity">{activity.name}</p>
-                    </div>
+                  <div
+                    className="activity"
+                    style={{ backgroundImage: "url(" + activity.photo + ")" }}
+                  >
+                    <p className="nomeActivity">{activity.name}</p>
+                  </div>
                 </Link>
               </div>
             );
           })}
         </Slider>
-        <div className="searchCity">
-          <TextField
-            id="standard-search"
-            label="Comment this Itinerary"
-            type="search"
-            variant="outlined"
-            // autoFocus={true}
-            fullWidth
-            onKeyPress={this.handleComment}
-          />
+        <div className="commentItinerary row">
+          <div className="col-sm-10">
+            <TextField
+              multiline
+              rowsMax="4"
+              id="standard-search"
+              label="Comment this Itinerary"
+              type="search"
+              variant="outlined"
+              // autoFocus={true}
+              fullWidth
+              onKeyPress={this.handleComment}
+            />
+          </div>
+          <div className="col-sm-2">
+            <div className="row activityOpt">
+            <IconContext.Provider value={{ className: "activityIcon" }}>
+                <MdSend />
+                <MdFavorite />
+                <MdStarBorder />
+              </IconContext.Provider>
+            </div>
+          </div>
         </div>
       </div>
     );
