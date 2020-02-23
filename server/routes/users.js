@@ -43,65 +43,27 @@ router.get("/all", (req, res) => {
 });
 
 /*add a User if not existing already CREATE*/
-router.post(
-  "/add",
-  [
-    upload.single("picture")
-    // check("email").isEmail(),
-    // check("pw").isLength({ min: 5 })
-  ],
-  (req, res) => {
-    // Finds the validation errors in this request and wraps them in an object with handy functions
-    // const errors = validationResult(req.body);
-    // if (!errors.isEmpty()) {
-    //   return res.status(422).json({ errors: errors.array() });
-    // }
-    userModel
-      .findOne({
-        username: req.body.username
+router.post("/add", [upload.single("picture")], (req, res) => {
+  bcrypt.hash(req.body.pw, saltRounds).then(function(hash) {
+    // Store hash in your password DB.
+    const newUser = new userModel({
+      username: req.body.username,
+      email: req.body.email,
+      picture: "uploads/" + req.file.filename,
+      pw: hash
+    });
+    newUser
+      .save()
+      .then(user => {
+        res.send(user);
       })
-      .then(exists => {
-        if (exists) {
-          console.log("Nome utente esistente", exists);
-          res.send("ESISTE UTENTE");
-          // Delete uploaded avatar
-          unlinkAsync(req.file.path);
-        } else {
-          userModel
-            .findOne({
-              email: req.body.email
-            })
-            .then(exists => {
-              if (exists) {
-                console.log("Indirizzo email esistente", exists);
-                res.send("ESISTE EMAIL");
-                unlinkAsync(req.file.path);
-              } else {
-                bcrypt.hash(req.body.pw, saltRounds).then(function(hash) {
-                  // Store hash in your password DB.
-                  const newUser = new userModel({
-                    username: req.body.username,
-                    email: req.body.email,
-                    picture: "uploads/" + req.file.filename,
-                    pw: hash
-                  });
-                  newUser
-                    .save()
-                    .then(user => {
-                      //   });
-                      res.send(user);
-                    })
-                    .catch(err => {
-                      console.log("ERRORE UTENTE ESISTENTE");
-                      res.status(500).send(err);
-                    });
-                });
-              }
-            });
-        }
+      .catch(err => {
+        //Delete uploaded avatar
+        unlinkAsync(req.file.path);
+        res.send(err);
       });
-  }
-);
+  });
+});
 
 // Login user
 router.post("/login", (req, res) => {
