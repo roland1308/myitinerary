@@ -55,8 +55,9 @@ export const addUser = user => {
     dispatch(addUserBegin());
     try {
       const response = await axios.post("/users/add", user);
-      if (typeof response.data === "string") {
-        dispatch(addUserFailure(response.data));
+      console.log(response.data);
+      if (response.data.name === "MongoError") {
+        dispatch(addUserFailure(response.data.errmsg));
       } else {
         dispatch(addUserSuccess(response.data));
         const token = await axios.post("/users/token", response.data);

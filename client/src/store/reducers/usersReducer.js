@@ -13,14 +13,15 @@ import {
   TOKEN_FAILURE,
   ADD_TOKEN,
   USER_LOGOUT,
-  RESET_ADDED
+  RESET_ADDED,
+  RESET_ERROR
 } from "../actions/userActions";
 
 const initialState = {
   user: {},
   loading: false,
   errorMsg: "",
-  credentials: true,
+  popup: false,
   loggedIn: false,
   token: ""
 };
@@ -28,10 +29,18 @@ const initialState = {
 export default function usersReducer(state = initialState, action) {
   switch (action.type) {
     case FETCH_USERS_BEGIN:
+    case ADD_USER_BEGIN:
+    case TOKEN_BEGIN:
+    case LOGIN_USER_BEGIN:
+    case USER_LOGOUT:
       return {
         ...state,
-        loading: true,
-        errorMsg: null
+        user: {},
+        loading: false,
+        errorMsg: "",
+        popup: false,
+        loggedIn: false,
+        token: ""
       };
     case FETCH_USERS_SUCCESS:
       return {
@@ -47,40 +56,33 @@ export default function usersReducer(state = initialState, action) {
         user: [{}]
       };
 
-    case ADD_USER_BEGIN:
-      return {
-        ...state,
-        loading: true,
-        errorMsg: "",
-        success: false
-      };
     case ADD_USER_SUCCESS:
       return {
         ...state,
         loading: false,
         user: action.payload,
-        errorMsg: "",
-        success: true
+        popup: true,
+        errorMsg: ""
       };
     case ADD_USER_FAILURE:
       return {
         ...state,
         loading: false,
-        errorMsg: action.payload.error,
-        success: false
+        popup: false,
+        errorMsg: action.payload.error
       };
 
     case RESET_ADDED:
       return {
         ...state,
-        success: true
+        popup: false
       };
-
-    case TOKEN_BEGIN:
+    case RESET_ERROR:
       return {
         ...state,
-        loading: true
+        errorMsg: ""
       };
+
     case TOKEN_SUCCESS:
       return {
         ...state,
@@ -95,26 +97,19 @@ export default function usersReducer(state = initialState, action) {
         loggedIn: false
       };
 
-    case LOGIN_USER_BEGIN:
-      return {
-        ...state,
-        loading: true,
-        credentials: true,
-        loggedIn: false
-      };
     case LOGIN_USER_SUCCESS:
       return {
         ...state,
         user: action.payload.user,
         loading: false,
-        credentials: true,
+        popup: false,
         loggedIn: true
       };
     case LOGIN_USER_FAILURE:
       return {
         ...state,
         loading: false,
-        credentials: false,
+        popup: true,
         loggedIn: false
       };
 
@@ -123,17 +118,6 @@ export default function usersReducer(state = initialState, action) {
         ...state,
         token: action.payload.token,
         loggedIn: true
-      };
-
-    case USER_LOGOUT:
-      return {
-        ...state,
-        user: {},
-        loading: false,
-        errorMsg: "",
-        credentials: true,
-        loggedIn: false,
-        token: ""
       };
 
     default:

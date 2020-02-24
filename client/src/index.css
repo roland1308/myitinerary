@@ -3,16 +3,13 @@ body {
   padding: 0 2px;
 }
 
+/* 
 .principale {
-  /* height: 86vh; */
   position: absolute;
-  /* display: flex;
-  flex-direction: column;
-  justify-content: space-between; */
   padding: 12px;
   width: 100vw;
   margin: 0;
-}
+} */
 
 .logo {
   margin: auto;
@@ -213,31 +210,45 @@ svg {
 
 .searchCity,
 .commentItinerary {
-  width: 100%;
   margin: 10px auto;
   height: 5vh;
   align-self: flex-start;
 }
 
+.commentItinerary {
+  width: 100%;
+}
+
+.searchCity {
+  width: 80%;
+}
+
 .MuiOutlinedInput-multiline {
   height: 200px;
 }
+
 .MuiInputLabel-outlined.MuiInputLabel-shrink {
   line-height: 2rem;
-transform: translate( 16px, -25px) scale(0.75) !important;
+  transform: translate(16px, -25px) scale(0.75) !important;
 }
 
 #standard-search-label {
   font-size: 3rem !important;
   height: 65px !important;
-  /* line-height: 1rem !important; */
 }
 
+/*
 #standard-search {
   font-size: 3rem !important;
   height: 165px !important;
   margin: 5px !important;
   line-height: 3rem !important;
+} */
+
+#standard-search {
+  font-size: 2.5rem !important;
+  margin: 5px !important;
+  line-height: 1rem !important;
 }
 
 .PrivateNotchedOutline-root-70 {
@@ -262,6 +273,7 @@ transform: translate( 16px, -25px) scale(0.75) !important;
   z-index: 10;
   box-shadow: 7px 9px 26px 3px rgba(0, 0, 0, 0.75);
 }
+
 .big {
   width: 13vh !important;
   height: 13vh !important;
@@ -275,6 +287,7 @@ transform: translate( 16px, -25px) scale(0.75) !important;
   padding: 10px !important;
   margin-bottom: 10px;
 }
+
 .accountAvatar {
   text-align: center;
   font-size: 2rem;
@@ -326,14 +339,14 @@ transform: translate( 16px, -25px) scale(0.75) !important;
   height: 25vh;
 }
 
-.account {
+/* .account {
   height: 86vh;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-items: flex-start;
   font-size: 3rem;
-}
+} */
 
 .accountForm {
   background-color: rgb(212, 206, 206);
@@ -345,7 +358,8 @@ transform: translate( 16px, -25px) scale(0.75) !important;
   transform: translateY(-130px);
 }
 
-input, label {
+input,
+label {
   width: 820px;
   margin-top: 10px;
 }
@@ -385,6 +399,7 @@ input, label {
   box-shadow: 7px 9px 26px 3px rgba(0, 0, 0, 0.75);
   border-radius: 5vh;
 }
+
 .popupInput Button {
   margin-top: 5vh;
 }
@@ -395,10 +410,10 @@ input, label {
 }
 
 .activityIcon {
-  transform: translateY(-40px) !important;
-  font-size: 5rem !important;
+  transform: translateY(-30px) !important;
+  font-size: 4.5rem !important;
   text-align: center;
-  margin: 0 4px 20px;
+  margin: 0 4px 15px;
   color: red;
 }
 

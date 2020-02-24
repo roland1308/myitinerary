@@ -14,8 +14,7 @@ const initialState = {
   searchDiv: false,
   campoCerca: "",
   goPrev: true,
-  error: false,
-  success: false
+  error: false
 };
 
 export default function popularsReducer(state = initialState, action) {
@@ -65,8 +64,7 @@ export default function popularsReducer(state = initialState, action) {
         searchDiv: false,
         campoCerca: "",
         goPrev: true,
-        error: false,
-        success: false
+        error: false
       };
 
     default:

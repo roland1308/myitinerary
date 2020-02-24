@@ -12,6 +12,7 @@ class CreateAccount extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
+      capitalize: "",
       username: "",
       email: "",
       picture: "/",
@@ -28,6 +29,10 @@ class CreateAccount extends React.Component {
     switch (e.target.name) {
       case "selectedFile":
         this.setState({ picture: e.target.files[0] });
+        break;
+      case "username":
+        const capitalize = e.target.value.replace(/\w\S*/g, function(txt){return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();});
+        this.setState({ username: capitalize });
         break;
       default:
         this.setState({ [e.target.name]: e.target.value });
@@ -55,9 +60,18 @@ class CreateAccount extends React.Component {
   };
 
   render() {
-    const { errorMsg, success } = this.props;
+    const { errorMsg, popup } = this.props;
+    const fixedHeight = window.innerHeight*0.86;
+    const  accountDivStyle = {
+      height: fixedHeight.toString()+"px",
+      display: "flex",
+      flexDirection: "column",
+      alignItems: "center",
+      justifyItems: "flex-start",
+      fontSize: "3rem"
+    }
     return (
-      <div className="account">
+      <div style={accountDivStyle}>
         <h1>Create New Account</h1>
         <div className="accountAvatar">
           <Avatar
@@ -132,10 +146,10 @@ class CreateAccount extends React.Component {
         {errorMsg && (
           <div className="backgroundGrey">
             <div className="popupInput">
-              {errorMsg === "ESISTE UTENTE" && (
+              {errorMsg.includes("username") && (
                 <h1>Sorry: this username already exists!</h1>
               )}
-              {errorMsg === "ESISTE EMAIL" && (
+              {errorMsg.includes("email") && (
                 <h1>Sorry: this e-mail address already exists!</h1>
               )}
               <Button
@@ -148,7 +162,7 @@ class CreateAccount extends React.Component {
             </div>
           </div>
         )}
-        {success && errorMsg === "" && (
+        {popup && errorMsg === "" && (
           <div className="backgroundGrey">
             <div className="popupInput">
               <h1>GREAT! New user added</h1>
@@ -170,7 +184,7 @@ class CreateAccount extends React.Component {
 
 const mapStateToProps = state => ({
   errorMsg: state.users.errorMsg,
-  success: state.users.success
+  popup: state.users.popup
 });
 
 export default connect(mapStateToProps)(CreateAccount);

@@ -22,7 +22,16 @@ class LogIn extends React.Component {
   }
 
   handleChange = e => {
-    this.setState({ [e.target.name]: e.target.value });
+    switch (e.target.name) {
+      case "username":
+        const capitalize = e.target.value.replace(/\w\S*/g, function(txt) {
+          return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();
+        });
+        this.setState({ username: capitalize });
+        break;
+      default:
+        this.setState({ [e.target.name]: e.target.value });
+    }
   };
 
   handleSubmit = event => {
@@ -35,9 +44,18 @@ class LogIn extends React.Component {
   };
 
   render() {
-    const { loggedIn, credentials } = this.props;
+    const { loggedIn, popup } = this.props;
+    const fixedHeight = window.innerHeight * 0.86;
+    const accountDivStyle = {
+      height: fixedHeight.toString() + "px",
+      display: "flex",
+      flexDirection: "column",
+      alignItems: "center",
+      justifyItems: "flex-start",
+      fontSize: "3rem"
+    };
     return (
-      <div className="account">
+      <div style={accountDivStyle}>
         <h1>Login</h1>
         <form className="accountForm" onSubmit={this.handleSubmit}>
           <label>
@@ -75,7 +93,7 @@ class LogIn extends React.Component {
             />
           </a>
         </div>
-        {!credentials && (
+        {popup && (
           <div className="backgroundGrey">
             <div className="popupInput">
               <h1>Sorry: unknown credentials!</h1>
@@ -94,11 +112,7 @@ class LogIn extends React.Component {
             <div className="popupInput">
               <h1>GREAT! You are logged in!</h1>
               <Link to="/">
-                <Button
-                  onClick={this.closeLogged}
-                  size="large"
-                  variant="contained"
-                >
+                <Button size="large" variant="contained">
                   home
                 </Button>
               </Link>
@@ -112,7 +126,7 @@ class LogIn extends React.Component {
 
 const mapStateToProps = state => ({
   errorMsg: state.users.errorMsg,
-  credentials: state.users.credentials,
+  popup: state.users.popup,
   loggedIn: state.users.loggedIn,
   token: state.users.token
 });

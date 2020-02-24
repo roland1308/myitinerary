@@ -15,7 +15,7 @@ class SearchBar extends React.Component {
         <div className="searchCity">
           <TextField
             id="standard-search"
-            label="Choose a City"
+            label="Choose a City or FIND one"
             type="search"
             variant="outlined"
             fullWidth
