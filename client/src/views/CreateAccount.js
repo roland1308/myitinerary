@@ -31,7 +31,9 @@ class CreateAccount extends React.Component {
         this.setState({ picture: e.target.files[0] });
         break;
       case "username":
-        const capitalize = e.target.value.replace(/\w\S*/g, function(txt){return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();});
+        const capitalize = e.target.value.replace(/\w\S*/g, function(txt) {
+          return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();
+        });
         this.setState({ username: capitalize });
         break;
       default:
@@ -61,15 +63,15 @@ class CreateAccount extends React.Component {
 
   render() {
     const { errorMsg, popup } = this.props;
-    const fixedHeight = window.innerHeight*0.86;
-    const  accountDivStyle = {
-      height: fixedHeight.toString()+"px",
+    const fixedHeight = window.innerHeight * 0.86;
+    const accountDivStyle = {
+      height: fixedHeight.toString() + "px",
       display: "flex",
       flexDirection: "column",
       alignItems: "center",
       justifyItems: "flex-start",
       fontSize: "3rem"
-    }
+    };
     return (
       <div style={accountDivStyle}>
         <h1>Create New Account</h1>
@@ -131,17 +133,32 @@ class CreateAccount extends React.Component {
           </label>
           <input type="submit" value="Register" />
         </form>
-        <div className="translateNewForm">
-          <a
-            className="linkNoDecoration"
-            href="http://localhost:5000/users/google"
-          >
-            <h1>or</h1>
-            <img
-              src={require("../images/googlesignup.jpg")}
-              alt="GOOGLE SIGN UP"
-            />
-          </a>
+        <h1 className="translateNewForm">or</h1>
+        <div className="row">
+          <div className="translateNewForm col-sm">
+            <a
+              className="linkNoDecoration"
+              href="http://localhost:5000/users/google"
+            >
+              <img
+                className="login_Logo"
+                src={require("../images/googlelogo.jpg")}
+                alt="GOOGLE SIGN UP"
+              />
+            </a>
+          </div>
+          <div className="translateNewForm col-sm">
+            <a
+              className="linkNoDecoration"
+              href="http://localhost:5000/users/github"
+            >
+              <img
+                className="login_Logo"
+                src={require("../images/github.png")}
+                alt="GOOGLE SIGN UP"
+              />
+            </a>
+          </div>
         </div>
         {errorMsg && (
           <div className="backgroundGrey">

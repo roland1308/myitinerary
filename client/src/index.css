@@ -435,3 +435,8 @@ svg {
   font-family: cursive;
   font-size: 7.5vw;
 }
+
+.login_Logo {
+  width: 50%;
+  margin: 0 auto;
+}

@@ -1,10 +1,10 @@
+const passport = require("passport");
 const JwtStrategy = require("passport-jwt").Strategy;
+const jwt = require("jsonwebtoken");
 const ExtractJwt = require("passport-jwt").ExtractJwt;
 
 const GoogleStrategy = require("passport-google-oauth20").Strategy;
-const passport = require("passport");
-
-const jwt = require("jsonwebtoken");
+const GitHubStrategy = require("passport-github").Strategy;
 
 const User = require("../model/userModel");
 const userModel = require("../model/userModel");
@@ -31,7 +31,6 @@ module.exports = passport.use(
 );
 
 //GOOGLE Strategy
-
 module.exports = passport.use(
   new GoogleStrategy(
     {
@@ -59,6 +58,47 @@ module.exports = passport.use(
         });
         let nuovoUtente = await newUser.save();
         console.log("GOOGLE AGGIUNTO", nuovoUtente);
+        payload = {
+          _id: nuovoUtente._id,
+          username: nuovoUtente.username,
+          picture: nuovoUtente.picture
+        };
+      }
+      const options = { expiresIn: 604800 };
+      const token = jwt.sign(payload, secretOrKey, options);
+      done(null, token);
+    }
+  )
+);
+
+//GITHUB Strategy
+module.exports = passport.use(
+  new GitHubStrategy(
+    {
+      clientID: process.env.github_ID_client,
+      clientSecret: process.env.github_Client_Secret,
+      callbackURL: "http://localhost:5000/users/github/redirect"
+    },
+    async function(accessToken, refreshToken, profile, done) {
+      let payload = {};
+      let user = await userModel.findOne({ email: profile.emails[0].value });
+      if (user) {
+        // User exists
+        payload = {
+          _id: user._id,
+          username: user.username,
+          picture: user.picture
+        };
+      } else {
+        console.log("NOT EXISTS", profile);
+        const newUser = new userModel({
+          username: profile.username,
+          email: profile.emails[0].value,
+          picture: profile.photos[0].value,
+          pw: null
+        });
+        let nuovoUtente = await newUser.save();
+        console.log("GITHUB AGGIUNTO", nuovoUtente);
         payload = {
           _id: nuovoUtente._id,
           username: nuovoUtente.username,

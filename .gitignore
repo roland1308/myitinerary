@@ -28,3 +28,4 @@ yarn-error.log*
 /server/keys.js
 .gitignore
 server/config/keys.js
+.env

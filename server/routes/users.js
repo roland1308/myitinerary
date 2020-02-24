@@ -136,6 +136,21 @@ router.get(
   }
 );
 
+//GITHUB Authentication
+router.get("/github", passport.authenticate("github"));
+
+router.get(
+  "/github/redirect",
+  passport.authenticate("github", {
+    failureRedirect: "http://localhost:3000/createaccount",
+    session: false
+  }),
+  function(req, res) {
+    res.redirect("http://localhost:3000/storetoken/?token=" + req.user);
+  }
+);
+
+//Create TOKEN
 router.post("/token", (req, res) => {
   const payload = {
     _id: req.body._id,
