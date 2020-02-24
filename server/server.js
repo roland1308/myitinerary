@@ -5,12 +5,14 @@ const port = process.env.PORT || 5000;
 const bodyParser = require("body-parser");
 // const cors = require("cors");
 
-const db = require('./config/keys').mongoURI;
+require("dotenv").config();
+const db = process.env.mongoURI;
 
 const mongoose = require("mongoose");
-mongoose.connect(db, { useNewUrlParser: true, useCreateIndex: true })
-    .then(() => console.log('Connection to Mongo DB established'))
-    .catch(err => console.log(err));
+mongoose
+  .connect(db, { useNewUrlParser: true, useCreateIndex: true })
+  .then(() => console.log("Connection to Mongo DB established"))
+  .catch(err => console.log(err));
 app.use("/uploads", express.static("uploads"));
 app.use(bodyParser.json());
 app.use(
@@ -19,7 +21,7 @@ app.use(
   })
 );
 
-const passport = require('passport');
+const passport = require("passport");
 
 //passport middleware
 app.use(passport.initialize());
@@ -32,7 +34,7 @@ app.listen(port, () => {
   console.log("Server is running on " + port + " port");
 });
 
-app.use('/cities', require('./routes/cities'));
-app.use('/itineraries', require('./routes/itineraries'));
-app.use('/activities', require('./routes/activities'));
-app.use('/users', require('./routes/users'));
+app.use("/cities", require("./routes/cities"));
+app.use("/itineraries", require("./routes/itineraries"));
+app.use("/activities", require("./routes/activities"));
+app.use("/users", require("./routes/users"));

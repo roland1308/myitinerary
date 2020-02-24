@@ -4,16 +4,18 @@ const ExtractJwt = require("passport-jwt").ExtractJwt;
 const GoogleStrategy = require("passport-google-oauth20").Strategy;
 const passport = require("passport");
 
-const key = require("./keys");
 const jwt = require("jsonwebtoken");
 
 const User = require("../model/userModel");
 const userModel = require("../model/userModel");
 
+require("dotenv").config();
+const secretOrKey = process.env.secretOrKey;
+
 //JWT Strategy
 const opts = {};
 opts.jwtFromRequest = ExtractJwt.fromAuthHeaderAsBearerToken();
-opts.secretOrKey = key.secretOrKey;
+opts.secretOrKey = secretOrKey;
 
 module.exports = passport.use(
   new JwtStrategy(opts, (jwt_payload, done) => {
@@ -33,8 +35,8 @@ module.exports = passport.use(
 module.exports = passport.use(
   new GoogleStrategy(
     {
-      clientID: key.google.ID_client,
-      clientSecret: key.google.Client_Secret,
+      clientID: process.env.google_ID_client,
+      clientSecret: process.env.google_Client_Secret,
       callbackURL: "http://localhost:5000/users/google/redirect"
     },
     async function(accessToken, refreshToken, profile, done) {
@@ -64,7 +66,7 @@ module.exports = passport.use(
         };
       }
       const options = { expiresIn: 604800 };
-      const token = jwt.sign(payload, key.secretOrKey, options);
+      const token = jwt.sign(payload, secretOrKey, options);
       done(null, token);
     }
   )

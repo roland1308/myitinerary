@@ -2,6 +2,9 @@ const express = require("express");
 const router = express.Router();
 const userModel = require("../model/userModel");
 
+require("dotenv").config();
+const secretOrKey = process.env.secretOrKey;
+
 const fs = require("fs");
 const { promisify } = require("util");
 const unlinkAsync = promisify(fs.unlink);
@@ -14,7 +17,6 @@ const app = express();
 
 app.use(express.json());
 
-const key = require("../config/keys.js");
 const jwt = require("jsonwebtoken");
 
 const passport = require("passport");
@@ -26,6 +28,7 @@ const storage = multer.diskStorage({
   },
   filename: function(req, file, cb) {
     const now = new Date().toISOString();
+    //windows needs to replace ":" for "-" to save the picture correctly
     const date = now.replace(/:/g, "-");
     cb(null, date + file.originalname);
   }
@@ -140,7 +143,7 @@ router.post("/token", (req, res) => {
     picture: req.body.picture
   };
   const options = { expiresIn: 604800 };
-  const token = jwt.sign(payload, key.secretOrKey, options);
+  const token = jwt.sign(payload, secretOrKey, options);
   res.send(token);
 });
 
