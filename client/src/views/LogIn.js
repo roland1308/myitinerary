@@ -81,18 +81,34 @@ class LogIn extends React.Component {
           </label>
           <input type="submit" value="Login" />
         </form>
-        <div>
-          <a
-            className="linkNoDecoration"
-            href="http://localhost:5000/users/google"
-          >
-            <h1>or</h1>
-            <img
-              src={require("../images/googlesignup.jpg")}
-              alt="GOOGLE SIGN UP"
-            />
-          </a>
+        <h1>or you can use:</h1>
+        <div className="row">
+          <div className="col-sm">
+            <a
+              className="linkNoDecoration"
+              href="http://localhost:5000/users/google"
+            >
+              <img
+                className="login_Logo"
+                src={require("../images/googlelogo.jpg")}
+                alt="GOOGLE SIGN UP"
+              />
+            </a>
+          </div>
+          <div className="col-sm">
+            <a
+              className="linkNoDecoration"
+              href="http://localhost:5000/users/github"
+            >
+              <img
+                className="login_Logo"
+                src={require("../images/githublogo.jpg")}
+                alt="GOOGLE SIGN UP"
+              />
+            </a>
+          </div>
         </div>
+
         {popup && (
           <div className="backgroundGrey">
             <div className="popupInput">

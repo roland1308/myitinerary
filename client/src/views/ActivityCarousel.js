@@ -11,13 +11,32 @@ import { MdFavorite } from "react-icons/md";
 import { MdSend } from "react-icons/md";
 import { MdStarBorder } from "react-icons/md";
 
+// import { addComment } from "../store/actions/itineraryActions";
+
 class ActivityCarousel extends React.Component {
-  handleComment(e) {
-    console.log(e.key);
+  constructor(props) {
+    super(props);
+    this.state = {
+      comment: ""
+    };
   }
 
+  handleComment = event => {
+    console.log(event.target);
+    this.setState({
+      comment: event.target.value
+    });
+    console.log(this.state.comment);
+  };
+
+  handleAddComment = () => {
+    //   this.props.dispatch(
+    //     addComment({ id: activity._id, comment: this.state.comment })
+    //   );
+  };
+
   render() {
-    const { activities } = this.props;
+    const { activities, loggedIn } = this.props;
     const settings = {
       dots: true,
       className: "center innerSlide",
@@ -30,17 +49,20 @@ class ActivityCarousel extends React.Component {
       autoplaySpeed: 2000,
       speed: 500
     };
+    const divStyle = {
+      height: loggedIn ? "450px" : "11vh"
+    };
+
+    const sendColor =
+      this.state.comment === "" ? { color: "red" } : { color: "green" };
 
     return (
-      <div className="itineraryInside">
+      <div style={divStyle}>
         <Slider {...settings}>
           {activities.map((activity, i) => {
             return (
               <div key={i}>
-                <Link
-                  className="linkNoDecoration"
-                  to={"/activity/:" + activity._id}
-                >
+                <Link className="linkNoDecoration" to={"/activitycard"}>
                   <div
                     className="activity"
                     style={{ backgroundImage: "url(" + activity.photo + ")" }}
@@ -52,30 +74,34 @@ class ActivityCarousel extends React.Component {
             );
           })}
         </Slider>
-        <div className="commentItinerary row">
-          <div className="col-sm-10">
-            <TextField
-              multiline
-              rowsMax="4"
-              id="standard-search"
-              label="Comment this Itinerary"
-              type="search"
-              variant="outlined"
-              // autoFocus={true}
-              fullWidth
-              onKeyPress={this.handleComment}
-            />
-          </div>
-          <div className="col-sm-2">
-            <div className="row activityOpt">
-            <IconContext.Provider value={{ className: "activityIcon" }}>
-                <MdSend />
-                <MdFavorite />
-                <MdStarBorder />
-              </IconContext.Provider>
+        {loggedIn && (
+          <div className="commentItinerary row">
+            <div className="col-sm-10">
+              <TextField
+                multiline
+                rowsMax="4"
+                id="standard-comment"
+                label="Comment this Itinerary"
+                variant="outlined"
+                value={this.state.comment}
+                fullWidth
+                onChange={this.handleComment}
+              />
+            </div>
+            <div className="col-sm-2">
+              <div className="row activityOpt">
+                <IconContext.Provider value={{ className: "activityIcon" }}>
+                  <MdSend
+                    style={sendColor}
+                    onClick={this.state.comment && this.handleAddComment}
+                  />
+                  <MdFavorite />
+                  <MdStarBorder />
+                </IconContext.Provider>
+              </div>
             </div>
           </div>
-        </div>
+        )}
       </div>
     );
   }
@@ -83,8 +109,7 @@ class ActivityCarousel extends React.Component {
 
 const mapStateToProps = state => ({
   activities: state.activities.items,
-  loading: state.activities.loading,
-  error: state.activities.error
+  loggedIn: state.users.loggedIn
 });
 
 export default connect(mapStateToProps)(ActivityCarousel);

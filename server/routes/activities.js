@@ -8,6 +8,7 @@ router.get("/all", (req, res) => {
     .find({})
     .then(files => {
       res.send(files);
+      console.log(files);
     })
     .catch(err => console.log(err));
 });

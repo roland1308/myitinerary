@@ -13,8 +13,10 @@ import { connect } from "react-redux";
 
 class LandingPage extends React.Component {
   componentDidMount = () => {
-    const token = window.localStorage.token;
-    this.props.dispatch(checkToken(token));
+    if (!this.props.loggedIn && window.localStorage.token) {
+      const token = window.localStorage.token;
+      this.props.dispatch(checkToken(token));
+    }
   };
 
   render() {
@@ -52,7 +54,8 @@ class LandingPage extends React.Component {
 
 const mapStateToProps = state => ({
   errorlogging: state.users.errorlogging,
-  loading: state.users.loading
+  loading: state.users.loading,
+  loggedIn: state.users.loggedIn
 });
 
 export default connect(mapStateToProps)(LandingPage);

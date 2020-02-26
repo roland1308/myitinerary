@@ -52,7 +52,7 @@ router.post("/add", [upload.single("picture")], (req, res) => {
     const newUser = new userModel({
       username: req.body.username,
       email: req.body.email,
-      picture: "uploads/" + req.file.filename,
+      picture: "/uploads/" + req.file.filename,
       pw: hash
     });
     newUser

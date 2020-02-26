@@ -38,21 +38,22 @@ router.post("/add", (req, res) => {
     });
 });
 
-/*get Itineraries for a city by City's ID READ*/
+/*get Itineraries for a city by City's ID and POPULATE comments READ*/
 router.get("/:id", (req, res) => {
   itineraryModel
     .find({ city_id: req.params.id })
+    .populate("comments", "username picture usercomment")
     .then(files => {
       res.send(files);
     })
     .catch(err => console.log(err));
 });
 
-/*get one itinerary by id and POPULATE activities READ*/
+/*get one itinerary by id and POPULATE activities and comments READ*/
 router.get("/populate/:id", (req, res) => {
   itineraryModel
     .findOne({ _id: req.params.id })
-    .populate("activities", "name photo")
+    .populate("activities", "name address photo time cost comments")
     .exec(function(err, itinerary) {
       if (err) {
         console.log("errore", err);
@@ -100,6 +101,31 @@ router.delete("/:id", (req, res) => {
       res.send(result);
     }
   });
+});
+
+/*update one itinerary's comment by ID UPDATE*/
+router.put("/comment", (req, res) => {
+  itineraryModel
+    .findOneAndUpdate(
+      { _id: req.body.id },
+      {
+        $set: {
+          comments: comments.push(req.body.comment)
+        }
+      },
+      {
+        new: true
+      }
+    )
+    .then(old => {
+      if (old !== null) {
+        res.json(old);
+        console.log("Commento aggiornato");
+      } else {
+        console.log("ERRORE AGGIORNAMENTO");
+        res.json(old);
+      }
+    });
 });
 
 module.exports = router;

@@ -7,12 +7,12 @@ import activityReducer from "./activityReducer";
 import usersReducer from "./usersReducer";
 
 const rootReducer = combineReducers({
-    cities: citiesReducer,
-    populars: popularsReducer,
-    app: appReducer,
-    itineraries: itineraryReducer,
-    activities: activityReducer,
-    users: usersReducer
+  cities: citiesReducer,
+  populars: popularsReducer,
+  app: appReducer,
+  itineraries: itineraryReducer,
+  activities: activityReducer,
+  users: usersReducer
 });
 
 export default rootReducer;

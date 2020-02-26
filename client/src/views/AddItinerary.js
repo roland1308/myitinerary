@@ -23,7 +23,6 @@ class AddItinerary extends React.Component {
     const target = event.target;
     const value = target.value;
     const name = target.name;
-
     this.setState({
       [name]: value
     });
@@ -31,21 +30,6 @@ class AddItinerary extends React.Component {
 
   additinerary = () => {
     console.log(JSON.stringify(this.state));
-
-    // (async () => {
-    //   const rawResponse = await fetch("/itineraries/add", {
-    //     method: 'POST',
-    //     headers: {
-    //       'Accept': 'application/json',
-    //       'Content-Type': 'application/json'
-    //     },
-    //     body: JSON.stringify(this.state)
-    //   });
-    //   const content = await rawResponse.json();
-
-    //   console.log(content);
-    // })();
-
     fetch("/itineraries/add", {
       method: "post",
       headers: {
@@ -60,7 +44,6 @@ class AddItinerary extends React.Component {
       .then(function(data) {
         console.log("Created:", data);
       });
-      
   };
 
   render() {

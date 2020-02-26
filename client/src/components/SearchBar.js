@@ -5,6 +5,9 @@ import { setCampoCerca } from "../store/actions/appActions";
 import { connect } from "react-redux";
 
 class SearchBar extends React.Component {
+  componentDidMount() {
+    this.props.dispatch(setCampoCerca(""));
+  }
 
   handleSearch = e => {
     this.props.dispatch(setCampoCerca(e.target.value.toLowerCase()));
@@ -12,16 +15,16 @@ class SearchBar extends React.Component {
 
   render() {
     return (
-        <div className="searchCity">
-          <TextField
-            id="standard-search"
-            label="Choose a City or FIND one"
-            type="search"
-            variant="outlined"
-            fullWidth
-            onChange={this.handleSearch}
-          />
-        </div>
+      <div className="searchCity">
+        <TextField
+          id="standard-search"
+          label="Choose a City or FIND one"
+          type="search"
+          variant="outlined"
+          fullWidth
+          onChange={this.handleSearch}
+        />
+      </div>
     );
   }
 }

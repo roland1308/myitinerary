@@ -7,7 +7,7 @@ export function fetchActivities(itinerary_id) {
   return dispatch => {
     dispatch(fetchActivityBegin());
     let url = "/itineraries/populate/" + itinerary_id;
-      return fetch(url)
+    return fetch(url)
       .then(handleErrors)
       .then(res => res.json())
       .then(json => {

@@ -43,12 +43,15 @@ class CreateAccount extends React.Component {
 
   handleSubmit = e => {
     e.preventDefault();
-    const { username, email, picture, pw } = this.state;
+    this.addUser(this.state);
+  };
+
+  addUser = payload => {
     let formResult = new FormData();
-    formResult.append("username", username);
-    formResult.append("email", email);
-    formResult.append("picture", picture);
-    formResult.append("pw", pw);
+    formResult.append("username", payload.username);
+    formResult.append("email", payload.email);
+    formResult.append("picture", payload.picture);
+    formResult.append("pw", payload.pw);
     this.props.dispatch(addUser(formResult));
   };
 
@@ -82,9 +85,10 @@ class CreateAccount extends React.Component {
             src={this.state.picture}
           />
         </div>
+        <div className="spaceBetween"></div>
         <form
           id="myForm"
-          className="accountForm translateNewForm"
+          className="accountForm"
           method="post"
           encType="multipart/form-data"
           onSubmit={this.handleSubmit}
@@ -133,9 +137,9 @@ class CreateAccount extends React.Component {
           </label>
           <input type="submit" value="Register" />
         </form>
-        <h1 className="translateNewForm">or</h1>
+        <h1>or you can use:</h1>
         <div className="row">
-          <div className="translateNewForm col-sm">
+          <div className="col-sm">
             <a
               className="linkNoDecoration"
               href="http://localhost:5000/users/google"
@@ -147,14 +151,14 @@ class CreateAccount extends React.Component {
               />
             </a>
           </div>
-          <div className="translateNewForm col-sm">
+          <div className="col-sm">
             <a
               className="linkNoDecoration"
               href="http://localhost:5000/users/github"
             >
               <img
                 className="login_Logo"
-                src={require("../images/github.png")}
+                src={require("../images/githublogo.jpg")}
                 alt="GOOGLE SIGN UP"
               />
             </a>

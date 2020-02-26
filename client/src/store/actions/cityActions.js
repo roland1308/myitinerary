@@ -22,7 +22,6 @@ export function fetchOneCityId(id) {
   return dispatch => {
     dispatch(fetchCitiesBegin());
     let url = "/cities/" + id;
-    console.log(url);
     return fetch(url)
       .then(handleErrors)
       .then(res => res.json())

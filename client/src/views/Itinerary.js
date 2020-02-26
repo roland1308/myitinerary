@@ -21,8 +21,10 @@ class Itinerary extends React.Component {
   }
 
   componentDidMount = () => {
-    const token = window.localStorage.token;
-    this.props.dispatch(checkToken(token));
+    if (!this.props.loggedIn && window.localStorage.token) {
+      const token = window.localStorage.token;
+      this.props.dispatch(checkToken(token));
+    }
     let fetchId = "";
     if (this.props.match.params.idcitta) {
       fetchId = this.props.match.params.idcitta;
@@ -31,7 +33,7 @@ class Itinerary extends React.Component {
       fetchId = window.localStorage.idcitta;
     } else {
       this.props.history.push("/");
-    };
+    }
     this.props.dispatch(fetchOneCityId(fetchId));
     this.props.dispatch(fetchItinerary(fetchId));
     this.props.dispatch(homeOn());
@@ -58,11 +60,13 @@ class Itinerary extends React.Component {
     const { errorItin, itineraries, selectedCity } = this.props;
     const { errorAct, loadingAct } = this.props;
     const { errorCit } = this.props;
-    const { loggedIn } = this.props;
     if (errorItin || errorAct || errorCit) {
-      return <div>Error!
-        {errorItin} , {errorAct} , {errorCit}
-      </div>;
+      return (
+        <div>
+          Error!
+          {errorItin} , {errorAct} , {errorCit}
+        </div>
+      );
     }
     return (
       <div className="itinerary">
@@ -91,7 +95,20 @@ class Itinerary extends React.Component {
                   <div>{itinerary.hashtags}</div>
                 </div>
               </div>
-              {!this.state.showAll[i] && loggedIn && (
+
+              {itinerary.comments.map((comment, i) => {
+                return (
+                  <div key={i} className="row comment">
+                    <h3 className="col-sm-10">"{comment.usercomment}"</h3>
+                    <div className="col-sm-2 avatarComment">
+                      <Avatar alt={comment.username} src={comment.picture} />
+                      <h4>{comment.username}</h4>
+                    </div>
+                  </div>
+                );
+              })}
+
+              {!this.state.showAll[i] && (
                 <Button
                   className="openingButton"
                   variant="contained"

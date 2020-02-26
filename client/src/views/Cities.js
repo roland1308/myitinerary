@@ -5,15 +5,24 @@ import { Link } from "react-router-dom";
 import FadeIn from "react-fade-in";
 
 import { fetchCities } from "../store/actions/cityActions";
-import { homeOn, backOff, searchOn } from "../store/actions/appActions";
+
+import {
+  homeOn,
+  backOff,
+  searchOn,
+  setCampoCerca
+} from "../store/actions/appActions";
 import { checkToken } from "../store/actions/userActions";
 
 import { connect } from "react-redux";
 
 class Cities extends React.Component {
   componentDidMount() {
-    const token = window.localStorage.token;
-    this.props.dispatch(checkToken(token));
+    if (!this.props.loggedIn && window.localStorage.token) {
+      const token = window.localStorage.token;
+      this.props.dispatch(checkToken(token));
+    }
+    this.props.dispatch(setCampoCerca(""));
     this.props.dispatch(fetchCities());
     this.props.dispatch(homeOn());
     this.props.dispatch(backOff());
@@ -71,7 +80,8 @@ const mapStateToProps = state => ({
   homeLink: state.app.homeLink,
   searchDiv: state.app.searchDiv,
   errorlogging: state.users.errorlogging,
-  loadingUser: state.users.loading
+  loadingUser: state.users.loading,
+  loggedIn: state.users.loggedIn
 });
 
 export default connect(mapStateToProps)(Cities);
