@@ -5,7 +5,7 @@ const cityModel = require("../model/cityModel");
 // get first 12 popular itineraries (City at the moment)
 router.get("/carousel", (req, res) => {
   cityModel
-    .find({}, null, {limit: 12, sort: {'name': 1}})
+    .find({}, null, { limit: 12, sort: { name: 1 } })
     .then(files => {
       res.send(files);
     })
@@ -16,6 +16,7 @@ router.get("/carousel", (req, res) => {
 router.get("/all", (req, res) => {
   cityModel
     .find({})
+    .sort({ name: 1 })
     .then(files => {
       res.send(files);
     })
@@ -52,7 +53,7 @@ router.post("/add", (req, res) => {
 router.get("/:id", (req, res) => {
   cityModel
     .findOne({ _id: req.params.id })
-    .then(files => {;
+    .then(files => {
       res.send(files);
     })
     .catch(err => console.log(err));
@@ -68,9 +69,9 @@ router.put("/:name/:newname", (req, res) => {
           name: req.params.newname
         }
       },
-        {
-          new: true
-        }
+      {
+        new: true
+      }
     )
     .then(old => {
       if (old !== null) {

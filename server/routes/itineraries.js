@@ -90,6 +90,22 @@ router.put("/:id/:newname/:newphoto", (req, res) => {
     });
 });
 
+// find one itinerary by id and update and push comment in array
+router.put("/addcommentid", (req, res) => {
+  itineraryModel.findByIdAndUpdate(
+    req.body.userid,
+    { $push: { comments: req.body.usercomment } },
+    { safe: true, upsert: true },
+    function(err, doc) {
+      if (err) {
+        console.log(err);
+      } else {
+        res.send("OK");
+      }
+    }
+  );
+});
+
 /*delete one itinerary by ID DELETE*/
 router.delete("/:id", (req, res) => {
   itineraryModel.findOneAndDelete({ _id: req.params.id }).then(result => {

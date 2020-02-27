@@ -15,13 +15,14 @@ router.get("/all", (req, res) => {
 /*add a comment CREATE*/
 router.post("/add", (req, res) => {
   const newcomment = new commentModel({
-    userid: req.body.userid,
+    username: req.body.username,
+    picture: req.body.picture,
     usercomment: req.body.usercomment
   });
   newcomment
     .save()
     .then(comment => {
-      res.send(comment);
+      res.send(comment._id);
     })
     .catch(err => {
       res.send(err);
