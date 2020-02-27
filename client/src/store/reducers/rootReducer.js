@@ -5,6 +5,7 @@ import appReducer from "./appReducer";
 import itineraryReducer from "./itineraryReducer";
 import activityReducer from "./activityReducer";
 import usersReducer from "./usersReducer";
+import commentsReducer from "./commentsReducer";
 
 const rootReducer = combineReducers({
   cities: citiesReducer,
@@ -12,7 +13,8 @@ const rootReducer = combineReducers({
   app: appReducer,
   itineraries: itineraryReducer,
   activities: activityReducer,
-  users: usersReducer
+  users: usersReducer,
+  comments: commentsReducer
 });
 
 export default rootReducer;

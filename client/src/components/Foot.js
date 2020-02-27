@@ -17,7 +17,7 @@ class Foot extends React.Component {
     const { goPrev } = this.props;
     return (
       <div className="row">
-        <div className="col-sm-4 back">
+        <div className="col-sm-4">
           {goPrev && (
             <ArrowBackIosTwoToneIcon
               style={{ fontSize: 100 }}

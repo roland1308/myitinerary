@@ -11,7 +11,8 @@ import { MdFavorite } from "react-icons/md";
 import { MdSend } from "react-icons/md";
 import { MdStarBorder } from "react-icons/md";
 
-// import { addComment } from "../store/actions/itineraryActions";
+import { addComment } from "../store/actions/commentActions";
+import { addCommentId } from "../store/actions/itineraryActions";
 
 class ActivityCarousel extends React.Component {
   constructor(props) {
@@ -22,17 +23,28 @@ class ActivityCarousel extends React.Component {
   }
 
   handleComment = event => {
-    console.log(event.target);
     this.setState({
       comment: event.target.value
     });
-    console.log(this.state.comment);
   };
 
   handleAddComment = () => {
-    //   this.props.dispatch(
-    //     addComment({ id: activity._id, comment: this.state.comment })
-    //   );
+    // Aggiungere il comment, username e picture alla collection comments ed il suo _ID al array comments di itineraries
+    if (this.state.comment) {
+      const { username, picture } = this.props;
+      this.props.dispatch(
+        addComment({
+          username: username,
+          picture: picture,
+          usercomment: this.state.comment
+        })
+      );
+      // console.log("PROPS", this.props);
+      // const { errorComment, itinerary_id, commentId } = this.props;
+      // if (!errorComment) {
+      //   this.props.dispatch(addCommentId({ itinerary_id, commentId }));
+      // }
+    }
   };
 
   render() {
@@ -54,7 +66,9 @@ class ActivityCarousel extends React.Component {
     };
 
     const sendColor =
-      this.state.comment === "" ? { color: "red" } : { color: "green" };
+      this.state.comment === ""
+        ? { color: "grey" }
+        : { color: "rgb(46, 46, 202)" };
 
     return (
       <div style={divStyle}>
@@ -91,10 +105,7 @@ class ActivityCarousel extends React.Component {
             <div className="col-sm-2">
               <div className="row activityOpt">
                 <IconContext.Provider value={{ className: "activityIcon" }}>
-                  <MdSend
-                    style={sendColor}
-                    onClick={this.state.comment && this.handleAddComment}
-                  />
+                  <MdSend style={sendColor} onClick={this.handleAddComment} />
                   <MdFavorite />
                   <MdStarBorder />
                 </IconContext.Provider>
@@ -109,7 +120,13 @@ class ActivityCarousel extends React.Component {
 
 const mapStateToProps = state => ({
   activities: state.activities.items,
-  loggedIn: state.users.loggedIn
+  itinerary_id: state.activities.itinerary_id,
+  loggedIn: state.users.loggedIn,
+  user: state.users.user,
+  commentId: state.comments.commentId,
+  errorComment: state.comments.errorComment,
+  loading: state.comments.loading,
+  errorMsg: state.comments.errorMsg
 });
 
 export default connect(mapStateToProps)(ActivityCarousel);

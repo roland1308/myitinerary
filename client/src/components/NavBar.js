@@ -20,7 +20,11 @@ export class NavBar extends Component {
       <div className="flexNavbar">
         {loggedIn === true ? (
           <div className="dropdown">
-            <Avatar alt="USER" src={user.picture} data-toggle="dropdown" />
+            <Avatar
+              alt={user.username}
+              src={user.picture}
+              data-toggle="dropdown"
+            />
             <div className="dropdown-menu">
               <Link
                 to={"/login"}

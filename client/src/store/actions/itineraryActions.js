@@ -2,6 +2,11 @@
 export const FETCH_ITINERARY_BEGIN = "FETCH_ITINERARY_BEGIN";
 export const FETCH_ITINERARY_SUCCESS = "FETCH_ITINERARY_SUCCESS";
 export const FETCH_ITINERARY_FAILURE = "FETCH_ITINERARY_FAILURE";
+export const ADD_COMMENT_BEGIN = "ADD_COMMENT_BEGIN";
+export const ADD_COMMENT_SUCCESS = "ADD_COMMENT_SUCCESS";
+export const ADD_COMMENT_FAILURE = "ADD_COMMENT_FAILURE";
+
+const axios = require("axios");
 
 export function fetchItinerary(city_id) {
   return dispatch => {
@@ -36,4 +41,35 @@ export const fetchItinerarySuccess = itinerary => ({
 export const fetchItineraryFailure = error => ({
   type: FETCH_ITINERARY_FAILURE,
   payload: { error }
+});
+
+export const addCommentId = update => {
+  return async dispatch => {
+    try {
+      const response = await axios.put("/itineraries/addcommentid", update);
+      console.log("UPDATE", update, response);
+      // if (response.data.name === "MongoError") {
+      //   dispatch(addCommentFailure(response.data.errmsg));
+      // } else {
+      //   dispatch(addCommentSuccess(response.data));
+      // }
+    } catch (error) {
+      // dispatch(addCommentFailure(error.message));
+    }
+    return "done";
+  };
+};
+
+export const addCommentBegin = () => ({
+  type: ADD_COMMENT_BEGIN
+});
+export const addCommentSuccess = commentId => ({
+  type: ADD_COMMENT_SUCCESS,
+  payload: commentId
+});
+export const addCommentFailure = error => ({
+  type: ADD_COMMENT_FAILURE,
+  payload: {
+    error
+  }
 });

@@ -2,6 +2,7 @@
 export const FETCH_ACTIVITY_BEGIN = "FETCH_ACTIVITY_BEGIN";
 export const FETCH_ACTIVITY_SUCCESS = "FETCH_ACTIVITY_SUCCESS";
 export const FETCH_ACTIVITY_FAILURE = "FETCH_ACTIVITY_FAILURE";
+export const STORE_ITINERARY_ID = "STORE_ITINERARY_ID";
 
 export function fetchActivities(itinerary_id) {
   return dispatch => {
@@ -12,6 +13,7 @@ export function fetchActivities(itinerary_id) {
       .then(res => res.json())
       .then(json => {
         dispatch(fetchActivitySuccess(json.activities));
+        dispatch(storeItineraryId(itinerary_id));
         return json;
       })
       .catch(error => dispatch(fetchActivityFailure(error)));
@@ -36,4 +38,9 @@ export const fetchActivitySuccess = activity => ({
 export const fetchActivityFailure = error => ({
   type: FETCH_ACTIVITY_FAILURE,
   payload: { error }
+});
+
+export const storeItineraryId = itineraryId => ({
+  type: STORE_ITINERARY_ID,
+  payload: itineraryId
 });
