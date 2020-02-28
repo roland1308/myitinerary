@@ -15,7 +15,6 @@ import { connect } from "react-redux";
 export class NavBar extends Component {
   render() {
     const { loggedIn, user } = this.props;
-    console.log(loggedIn);
     return (
       <div className="flexNavbar">
         {loggedIn === true ? (

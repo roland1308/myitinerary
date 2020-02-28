@@ -16,11 +16,12 @@ class Itinerary extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      showAll: []
+      showAll: [],
+      cityId: ""
     };
   }
 
-  componentDidMount = () => {
+  componentDidMount() {
     if (!this.props.loggedIn && window.localStorage.token) {
       const token = window.localStorage.token;
       this.props.dispatch(checkToken(token));
@@ -39,7 +40,21 @@ class Itinerary extends React.Component {
     this.props.dispatch(homeOn());
     this.props.dispatch(backOn());
     this.props.dispatch(searchOff());
-  };
+    this.setState({
+      cityId: fetchId
+    });
+  }
+
+  componentWillUnmount() {
+    window.localStorage.setItem("idcitta", "");
+  }
+
+  // componentDidUpdate(prevProps) {
+  //   const { commentId } = this.props;
+  //   if (commentId !== prevProps.commentId) {
+  //     this.props.dispatch(fetchItinerary(this.state.cityId));
+  //   }
+  // }
 
   handleActivity = (itinerario, i) => {
     this.props.dispatch(fetchActivities(itinerario));
@@ -57,7 +72,7 @@ class Itinerary extends React.Component {
   };
 
   render() {
-    const { errorItin, itineraries, selectedCity } = this.props;
+    const { loadingItin, errorItin, itineraries, selectedCity } = this.props;
     const { errorAct, loadingAct } = this.props;
     const { errorCit } = this.props;
     if (errorItin || errorAct || errorCit) {
@@ -95,19 +110,20 @@ class Itinerary extends React.Component {
                   <div>{itinerary.hashtags}</div>
                 </div>
               </div>
-              {itinerary.comments.map((comment, i) => {
-                return (
-                  <div key={i} className="row commentContainer">
-                    <h3 className="col-sm-10 comment">
-                      "{comment.usercomment}"
-                    </h3>
-                    <div className="col-sm-2 avatarComment">
-                      <Avatar alt={comment.username} src={comment.picture} />
-                      <h4>{comment.username}</h4>
+              {!loadingItin &&
+                itinerary.comments.map((comment, i) => {
+                  return (
+                    <div key={i} className="row commentContainer">
+                      <h3 className="col-sm-10 comment">
+                        "{comment.usercomment}"
+                      </h3>
+                      <div className="col-sm-2 avatarComment">
+                        <Avatar alt={comment.username} src={comment.picture} />
+                        <h4>{comment.username}</h4>
+                      </div>
                     </div>
-                  </div>
-                );
-              })}
+                  );
+                })}
               {!this.state.showAll[i] && (
                 <Button
                   className="openingButton"
@@ -142,11 +158,13 @@ const mapStateToProps = state => ({
   selectedCity: state.cities.selectedCity,
   itineraries: state.itineraries.items,
   errorItin: state.itineraries.errorItin,
+  loadingItin: state.itineraries.loadingItin,
   loadingAct: state.activities.loadingAct,
   errorAct: state.activities.errorAct,
   errorCit: state.cities.error,
   errorlogging: state.users.errorlogging,
-  loggedIn: state.users.loggedIn
+  loggedIn: state.users.loggedIn,
+  commentId: state.comments.commentId
 });
 
 export default connect(mapStateToProps)(Itinerary);

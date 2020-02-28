@@ -55,7 +55,6 @@ export const addUser = user => {
     dispatch(addUserBegin());
     try {
       const response = await axios.post("/users/add", user);
-      console.log(response.data);
       if (response.data.name === "MongoError") {
         dispatch(addUserFailure(response.data.errmsg));
       } else {
@@ -175,7 +174,7 @@ export const loginUserFailure = error => ({
 
 export const logInUserOff = () => ({
   type: USER_LOGOUT
-})
+});
 
 export const resetError = () => ({
   type: RESET_ERROR

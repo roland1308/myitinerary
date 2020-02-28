@@ -12,7 +12,11 @@ import { MdSend } from "react-icons/md";
 import { MdStarBorder } from "react-icons/md";
 
 import { addComment } from "../store/actions/commentActions";
-import { addCommentId } from "../store/actions/itineraryActions";
+import {
+  addCommentId,
+  fetchItinerary
+} from "../store/actions/itineraryActions";
+import { fetchOneCityId } from "../store/actions/cityActions";
 
 class ActivityCarousel extends React.Component {
   constructor(props) {
@@ -31,7 +35,7 @@ class ActivityCarousel extends React.Component {
   handleAddComment = () => {
     // Aggiungere il comment, username e picture alla collection comments ed il suo _ID al array comments di itineraries
     if (this.state.comment) {
-      const { username, picture } = this.props;
+      const { username, picture } = this.props.user;
       this.props.dispatch(
         addComment({
           username: username,
@@ -39,13 +43,23 @@ class ActivityCarousel extends React.Component {
           usercomment: this.state.comment
         })
       );
-      // console.log("PROPS", this.props);
-      // const { errorComment, itinerary_id, commentId } = this.props;
-      // if (!errorComment) {
-      //   this.props.dispatch(addCommentId({ itinerary_id, commentId }));
-      // }
     }
   };
+
+  componentDidUpdate(prevProps) {
+    const { errorComment, itinerary_id, commentId } = this.props;
+    if (commentId !== prevProps.commentId) {
+      if (!errorComment) {
+        this.props.dispatch(addCommentId({ itinerary_id, commentId }));
+        this.setState({
+          comment: ""
+        });
+        const fetchId = window.localStorage.idcitta;
+        this.props.dispatch(fetchOneCityId(fetchId));
+        this.props.dispatch(fetchItinerary(fetchId));
+      }
+    }
+  }
 
   render() {
     const { activities, loggedIn } = this.props;

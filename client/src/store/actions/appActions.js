@@ -40,10 +40,10 @@ export const searchOff = () => ({
   payload: false
 });
 
-export const setCampoCerca = (campoCerca) => ({
+export const setCampoCerca = campoCerca => ({
   type: SET_CERCA,
   payload: { campoCerca }
-})
+});
 
 export const addToken = token => ({
   type: ADD_TOKEN,
@@ -54,4 +54,4 @@ export const addToken = token => ({
 
 export const logInAppOff = () => ({
   type: APP_LOGOUT
-})
+});

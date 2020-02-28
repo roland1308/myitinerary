@@ -27,7 +27,7 @@ body {
 
 /* ------------------------------------ Cities - Itinerary - Landing */
 .cities {
-  height: 80vh;
+  height: 79vh;
   overflow-y: scroll;
 }
 
@@ -227,7 +227,7 @@ svg {
 /* --------------------------------- Loading */
 .loading {
   width: 70%;
-  height: 80vh;
+  height: 79vh;
   margin: auto;
 }
 
@@ -304,7 +304,7 @@ svg {
 
 /* ------------------------------- ActivityCard - Itinerary */
 .itinerary {
-  height: 86vh;
+  height: 85vh;
   overflow: scroll;
 }
 
