@@ -14,7 +14,8 @@ import { MdStarBorder } from "react-icons/md";
 import { addComment } from "../store/actions/commentActions";
 import {
   addCommentId,
-  fetchItinerary
+  fetchItinerary,
+  pushCommentToStore
 } from "../store/actions/itineraryActions";
 import { fetchOneCityId } from "../store/actions/cityActions";
 import { pushFavorite, pullFavorite } from "../store/actions/userActions";
@@ -63,17 +64,27 @@ class ActivityCarousel extends React.Component {
     }
     this.props.dispatch(setFavorite(!favoriteFlag));
   };
+
   componentDidUpdate(prevProps) {
     const { errorComment, itinerary_id, commentId } = this.props;
+    const { username, picture } = this.props.user;
     if (commentId !== prevProps.commentId) {
       if (!errorComment) {
         this.props.dispatch(addCommentId({ itinerary_id, commentId }));
+        let commentToPush = {
+          id: commentId,
+          username: username,
+          picture: picture,
+          usercomment: this.state.comment
+        };
+        this.props.dispatch(
+          pushCommentToStore({ itinerary_id, commentToPush })
+        );
         this.setState({
           comment: ""
         });
         const fetchId = window.localStorage.idcitta;
         this.props.dispatch(fetchOneCityId(fetchId));
-        this.props.dispatch(fetchItinerary(fetchId));
       }
     }
   }

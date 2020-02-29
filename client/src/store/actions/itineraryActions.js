@@ -3,6 +3,7 @@ export const FETCH_ITINERARY_BEGIN = "FETCH_ITINERARY_BEGIN";
 export const FETCH_ITINERARY_SUCCESS = "FETCH_ITINERARY_SUCCESS";
 export const FETCH_ITINERARY_FAILURE = "FETCH_ITINERARY_FAILURE";
 export const ADD_COMMENT_FAILURE = "ADD_COMMENT_FAILURE";
+export const PUSH_COMMENT = "PUSH_COMMENT";
 
 const axios = require("axios");
 
@@ -55,4 +56,9 @@ export const addCommentFailure = error => ({
   payload: {
     error
   }
+});
+
+export const pushCommentToStore = itinId_Comment => ({
+  type: PUSH_COMMENT,
+  payload: itinId_Comment
 });

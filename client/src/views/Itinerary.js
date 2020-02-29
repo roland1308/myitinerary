@@ -88,7 +88,7 @@ class Itinerary extends React.Component {
         </div>
       );
     }
-    if (loadingItin || loadingAct) {
+    if (loadingItin) {
       return <Loading />;
     }
     return (
@@ -118,10 +118,11 @@ class Itinerary extends React.Component {
                   <div>{itinerary.hashtags}</div>
                 </div>
               </div>
+              <h3 className="padding17">Traveler's Comments</h3>
               {!loadingItin &&
                 itinerary.comments.map((comment, i) => {
                   return (
-                    <div key={i} className="row commentContainer">
+                    <div key={i} className="row commentContainer" id={i}>
                       <h3 className="col-sm-10 comment">
                         "{comment.usercomment}"
                       </h3>

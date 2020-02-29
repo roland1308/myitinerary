@@ -1,7 +1,8 @@
 import {
   FETCH_ITINERARY_BEGIN,
   FETCH_ITINERARY_SUCCESS,
-  FETCH_ITINERARY_FAILURE
+  FETCH_ITINERARY_FAILURE,
+  PUSH_COMMENT
 } from "../actions/itineraryActions";
 
 const initialState = {
@@ -27,6 +28,7 @@ export default function itineraryReducer(state = initialState, action) {
       return {
         ...state,
         loadingItin: false,
+        errorItin: false,
         items: action.payload.itinerary
       };
 
@@ -39,6 +41,20 @@ export default function itineraryReducer(state = initialState, action) {
         loadingItin: false,
         errorItin: true,
         items: [{}]
+      };
+
+    case PUSH_COMMENT:
+      let newitems = state.items;
+      let index = newitems.findIndex(
+        element => element._id === action.payload.itinerary_id
+      );
+      newitems[index].comments = [
+        ...newitems[index].comments,
+        action.payload.commentToPush
+      ];
+      return {
+        ...state,
+        items: newitems
       };
 
     default:
