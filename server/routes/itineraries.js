@@ -95,8 +95,6 @@ router.put("/:id/:newname/:newphoto", (req, res) => {
 
 // find one itinerary by id and update and push comment in array
 router.put("/addcommentid", (req, res) => {
-  console.log(req.body);
-
   itineraryModel.findByIdAndUpdate(
     req.body.itinerary_id,
     { $push: { comments: req.body.commentId } },

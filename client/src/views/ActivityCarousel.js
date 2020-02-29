@@ -17,6 +17,8 @@ import {
   fetchItinerary
 } from "../store/actions/itineraryActions";
 import { fetchOneCityId } from "../store/actions/cityActions";
+import { pushFavorite, pullFavorite } from "../store/actions/userActions";
+import { setFavorite } from "../store/actions/appActions";
 
 class ActivityCarousel extends React.Component {
   constructor(props) {
@@ -46,6 +48,21 @@ class ActivityCarousel extends React.Component {
     }
   };
 
+  handleFavorite = () => {
+    // Toggle favoriteFlag and pushes/pulls the ID from fovorites
+    const { favoriteFlag, itinerary_id } = this.props;
+    const { user } = this.props;
+    let user_itin = {
+      user_id: user._id,
+      itinerary_id: itinerary_id
+    };
+    if (favoriteFlag) {
+      this.props.dispatch(pullFavorite(user_itin));
+    } else {
+      this.props.dispatch(pushFavorite(user_itin));
+    }
+    this.props.dispatch(setFavorite(!favoriteFlag));
+  };
   componentDidUpdate(prevProps) {
     const { errorComment, itinerary_id, commentId } = this.props;
     if (commentId !== prevProps.commentId) {
@@ -63,6 +80,7 @@ class ActivityCarousel extends React.Component {
 
   render() {
     const { activities, loggedIn } = this.props;
+    const { favoriteFlag } = this.props;
     const settings = {
       dots: true,
       className: "center innerSlide",
@@ -84,6 +102,8 @@ class ActivityCarousel extends React.Component {
         ? { color: "grey" }
         : { color: "rgb(46, 46, 202)" };
 
+    const redColor = { color: "red" };
+    const greyColor = { color: "grey" };
     return (
       <div style={divStyle}>
         <Slider {...settings}>
@@ -120,7 +140,18 @@ class ActivityCarousel extends React.Component {
               <div className="row activityOpt">
                 <IconContext.Provider value={{ className: "activityIcon" }}>
                   <MdSend style={sendColor} onClick={this.handleAddComment} />
-                  <MdFavorite />
+                  {favoriteFlag && (
+                    <MdFavorite
+                      style={redColor}
+                      onClick={this.handleFavorite}
+                    />
+                  )}
+                  {!favoriteFlag && (
+                    <MdFavorite
+                      style={greyColor}
+                      onClick={this.handleFavorite}
+                    />
+                  )}
                   <MdStarBorder />
                 </IconContext.Provider>
               </div>
@@ -140,7 +171,8 @@ const mapStateToProps = state => ({
   commentId: state.comments.commentId,
   errorComment: state.comments.errorComment,
   loading: state.comments.loading,
-  errorMsg: state.comments.errorMsg
+  errorMsg: state.comments.errorMsg,
+  favoriteFlag: state.app.favoriteFlag
 });
 
 export default connect(mapStateToProps)(ActivityCarousel);

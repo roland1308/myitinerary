@@ -13,6 +13,8 @@ export const ADD_TOKEN = "ADD_TOKEN";
 
 export const APP_LOGOUT = "APP_LOGOUT";
 
+export const SET_FAVORITE = "SET_FAVORITE";
+
 export const homeOn = () => ({
   type: HOME_ON,
   payload: true
@@ -54,4 +56,9 @@ export const addToken = token => ({
 
 export const logInAppOff = () => ({
   type: APP_LOGOUT
+});
+
+export const setFavorite = flag => ({
+  type: SET_FAVORITE,
+  payload: flag
 });

@@ -16,7 +16,8 @@ class CreateAccount extends React.Component {
       username: "",
       email: "",
       picture: "/",
-      pw: ""
+      pw: "",
+      favorites: []
     };
   }
   componentDidMount() {
@@ -43,15 +44,12 @@ class CreateAccount extends React.Component {
 
   handleSubmit = e => {
     e.preventDefault();
-    this.addUser(this.state);
-  };
-
-  addUser = payload => {
     let formResult = new FormData();
-    formResult.append("username", payload.username);
-    formResult.append("email", payload.email);
-    formResult.append("picture", payload.picture);
-    formResult.append("pw", payload.pw);
+    formResult.append("username", this.state.username);
+    formResult.append("email", this.state.email);
+    formResult.append("picture", this.state.picture);
+    formResult.append("pw", this.state.pw);
+    formResult.append("favorites", this.state.favorites);
     this.props.dispatch(addUser(formResult));
   };
 

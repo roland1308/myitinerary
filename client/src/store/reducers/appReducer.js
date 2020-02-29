@@ -6,7 +6,8 @@ import {
   SET_CERCA,
   BACK_ON,
   BACK_OFF,
-  APP_LOGOUT
+  APP_LOGOUT,
+  SET_FAVORITE
 } from "../actions/appActions";
 
 const initialState = {
@@ -14,7 +15,8 @@ const initialState = {
   searchDiv: false,
   campoCerca: "",
   goPrev: true,
-  error: false
+  error: false,
+  favoriteFlag: false
 };
 
 export default function popularsReducer(state = initialState, action) {
@@ -55,6 +57,12 @@ export default function popularsReducer(state = initialState, action) {
       return {
         ...state,
         campoCerca: action.payload.campoCerca
+      };
+
+    case SET_FAVORITE:
+      return {
+        ...state,
+        favoriteFlag: action.payload
       };
 
     case APP_LOGOUT:

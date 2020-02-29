@@ -12,7 +12,6 @@ const unlinkAsync = promisify(fs.unlink);
 const bcrypt = require("bcrypt");
 const saltRounds = 10;
 
-const { check, validationResult } = require("express-validator");
 const app = express();
 
 app.use(express.json());
@@ -53,7 +52,8 @@ router.post("/add", [upload.single("picture")], (req, res) => {
       username: req.body.username,
       email: req.body.email,
       picture: "/uploads/" + req.file.filename,
-      pw: hash
+      pw: hash,
+      favorites: []
     });
     newUser
       .save()
@@ -94,6 +94,47 @@ router.post("/login", (req, res) => {
     });
 });
 
+// PUSH favorite inside favorites
+router.put(
+  "/pushfavorite",
+  // passport.authenticate("jwt",
+  //  { session: false }),
+  (req, res) => {
+    userModel.findByIdAndUpdate(
+      req.body.user_id,
+      { $push: { favorites: req.body.itinerary_id } },
+      { safe: true, upsert: true },
+      function(err, doc) {
+        if (err) {
+          console.log(err);
+        } else {
+          res.send("OK");
+        }
+      }
+    );
+  }
+);
+
+// PULL favorite from favorites
+router.put(
+  "/pullfavorite",
+  // passport.authenticate("jwt",
+  //  { session: false }),
+  (req, res) => {
+    userModel.findByIdAndUpdate(
+      req.body.user_id,
+      { $pull: { favorites: req.body.itinerary_id } },
+      { safe: true, upsert: true },
+      function(err, doc) {
+        if (err) {
+          console.log(err);
+        } else {
+          res.send("OK");
+        }
+      }
+    );
+  }
+);
 // JWT Authentication
 router.get(
   "/aut",

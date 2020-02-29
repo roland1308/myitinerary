@@ -42,8 +42,6 @@ export const addCommentId = update => {
       const response = await axios.put("/itineraries/addcommentid", update);
       if (response.data.name === "MongoError") {
         dispatch(addCommentFailure(response.data.errmsg));
-        // } else {
-        //   dispatch(addCommentSuccess(response.data));
       }
     } catch (error) {
       dispatch(addCommentFailure(error.message));

@@ -22,6 +22,10 @@ export const USER_LOGOUT = "USER_LOGOUT";
 export const RESET_ERROR = "RESET_ERROR";
 export const RESET_ADDED = "RESET_ADDED";
 
+export const FAVORITE_PULL_SUCCESS = "FAVORITE_PULL_SUCCESS";
+export const FAVORITE_PUSH_SUCCESS = "FAVORITE_PUSH_SUCCESS";
+export const FAVORITE_FAILURE = "FAVORITE_FAILURE";
+
 const axios = require("axios");
 
 export const fetchUsers = () => {
@@ -73,11 +77,16 @@ export const addUser = user => {
 export const addUserBegin = () => ({
   type: ADD_USER_BEGIN
 });
-
 export const addUserSuccess = user => ({
   type: ADD_USER_SUCCESS,
   payload: {
     user
+  }
+});
+export const addUserFailure = error => ({
+  type: ADD_USER_FAILURE,
+  payload: {
+    error
   }
 });
 
@@ -85,13 +94,6 @@ export const addToken = token => ({
   type: ADD_TOKEN,
   payload: {
     token
-  }
-});
-
-export const addUserFailure = error => ({
-  type: ADD_USER_FAILURE,
-  payload: {
-    error
   }
 });
 
@@ -178,4 +180,50 @@ export const logInUserOff = () => ({
 
 export const resetError = () => ({
   type: RESET_ERROR
+});
+
+export const pushFavorite = payload => {
+  return async dispatch => {
+    try {
+      const response = await axios.put("/users/pushfavorite", payload);
+      if (response.data.name === "MongoError") {
+        dispatch(FavoriteFailure(response.data.errmsg));
+      } else {
+        dispatch(FavoritePushSuccess(payload.itinerary_id));
+      }
+    } catch (error) {
+      dispatch(FavoriteFailure(error.message));
+    }
+    return "done";
+  };
+};
+
+export const pullFavorite = user_itin => {
+  return async dispatch => {
+    try {
+      const response = await axios.put("/users/pullfavorite", user_itin);
+      if (response.data.name === "MongoError") {
+        dispatch(FavoriteFailure(response.data.errmsg));
+      } else {
+        dispatch(FavoritePullSuccess(user_itin.itinerary_id));
+      }
+    } catch (error) {
+      dispatch(FavoriteFailure(error.message));
+      console.log(error.message);
+    }
+    return "done";
+  };
+};
+
+export const FavoritePullSuccess = itinerario => ({
+  type: FAVORITE_PULL_SUCCESS,
+  payload: itinerario
+});
+export const FavoritePushSuccess = itinerario => ({
+  type: FAVORITE_PUSH_SUCCESS,
+  payload: itinerario
+});
+export const FavoriteFailure = error => ({
+  type: FAVORITE_FAILURE,
+  payload: error
 });

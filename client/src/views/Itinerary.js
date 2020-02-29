@@ -3,11 +3,17 @@ import Avatar from "@material-ui/core/Avatar";
 import Button from "@material-ui/core/Button";
 
 import ActivityCarousel from "./ActivityCarousel";
+import Loading from "../components/Loading";
 
 import { fetchOneCityId } from "../store/actions/cityActions";
 import { fetchItinerary } from "../store/actions/itineraryActions";
 import { fetchActivities } from "../store/actions/activityActions";
-import { homeOn, backOn, searchOff } from "../store/actions/appActions";
+import {
+  homeOn,
+  backOn,
+  searchOff,
+  setFavorite
+} from "../store/actions/appActions";
 import { checkToken } from "../store/actions/userActions";
 
 import { connect } from "react-redux";
@@ -46,15 +52,8 @@ class Itinerary extends React.Component {
   }
 
   componentWillUnmount() {
-    window.localStorage.setItem("idcitta", "");
+    window.localStorage.removeItem("idcitta");
   }
-
-  // componentDidUpdate(prevProps) {
-  //   const { commentId } = this.props;
-  //   if (commentId !== prevProps.commentId) {
-  //     this.props.dispatch(fetchItinerary(this.state.cityId));
-  //   }
-  // }
 
   handleActivity = (itinerario, i) => {
     this.props.dispatch(fetchActivities(itinerario));
@@ -63,6 +62,12 @@ class Itinerary extends React.Component {
     this.setState({
       showAll: show
     });
+    const { user } = this.props;
+    let flag = false;
+    if (user.favorites) {
+      flag = user.favorites.includes(itinerario);
+    }
+    this.props.dispatch(setFavorite(flag));
   };
 
   handleActivityClose = () => {
@@ -82,6 +87,9 @@ class Itinerary extends React.Component {
           {errorItin} , {errorAct} , {errorCit}
         </div>
       );
+    }
+    if (loadingItin || loadingAct) {
+      return <Loading />;
     }
     return (
       <div className="itinerary">
@@ -164,6 +172,8 @@ const mapStateToProps = state => ({
   errorCit: state.cities.error,
   errorlogging: state.users.errorlogging,
   loggedIn: state.users.loggedIn,
+  itinerary_id: state.activities.itinerary_id,
+  user: state.users.user,
   commentId: state.comments.commentId
 });
 

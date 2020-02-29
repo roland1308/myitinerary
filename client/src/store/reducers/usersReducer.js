@@ -14,7 +14,10 @@ import {
   ADD_TOKEN,
   USER_LOGOUT,
   RESET_ADDED,
-  RESET_ERROR
+  RESET_ERROR,
+  FAVORITE_PUSH_SUCCESS,
+  FAVORITE_PULL_SUCCESS,
+  FAVORITE_FAILURE
 } from "../actions/userActions";
 
 const initialState = {
@@ -35,7 +38,14 @@ export default function usersReducer(state = initialState, action) {
     case USER_LOGOUT:
       return {
         ...state,
-        user: {},
+        user: {
+          favorites: [],
+          _id: "",
+          username: "",
+          email: "",
+          picture: "",
+          pw: ""
+        },
         loading: false,
         errorMsg: "",
         popup: false,
@@ -118,6 +128,33 @@ export default function usersReducer(state = initialState, action) {
         ...state,
         token: action.payload.token,
         loggedIn: true
+      };
+
+    case FAVORITE_PUSH_SUCCESS:
+      return {
+        ...state,
+        loading: false,
+        errorMsg: "",
+        user: {
+          ...state.user,
+          favorites: [...state.user.favorites, action.payload]
+        }
+      };
+    case FAVORITE_PULL_SUCCESS:
+      let newFavorites = state.user.favorites.filter(
+        fav => fav !== action.payload
+      );
+      return {
+        ...state,
+        loading: false,
+        errorMsg: "",
+        user: { ...state.user, favorites: newFavorites }
+      };
+    case FAVORITE_FAILURE:
+      return {
+        ...state,
+        loading: false,
+        errorMsg: action.payload
       };
 
     default:
