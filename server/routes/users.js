@@ -34,6 +34,16 @@ const storage = multer.diskStorage({
 });
 const upload = multer({ storage: storage });
 
+const momstorage = multer.diskStorage({
+  destination: function(req, file, cb) {
+    cb(null, "./uploads/");
+  },
+  filename: function(req, file, cb) {
+    cb(null, "mom" + file.originalname);
+  }
+});
+const uploadmom = multer({ storage: momstorage });
+
 /*get all users*/
 router.get("/all", (req, res) => {
   userModel
@@ -66,6 +76,21 @@ router.post("/add", [upload.single("picture")], (req, res) => {
         res.send(err);
       });
   });
+});
+
+/*add PICTURE for preview when creating user*/
+router.post("/addmom", [uploadmom.single("picture")], (req, res) => {
+  res.send("ok");
+});
+
+/*remove ALL MOM PICTURES when leaving createAccount Component*/
+router.delete("/removemom", (req, res) => {
+  const path = "./uploads/";
+  let regex = /^mom/;
+  fs.readdirSync(path)
+    .filter(f => regex.test(f))
+    .map(f => fs.unlinkSync(path + f));
+  res.send("ok");
 });
 
 // Login user
