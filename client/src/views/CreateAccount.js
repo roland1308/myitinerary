@@ -3,10 +3,17 @@ import React from "react";
 import { connect } from "react-redux";
 
 import { homeOn, backOn, searchOff } from "../store/actions/appActions";
-import { addUser, resetError, resetAdded } from "../store/actions/userActions";
+import {
+  addMomAvatar,
+  addUser,
+  resetError,
+  resetPopup
+} from "../store/actions/userActions";
 
 import Avatar from "@material-ui/core/Avatar";
 import Button from "@material-ui/core/Button";
+
+const axios = require("axios");
 
 class CreateAccount extends React.Component {
   constructor(props) {
@@ -16,6 +23,7 @@ class CreateAccount extends React.Component {
       username: "",
       email: "",
       picture: "/",
+      momAvatar: "/",
       pw: "",
       favorites: []
     };
@@ -29,7 +37,13 @@ class CreateAccount extends React.Component {
   handleChange = e => {
     switch (e.target.name) {
       case "selectedFile":
-        this.setState({ picture: e.target.files[0] });
+        this.setState({
+          picture: e.target.files[0],
+          momAvatar: "/uploads/mom" + e.target.files[0].name
+        });
+        let formPicture = new FormData();
+        formPicture.append("picture", e.target.files[0]);
+        this.props.dispatch(addMomAvatar(formPicture));
         break;
       case "username":
         const capitalize = e.target.value.replace(/\w\S*/g, function(txt) {
@@ -43,6 +57,9 @@ class CreateAccount extends React.Component {
   };
 
   handleSubmit = e => {
+    /* REMOVE all MOM AVATARS */
+    axios.delete("/users/removemom");
+    /* */
     e.preventDefault();
     let formResult = new FormData();
     formResult.append("username", this.state.username);
@@ -58,7 +75,7 @@ class CreateAccount extends React.Component {
   };
 
   closeAdded = () => {
-    this.props.dispatch(resetAdded());
+    this.props.dispatch(resetPopup());
     this.props.history.push("/");
   };
 
@@ -80,7 +97,7 @@ class CreateAccount extends React.Component {
           <Avatar
             className="big"
             alt={this.state.username}
-            src={this.state.picture}
+            src={this.state.momAvatar}
           />
         </div>
         <div className="spaceBetween"></div>

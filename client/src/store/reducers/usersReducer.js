@@ -13,7 +13,7 @@ import {
   TOKEN_FAILURE,
   ADD_TOKEN,
   USER_LOGOUT,
-  RESET_ADDED,
+  RESET_POPUP,
   RESET_ERROR,
   FAVORITE_PUSH_SUCCESS,
   FAVORITE_PULL_SUCCESS,
@@ -82,7 +82,7 @@ export default function usersReducer(state = initialState, action) {
         errorMsg: action.payload.error
       };
 
-    case RESET_ADDED:
+    case RESET_POPUP:
       return {
         ...state,
         popup: false

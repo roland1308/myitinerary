@@ -134,13 +134,22 @@ div.dropdown-menu.show {
   color: black;
 }
 
-.avatarName {
+.avatarName,
+.accessName {
   overflow: hidden;
   width: 80%;
   height: 7vh;
   text-align: center;
   font-family: cursive;
   font-size: 7.5vw;
+}
+
+.avatarName {
+  text-align: center;
+}
+
+.accessName {
+  text-align: left;
 }
 
 /* ------------------------------------------ */
@@ -485,4 +494,9 @@ label {
 
 svg {
   transform: translateY(10px) !important;
+}
+
+/* Menu on the right side */
+.menu-left {
+  transform: translate3d(-435px, 122px, 0px) !important;
 }

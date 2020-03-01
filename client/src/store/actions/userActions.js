@@ -20,7 +20,7 @@ export const ADD_TOKEN = "ADD_TOKEN";
 export const USER_LOGOUT = "USER_LOGOUT";
 
 export const RESET_ERROR = "RESET_ERROR";
-export const RESET_ADDED = "RESET_ADDED";
+export const RESET_POPUP = "RESET_POPUP";
 
 export const FAVORITE_PULL_SUCCESS = "FAVORITE_PULL_SUCCESS";
 export const FAVORITE_PUSH_SUCCESS = "FAVORITE_PUSH_SUCCESS";
@@ -62,6 +62,7 @@ export const addUser = user => {
       if (response.data.name === "MongoError") {
         dispatch(addUserFailure(response.data.errmsg));
       } else {
+        console.log(response.data);
         dispatch(addUserSuccess(response.data));
         const token = await axios.post("/users/token", response.data);
         window.localStorage.setItem("token", token.data);
@@ -74,14 +75,23 @@ export const addUser = user => {
   };
 };
 
+export const addMomAvatar = filename => {
+  return async dispatch => {
+    try {
+      await axios.post("/users/addmom", filename);
+    } catch (error) {
+      console.log(error.message);
+    }
+    return "done";
+  };
+};
+
 export const addUserBegin = () => ({
   type: ADD_USER_BEGIN
 });
 export const addUserSuccess = user => ({
   type: ADD_USER_SUCCESS,
-  payload: {
-    user
-  }
+  payload: user
 });
 export const addUserFailure = error => ({
   type: ADD_USER_FAILURE,
@@ -97,8 +107,8 @@ export const addToken = token => ({
   }
 });
 
-export const resetAdded = () => ({
-  type: RESET_ADDED
+export const resetPopup = () => ({
+  type: RESET_POPUP
 });
 
 export const checkToken = token => {

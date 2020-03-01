@@ -5,10 +5,11 @@ import { IoIosLogIn } from "react-icons/io";
 import { IoIosSettings } from "react-icons/io";
 import { IoIosPower } from "react-icons/io";
 import { FaPenNib } from "react-icons/fa";
+import { MdFavorite } from "react-icons/md";
+import { FaRegComment } from "react-icons/fa";
 
 import AccountCircleTwoToneIcon from "@material-ui/icons/AccountCircleTwoTone";
 import MenuRoundedIcon from "@material-ui/icons/MenuRounded";
-
 import React, { Component } from "react";
 import { connect } from "react-redux";
 
@@ -17,7 +18,7 @@ export class NavBar extends Component {
     const { loggedIn, user } = this.props;
     return (
       <div className="flexNavbar">
-        {loggedIn === true ? (
+        {loggedIn ? (
           <div className="dropdown">
             <Avatar
               alt={user.username}
@@ -26,7 +27,7 @@ export class NavBar extends Component {
             />
             <div className="dropdown-menu">
               <Link
-                to={"/login"}
+                to={"/"}
                 className="dropdown-item linkNoDecoration menuText"
               >
                 Preferences <IoIosSettings />
@@ -62,10 +63,34 @@ export class NavBar extends Component {
             </div>
           </div>
         )}
-        {loggedIn && <div className="avatarName">{user.username}</div>}
-        <Link to={"ListUsers"}>
-          <MenuRoundedIcon style={{ fontSize: 100 }} className="colorPrimary" />
-        </Link>
+        {loggedIn ? (
+          <div className="avatarName">{user.username}</div>
+        ) : (
+          <div className="accessName">Access to travel!</div>
+        )}
+        {loggedIn && (
+          <div className="dropdown">
+            <MenuRoundedIcon
+              style={{ fontSize: 100 }}
+              className="colorPrimary"
+              data-toggle="dropdown"
+            />
+            <div className="dropdown-menu menu-left">
+              <Link
+                to={"/"}
+                className="dropdown-item linkNoDecoration menuText"
+              >
+                MYFavorites <MdFavorite />
+              </Link>
+              <Link
+                to={"/"}
+                className="dropdown-item linkNoDecoration menuText"
+              >
+                MYComments <FaRegComment />
+              </Link>
+            </div>
+          </div>
+        )}
       </div>
     );
   }

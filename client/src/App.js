@@ -15,6 +15,7 @@ import ListUsers from "./components/ListUsers";
 import StoreToken from "./components/StoreToken";
 import ReleaseToken from "./components/ReleaseToken";
 import ActivityCard from "./components/ActivityCard";
+import PopUp from "./components/PopUp";
 
 class App extends React.Component {
   render() {
@@ -34,6 +35,7 @@ class App extends React.Component {
             <Route path="/storetoken" component={StoreToken} />
             <Route path="/releasetoken" component={ReleaseToken} />
             <Route path="/activitycard" component={ActivityCard} />
+            <Route path="/popup" component={PopUp} />
           </Switch>
           {homeLink && <Foot />}
         </Router>

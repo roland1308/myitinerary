@@ -6,6 +6,7 @@ import Button from "@material-ui/core/Button";
 
 import { Link } from "react-router-dom";
 import { connect } from "react-redux";
+import PopUp from "../components/PopUp";
 
 class LogIn extends React.Component {
   constructor(props) {
@@ -110,18 +111,23 @@ class LogIn extends React.Component {
         </div>
 
         {popup && (
-          <div className="backgroundGrey">
-            <div className="popupInput">
-              <h1>Sorry: unknown credentials!</h1>
-              <Button
-                onClick={this.closeError}
-                size="large"
-                variant="contained"
-              >
-                close
-              </Button>
-            </div>
-          </div>
+          <PopUp
+            h1="Sorry: unknown credentials!"
+            newPage="/login"
+            button="close"
+          />
+          // <div className="backgroundGrey">
+          //   <div className="popupInput">
+          //     <h1>Sorry: unknown credentials!</h1>
+          //     <Button
+          //       onClick={this.closeError}
+          //       size="large"
+          //       variant="contained"
+          //     >
+          //       close
+          //     </Button>
+          //   </div>
+          // </div>
         )}
         {loggedIn && (
           <div className="backgroundGrey">

@@ -14,7 +14,6 @@ import { MdStarBorder } from "react-icons/md";
 import { addComment } from "../store/actions/commentActions";
 import {
   addCommentId,
-  fetchItinerary,
   pushCommentToStore
 } from "../store/actions/itineraryActions";
 import { fetchOneCityId } from "../store/actions/cityActions";
