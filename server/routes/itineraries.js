@@ -15,7 +15,7 @@ router.get("/all", (req, res) => {
     .catch(err => console.log(err));
 });
 
-/*add an Itinerary CREATE*/
+/*add an Itinerary CREATE* STILL NOT IN PRODUCTION */
 router.post("/add", (req, res) => {
   const newItinerary = new itineraryModel({
     name: req.body.name,
@@ -67,7 +67,7 @@ router.get("/populate/:id", (req, res) => {
     });
 });
 
-/*update one itinerary's name and photo by ID UPDATE*/
+/*update one itinerary's name and photo by ID UPDATE* STILL NOT IN PRODUCTION*/
 router.put("/:id/:newname/:newphoto", (req, res) => {
   itineraryModel
     .findOneAndUpdate(
@@ -109,7 +109,7 @@ router.put("/addcommentid", (req, res) => {
   );
 });
 
-/*delete one itinerary by ID DELETE*/
+/*delete one itinerary by ID DELETE* STILL NOT IN PRODUCTION*/
 router.delete("/:id", (req, res) => {
   itineraryModel.findOneAndDelete({ _id: req.params.id }).then(result => {
     if (result) {

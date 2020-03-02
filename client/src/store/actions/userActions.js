@@ -195,7 +195,11 @@ export const resetError = () => ({
 export const pushFavorite = payload => {
   return async dispatch => {
     try {
-      const response = await axios.put("/users/pushfavorite", payload);
+      const response = await axios.put("/users/pushfavorite", payload, {
+        headers: {
+          authorization: `bearer ${payload.token}`
+        }
+      });
       if (response.data.name === "MongoError") {
         dispatch(FavoriteFailure(response.data.errmsg));
       } else {
@@ -208,14 +212,18 @@ export const pushFavorite = payload => {
   };
 };
 
-export const pullFavorite = user_itin => {
+export const pullFavorite = payload => {
   return async dispatch => {
     try {
-      const response = await axios.put("/users/pullfavorite", user_itin);
+      const response = await axios.put("/users/pullfavorite", payload, {
+        headers: {
+          authorization: `bearer ${payload.token}`
+        }
+      });
       if (response.data.name === "MongoError") {
         dispatch(FavoriteFailure(response.data.errmsg));
       } else {
-        dispatch(FavoritePullSuccess(user_itin.itinerary_id));
+        dispatch(FavoritePullSuccess(payload.itinerary_id));
       }
     } catch (error) {
       dispatch(FavoriteFailure(error.message));

@@ -37,11 +37,10 @@ class ActivityCarousel extends React.Component {
   handleAddComment = () => {
     // Aggiungere il comment, username e picture alla collection comments ed il suo _ID al array comments di itineraries
     if (this.state.comment) {
-      const { username, picture } = this.props.user;
+      const token = window.localStorage.token;
       this.props.dispatch(
         addComment({
-          username: username,
-          picture: picture,
+          token,
           usercomment: this.state.comment
         })
       );
@@ -51,10 +50,10 @@ class ActivityCarousel extends React.Component {
   handleFavorite = () => {
     // Toggle favoriteFlag and pushes/pulls the ID from fovorites
     const { favoriteFlag, itinerary_id } = this.props;
-    const { user } = this.props;
+    const token = window.localStorage.token;
     let user_itin = {
-      user_id: user._id,
-      itinerary_id: itinerary_id
+      itinerary_id,
+      token
     };
     if (favoriteFlag) {
       this.props.dispatch(pullFavorite(user_itin));

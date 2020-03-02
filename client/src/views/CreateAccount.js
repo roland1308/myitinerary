@@ -4,7 +4,7 @@ import { connect } from "react-redux";
 
 import { homeOn, backOn, searchOff } from "../store/actions/appActions";
 import {
-  addMomAvatar,
+  // addMomAvatar,
   addUser,
   resetError,
   resetPopup
@@ -13,7 +13,7 @@ import {
 import Avatar from "@material-ui/core/Avatar";
 import Button from "@material-ui/core/Button";
 
-const axios = require("axios");
+// const axios = require("axios");
 
 class CreateAccount extends React.Component {
   constructor(props) {
@@ -39,11 +39,12 @@ class CreateAccount extends React.Component {
       case "selectedFile":
         this.setState({
           picture: e.target.files[0],
-          momAvatar: "/uploads/mom" + e.target.files[0].name
+          momAvatar: URL.createObjectURL(e.target.files[0])
+          // momAvatar: "/uploads/mom" + e.target.files[0].name
         });
-        let formPicture = new FormData();
-        formPicture.append("picture", e.target.files[0]);
-        this.props.dispatch(addMomAvatar(formPicture));
+        // let formPicture = new FormData();
+        // formPicture.append("picture", e.target.files[0]);
+        // this.props.dispatch(addMomAvatar(formPicture));
         break;
       case "username":
         const capitalize = e.target.value.replace(/\w\S*/g, function(txt) {
@@ -58,7 +59,7 @@ class CreateAccount extends React.Component {
 
   handleSubmit = e => {
     /* REMOVE all MOM AVATARS */
-    axios.delete("/users/removemom");
+    // axios.delete("/users/removemom");
     /* */
     e.preventDefault();
     let formResult = new FormData();

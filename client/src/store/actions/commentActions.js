@@ -8,7 +8,11 @@ export const addComment = comment => {
   return async dispatch => {
     try {
       dispatch(addCommentBegin());
-      const response = await axios.post("/comments/add", comment);
+      const response = await axios.post("/comments/add", comment, {
+        headers: {
+          authorization: `bearer ${comment.token}`
+        }
+      });
       if (response.data.name === "MongoError") {
         dispatch(addCommentFailure(response.data.errmsg));
       } else {

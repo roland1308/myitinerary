@@ -17,7 +17,6 @@ const app = express();
 app.use(express.json());
 
 const jwt = require("jsonwebtoken");
-
 const passport = require("passport");
 
 const multer = require("multer");
@@ -44,7 +43,7 @@ const momstorage = multer.diskStorage({
 });
 const uploadmom = multer({ storage: momstorage });
 
-/*get all users*/
+/*get all users TO BE COMMENTED OUT IN PRODUCTION*/
 router.get("/all", (req, res) => {
   userModel
     .find({})
@@ -54,13 +53,17 @@ router.get("/all", (req, res) => {
     .catch(err => console.log(err));
 });
 
-/*add a User if not existing already CREATE*/
+/*add a User if not existing already: CREATE*/
 router.post("/add", [upload.single("picture")], (req, res) => {
-  bcrypt.hash(req.body.pw, saltRounds).then(function(hash) {
+  const { username, email, pw } = req.body;
+  if (!username || !email || !pw) {
+    return res.status(400).json({ msg: "Please fill all fields" });
+  }
+  bcrypt.hash(pw, saltRounds).then(function(hash) {
     // Store hash in your password DB.
     const newUser = new userModel({
-      username: req.body.username,
-      email: req.body.email,
+      username,
+      email,
       picture: "/uploads/" + req.file.filename,
       pw: hash,
       favorites: []
@@ -79,19 +82,19 @@ router.post("/add", [upload.single("picture")], (req, res) => {
 });
 
 /*add PICTURE for preview when creating user*/
-router.post("/addmom", [uploadmom.single("picture")], (req, res) => {
-  res.send("ok");
-});
+// router.post("/addmom", [uploadmom.single("picture")], (req, res) => {
+//   res.send("ok");
+// });
 
 /*remove ALL MOM PICTURES when leaving createAccount Component*/
-router.delete("/removemom", (req, res) => {
-  const path = "./uploads/";
-  let regex = /^mom/;
-  fs.readdirSync(path)
-    .filter(f => regex.test(f))
-    .map(f => fs.unlinkSync(path + f));
-  res.send("ok");
-});
+// router.delete("/removemom", (req, res) => {
+//   const path = "./uploads/";
+//   let regex = /^mom/;
+//   fs.readdirSync(path)
+//     .filter(f => regex.test(f))
+//     .map(f => fs.unlinkSync(path + f));
+//   res.send("ok");
+// });
 
 // Login user
 router.post("/login", (req, res) => {
@@ -122,16 +125,15 @@ router.post("/login", (req, res) => {
 // PUSH favorite inside favorites
 router.put(
   "/pushfavorite",
-  // passport.authenticate("jwt",
-  //  { session: false }),
+  passport.authenticate("jwt", { session: false }),
   (req, res) => {
     userModel.findByIdAndUpdate(
-      req.body.user_id,
+      req.user.id,
       { $push: { favorites: req.body.itinerary_id } },
       { safe: true, upsert: true },
       function(err, doc) {
         if (err) {
-          console.log(err);
+          res.send(err);
         } else {
           res.send("OK");
         }
@@ -143,21 +145,34 @@ router.put(
 // PULL favorite from favorites
 router.put(
   "/pullfavorite",
-  // passport.authenticate("jwt",
-  //  { session: false }),
+  passport.authenticate("jwt", { session: false }),
   (req, res) => {
     userModel.findByIdAndUpdate(
-      req.body.user_id,
+      req.user.id,
       { $pull: { favorites: req.body.itinerary_id } },
       { safe: true, upsert: true },
       function(err, doc) {
         if (err) {
-          console.log(err);
+          res.send(err);
         } else {
           res.send("OK");
         }
       }
     );
+  }
+);
+
+// LIST favorites for a user
+router.get(
+  "/listfavorite",
+  passport.authenticate("jwt", { session: false }),
+  (req, res) => {
+    userModel
+      .findById(req.user.id, { favorites: 1, _id: 0 })
+      .then(favorites => {
+        res.send(favorites);
+      })
+      .catch(err => console.log(err));
   }
 );
 // JWT Authentication
