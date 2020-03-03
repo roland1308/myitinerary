@@ -17,6 +17,8 @@ import ReleaseToken from "./components/ReleaseToken";
 import ActivityCard from "./components/ActivityCard";
 import PopUp from "./components/PopUp";
 
+import "bootstrap";
+
 class App extends React.Component {
   render() {
     const { homeLink, searchDiv } = this.props;
