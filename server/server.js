@@ -1,5 +1,6 @@
 const express = require("express");
 const app = express();
+const path = require("path");
 const port = process.env.PORT || 5000;
 
 const bodyParser = require("body-parser");
@@ -27,6 +28,16 @@ const passport = require("passport");
 app.use(passport.initialize());
 //passport configuration
 require("./config/passport");
+
+// Serve static assets if we are in production
+if (process.env.NODE_ENV === "production") {
+  // Set static folder
+  app.use(express.static("client/build"));
+
+  app.get("*", (req, res) => {
+    res.sendFile(oath.resolve(__dirname, "client", "build", "index.html"));
+  });
+}
 
 // app.use(cors());
 
