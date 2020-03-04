@@ -17,12 +17,11 @@ class LandingPage extends React.Component {
       const token = window.localStorage.token;
       this.props.dispatch(checkToken(token));
     }
+    this.props.dispatch(homeOff());
+    this.props.dispatch(searchOff());
   };
 
   render() {
-    this.props.dispatch(homeOff());
-    this.props.dispatch(searchOff());
-
     const { loading } = this.props;
 
     if (loading) {

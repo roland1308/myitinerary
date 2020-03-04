@@ -136,6 +136,7 @@ export const loginUser = user => {
       if (typeof response.data !== "string") {
         const token = await axios.post("/users/token", response.data);
         window.localStorage.setItem("token", token.data);
+        dispatch(checkToken(token.data));
         dispatch(addToken(token.data));
         dispatch(loginUserSuccess(user));
       } else {
@@ -154,9 +155,7 @@ export const checkTokenBegin = () => ({
 
 export const checkTokenSuccess = user => ({
   type: TOKEN_SUCCESS,
-  payload: {
-    user
-  }
+  payload: user
 });
 
 export const checkTokenFailure = error => ({
@@ -172,9 +171,7 @@ export const loginUserBegin = () => ({
 
 export const loginUserSuccess = user => ({
   type: LOGIN_USER_SUCCESS,
-  payload: {
-    user
-  }
+  payload: user
 });
 
 export const loginUserFailure = error => ({

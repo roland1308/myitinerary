@@ -96,7 +96,7 @@ export default function usersReducer(state = initialState, action) {
     case TOKEN_SUCCESS:
       return {
         ...state,
-        user: action.payload.user,
+        user: action.payload,
         loading: false,
         loggedIn: true
       };
@@ -110,7 +110,7 @@ export default function usersReducer(state = initialState, action) {
     case LOGIN_USER_SUCCESS:
       return {
         ...state,
-        user: action.payload.user,
+        user: action.payload,
         loading: false,
         popup: false,
         loggedIn: true
