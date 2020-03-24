@@ -29,13 +29,18 @@ app.use(passport.initialize());
 //passport configuration
 require("./config/passport");
 
+app.use("/cities", require("./routes/cities"));
+app.use("/itineraries", require("./routes/itineraries"));
+app.use("/activities", require("./routes/activities"));
+app.use("/users", require("./routes/users"));
+app.use("/comments", require("./routes/comments"));
+
 // Serve static assets if we are in production
 if (process.env.NODE_ENV === "production") {
   // Set static folder
-  app.use(express.static("client/build"));
-
+  app.use(express.static("./client/build"));
   app.get("*", (req, res) => {
-    res.sendFile(oath.resolve(__dirname, "client", "build", "index.html"));
+    res.sendFile(path.resolve(__dirname, "./client/build/index.html"));
   });
 }
 
@@ -44,9 +49,3 @@ if (process.env.NODE_ENV === "production") {
 app.listen(port, () => {
   console.log("Server is running on " + port + " port");
 });
-
-app.use("/cities", require("./routes/cities"));
-app.use("/itineraries", require("./routes/itineraries"));
-app.use("/activities", require("./routes/activities"));
-app.use("/users", require("./routes/users"));
-app.use("/comments", require("./routes/comments"));

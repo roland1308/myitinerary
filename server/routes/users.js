@@ -21,10 +21,10 @@ const passport = require("passport");
 
 const multer = require("multer");
 const storage = multer.diskStorage({
-  destination: function(req, file, cb) {
+  destination: function (req, file, cb) {
     cb(null, "./uploads/");
   },
-  filename: function(req, file, cb) {
+  filename: function (req, file, cb) {
     const now = new Date().toISOString();
     //windows needs to replace ":" for "-" to save the picture correctly
     const date = now.replace(/:/g, "-");
@@ -34,10 +34,10 @@ const storage = multer.diskStorage({
 const upload = multer({ storage: storage });
 
 const momstorage = multer.diskStorage({
-  destination: function(req, file, cb) {
+  destination: function (req, file, cb) {
     cb(null, "./uploads/");
   },
-  filename: function(req, file, cb) {
+  filename: function (req, file, cb) {
     cb(null, "mom" + file.originalname);
   }
 });
@@ -59,7 +59,7 @@ router.post("/add", [upload.single("picture")], (req, res) => {
   if (!username || !email || !pw) {
     return res.status(400).json({ msg: "Please fill all fields" });
   }
-  bcrypt.hash(pw, saltRounds).then(function(hash) {
+  bcrypt.hash(pw, saltRounds).then(function (hash) {
     // Store hash in your password DB.
     const newUser = new userModel({
       username,
@@ -109,7 +109,7 @@ router.post("/login", (req, res) => {
         res.send("UTENTE INESISTENTE");
       } else {
         // compare passwords with bycript compare function
-        bcrypt.compare(req.body.pw, user.pw, function(err, result) {
+        bcrypt.compare(req.body.pw, user.pw, function (err, result) {
           if (!result) {
             console.log("PW ERRATA", err);
             res.send("PW ERRATA");
@@ -131,14 +131,15 @@ router.put(
       req.user.id,
       { $push: { favorites: req.body.itinerary_id } },
       { safe: true, upsert: true },
-      function(err, doc) {
+      function (err, doc) {
         if (err) {
           res.send(err);
         } else {
           res.send("OK");
         }
       }
-    );
+    )
+      .populate("favorites", "name city rating duration price");
   }
 );
 
@@ -151,7 +152,7 @@ router.put(
       req.user.id,
       { $pull: { favorites: req.body.itinerary_id } },
       { safe: true, upsert: true },
-      function(err, doc) {
+      function (err, doc) {
         if (err) {
           res.send(err);
         } else {
@@ -162,19 +163,21 @@ router.put(
   }
 );
 
-// LIST favorites for a user
+// LIST favorites for a user and populate
 router.get(
   "/listfavorite",
   passport.authenticate("jwt", { session: false }),
   (req, res) => {
     userModel
-      .findById(req.user.id, { favorites: 1, _id: 0 })
+      .findById({ _id: req.user.id }, { favorites: 1, _id: 0 })
+      .populate("favorites", "name city rating duration price")
       .then(favorites => {
         res.send(favorites);
       })
       .catch(err => console.log(err));
   }
 );
+
 // JWT Authentication
 router.get(
   "/aut",
@@ -209,11 +212,16 @@ router.get(
 router.get(
   "/google/redirect",
   passport.authenticate("google", {
-    failureRedirect: "http://localhost:3000/createaccount",
+    // failureRedirect: "http://localhost:3000/createaccount",
+    failureRedirect: "https://agile-retreat-64885.herokuapp.com/createaccount",
     session: false
   }),
-  function(req, res) {
-    res.redirect("http://localhost:3000/storetoken/?token=" + req.user);
+  function (req, res) {
+    // res.redirect("http://localhost:3000/storetoken/?token=" + req.user);
+    // res.redirect(`/storetoken/?token=${req.user}`);
+    res.redirect(
+      "https://agile-retreat-64885.herokuapp.com/storetoken/?token=" + req.user
+    );
   }
 );
 
@@ -223,11 +231,13 @@ router.get("/github", passport.authenticate("github"));
 router.get(
   "/github/redirect",
   passport.authenticate("github", {
-    failureRedirect: "http://localhost:3000/createaccount",
+    failureRedirect: "https://agile-retreat-64885.herokuapp.com/createaccount",
     session: false
   }),
-  function(req, res) {
-    res.redirect("http://localhost:3000/storetoken/?token=" + req.user);
+  function (req, res) {
+    res.redirect(
+      "https://agile-retreat-64885.herokuapp.com/storetoken/?token=" + req.user
+    );
   }
 );
 

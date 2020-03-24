@@ -1,4 +1,5 @@
 const mongoose = require("mongoose");
+const Schema = mongoose.Schema;
 const userSchema = new mongoose.Schema({
   username: {
     type: String,
@@ -16,9 +17,7 @@ const userSchema = new mongoose.Schema({
   pw: {
     type: String
   },
-  favorites: {
-    type: Array
-  }
+  favorites: [{ type: Schema.Types.ObjectId, ref: "itinerary" }]
 });
 
 module.exports = mongoose.model("user", userSchema);

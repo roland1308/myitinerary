@@ -15,14 +15,17 @@ import {
   USER_LOGOUT,
   RESET_POPUP,
   RESET_ERROR,
+  FAVORITE_BEGIN,
   FAVORITE_PUSH_SUCCESS,
   FAVORITE_PULL_SUCCESS,
+  FAVORITE_LIST_SUCCESS,
   FAVORITE_FAILURE
 } from "../actions/userActions";
 
 const initialState = {
   user: {},
   loading: false,
+  loadingFav: true,
   errorMsg: "",
   popup: false,
   loggedIn: false,
@@ -35,9 +38,24 @@ export default function usersReducer(state = initialState, action) {
     case ADD_USER_BEGIN:
     case TOKEN_BEGIN:
     case LOGIN_USER_BEGIN:
+      return {
+        user: {
+          favorites: [],
+          _id: "",
+          username: "",
+          email: "",
+          picture: "",
+          pw: ""
+        },
+        loading: true,
+        loadingFav: true,
+        errorMsg: "",
+        popup: false,
+        loggedIn: false,
+        token: ""
+      };
     case USER_LOGOUT:
       return {
-        ...state,
         user: {
           favorites: [],
           _id: "",
@@ -47,6 +65,7 @@ export default function usersReducer(state = initialState, action) {
           pw: ""
         },
         loading: false,
+        loadingFav: true,
         errorMsg: "",
         popup: false,
         loggedIn: false,
@@ -130,10 +149,15 @@ export default function usersReducer(state = initialState, action) {
         loggedIn: true
       };
 
+    case FAVORITE_BEGIN:
+      return {
+        ...state,
+        loadingFav: true
+      }
     case FAVORITE_PUSH_SUCCESS:
       return {
         ...state,
-        loading: false,
+        loadingFav: false,
         errorMsg: "",
         user: {
           ...state.user,
@@ -146,14 +170,21 @@ export default function usersReducer(state = initialState, action) {
       );
       return {
         ...state,
-        loading: false,
+        loadingFav: false,
         errorMsg: "",
         user: { ...state.user, favorites: newFavorites }
+      };
+    case FAVORITE_LIST_SUCCESS:
+      return {
+        ...state,
+        loadingFav: false,
+        errorMsg: "",
+        user: { ...state.user, favorites: action.payload }
       };
     case FAVORITE_FAILURE:
       return {
         ...state,
-        loading: false,
+        loadingFav: false,
         errorMsg: action.payload
       };
 

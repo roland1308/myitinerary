@@ -28,13 +28,12 @@ class Itinerary extends React.Component {
   }
 
   componentDidMount() {
-    if (!this.props.loggedIn && window.localStorage.token) {
-      const token = window.localStorage.token;
+    const token = window.localStorage.token;
+    if (!this.props.loggedIn && token) {
       this.props.dispatch(checkToken(token));
     }
-    let fetchId = "";
-    if (this.props.match.params.idcitta) {
-      fetchId = this.props.match.params.idcitta;
+    let fetchId = this.props.match.params.idcitta;
+    if (fetchId) {
       window.localStorage.setItem("idcitta", fetchId);
     } else if (window.localStorage.idcitta) {
       fetchId = window.localStorage.idcitta;
@@ -55,17 +54,19 @@ class Itinerary extends React.Component {
     window.localStorage.removeItem("idcitta");
   }
 
-  handleActivity = (itinerario, i) => {
-    this.props.dispatch(fetchActivities(itinerario));
+  handleActivity = (itinerary, i) => {
+    this.props.dispatch(fetchActivities(itinerary));
     let show = [];
     show[i] = true;
     this.setState({
       showAll: show
     });
     const { user } = this.props;
-    let flag = false;
+    let flag = null;
     if (user.favorites) {
-      flag = user.favorites.includes(itinerario);
+      flag =
+        user.favorites.includes(itinerary) ||
+        user.favorites.some(favorite => favorite._id === itinerary);
     }
     this.props.dispatch(setFavorite(flag));
   };

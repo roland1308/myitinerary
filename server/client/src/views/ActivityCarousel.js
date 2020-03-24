@@ -35,20 +35,21 @@ class ActivityCarousel extends React.Component {
   };
 
   handleAddComment = () => {
-    // Aggiungere il comment, username e picture alla collection comments ed il suo _ID al array comments di itineraries
     if (this.state.comment) {
+      const { itinerary_id } = this.props;
       const token = window.localStorage.token;
       this.props.dispatch(
         addComment({
           token,
-          usercomment: this.state.comment
+          usercomment: this.state.comment,
+          itineraryid: itinerary_id
         })
       );
     }
   };
 
   handleFavorite = () => {
-    // Toggle favoriteFlag and pushes/pulls the ID from fovorites
+    // Toggle favoriteFlag and pushes/pulls the ID from favorites
     const { favoriteFlag, itinerary_id } = this.props;
     const token = window.localStorage.token;
     let user_itin = {
@@ -151,6 +152,7 @@ class ActivityCarousel extends React.Component {
                   <MdSend style={sendColor} onClick={this.handleAddComment} />
                   {favoriteFlag && (
                     <MdFavorite
+                      className="beatingHeartComment"
                       style={redColor}
                       onClick={this.handleFavorite}
                     />

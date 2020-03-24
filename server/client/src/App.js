@@ -7,6 +7,8 @@ import Cities from "./views/Cities";
 import LogIn from "./views/LogIn";
 import CreateAccount from "./views/CreateAccount";
 import Itinerary from "./views/Itinerary";
+import ManageFavorites from "./views/ManageFavorites";
+import ManageComments from "./views/ManageComments";
 
 import NavBar from "./components/NavBar";
 import Foot from "./components/Foot";
@@ -36,6 +38,8 @@ class App extends React.Component {
             <Route path="/releasetoken" component={ReleaseToken} />
             <Route path="/activitycard" component={ActivityCard} />
             <Route path="/popup" component={PopUp} />
+            <Route path="/managefavorites" component={ManageFavorites} />
+            <Route path="/manageComments" component={ManageComments} />
           </Switch>
           {homeLink && <Foot />}
         </Router>

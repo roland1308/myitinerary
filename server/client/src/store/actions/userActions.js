@@ -22,8 +22,10 @@ export const USER_LOGOUT = "USER_LOGOUT";
 export const RESET_ERROR = "RESET_ERROR";
 export const RESET_POPUP = "RESET_POPUP";
 
+export const FAVORITE_BEGIN = "FAVORITE_BEGIN";
 export const FAVORITE_PULL_SUCCESS = "FAVORITE_PULL_SUCCESS";
 export const FAVORITE_PUSH_SUCCESS = "FAVORITE_PUSH_SUCCESS";
+export const FAVORITE_LIST_SUCCESS = "FAVORITE_LIST_SUCCESS";
 export const FAVORITE_FAILURE = "FAVORITE_FAILURE";
 
 const axios = require("axios");
@@ -198,12 +200,12 @@ export const pushFavorite = payload => {
         }
       });
       if (response.data.name === "MongoError") {
-        dispatch(FavoriteFailure(response.data.errmsg));
+        dispatch(favoriteFailure(response.data.errmsg));
       } else {
-        dispatch(FavoritePushSuccess(payload.itinerary_id));
+        dispatch(favoritePushSuccess(payload.itinerary_id));
       }
     } catch (error) {
-      dispatch(FavoriteFailure(error.message));
+      dispatch(favoriteFailure(error.message));
     }
     return "done";
   };
@@ -218,27 +220,56 @@ export const pullFavorite = payload => {
         }
       });
       if (response.data.name === "MongoError") {
-        dispatch(FavoriteFailure(response.data.errmsg));
+        dispatch(favoriteFailure(response.data.errmsg));
       } else {
-        dispatch(FavoritePullSuccess(payload.itinerary_id));
+        dispatch(favoritePullSuccess(payload.itinerary_id));
       }
     } catch (error) {
-      dispatch(FavoriteFailure(error.message));
+      dispatch(favoriteFailure(error.message));
       console.log(error.message);
     }
     return "done";
   };
 };
 
-export const FavoritePullSuccess = itinerario => ({
+export const getFavorite = token => {
+  return async dispatch => {
+    dispatch(favoriteBegin());
+    try {
+      const response = await axios.get("/users/listfavorite", {
+        headers: {
+          authorization: `bearer ${token}`
+        }
+      });
+      if (response.data.name === "MongoError") {
+        dispatch(favoriteFailure(response.data.errmsg));
+      } else {
+        dispatch(favoriteListSuccess(response.data.favorites));
+      }
+    } catch (error) {
+      dispatch(favoriteFailure(error.message));
+      console.log(error.message);
+    }
+    return "done";
+  };
+};
+
+export const favoriteBegin = () => ({
+  type: FAVORITE_BEGIN
+});
+export const favoriteListSuccess = itinerari => ({
+  type: FAVORITE_LIST_SUCCESS,
+  payload: itinerari
+});
+export const favoritePullSuccess = itinerario => ({
   type: FAVORITE_PULL_SUCCESS,
   payload: itinerario
 });
-export const FavoritePushSuccess = itinerario => ({
+export const favoritePushSuccess = itinerario => ({
   type: FAVORITE_PUSH_SUCCESS,
   payload: itinerario
 });
-export const FavoriteFailure = error => ({
+export const favoriteFailure = error => ({
   type: FAVORITE_FAILURE,
   payload: error
 });

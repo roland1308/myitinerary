@@ -25,10 +25,14 @@ class CreateAccount extends React.Component {
       picture: "/",
       momAvatar: "/",
       pw: "",
-      favorites: []
+      favorites: [],
+      fixedHeight: 200
     };
   }
   componentDidMount() {
+    this.setState({
+      fixedHeight: window.innerHeight * 0.86
+    });
     this.props.dispatch(homeOn());
     this.props.dispatch(backOn());
     this.props.dispatch(searchOff());
@@ -82,9 +86,8 @@ class CreateAccount extends React.Component {
 
   render() {
     const { errorMsg, popup } = this.props;
-    const fixedHeight = window.innerHeight * 0.86;
     const accountDivStyle = {
-      height: fixedHeight.toString() + "px",
+      height: this.state.fixedHeight.toString() + "px",
       display: "flex",
       flexDirection: "column",
       alignItems: "center",
@@ -131,12 +134,12 @@ class CreateAccount extends React.Component {
             />
           </label>
           <label>
-            Profile Picture*:
+            Profile Picture:
             <input
               type="file"
               name="selectedFile"
               // value={this.state.picture}
-              required="required"
+              // required="required"
               onChange={this.handleChange}
             />
           </label>
@@ -158,7 +161,7 @@ class CreateAccount extends React.Component {
           <div className="col-sm">
             <a
               className="linkNoDecoration"
-              href="http://localhost:5000/users/google"
+              href="https://agile-retreat-64885.herokuapp.com/users/google"
             >
               <img
                 className="login_Logo"
@@ -170,7 +173,7 @@ class CreateAccount extends React.Component {
           <div className="col-sm">
             <a
               className="linkNoDecoration"
-              href="http://localhost:5000/users/github"
+              href="https://agile-retreat-64885.herokuapp.com/users/github"
             >
               <img
                 className="login_Logo"

@@ -18,8 +18,8 @@ import { connect } from "react-redux";
 
 class Cities extends React.Component {
   componentDidMount() {
-    if (!this.props.loggedIn && window.localStorage.token) {
-      const token = window.localStorage.token;
+    const token = window.localStorage.token;
+    if (!this.props.loggedIn && token) {
       this.props.dispatch(checkToken(token));
     }
     this.props.dispatch(setCampoCerca(""));

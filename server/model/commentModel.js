@@ -1,4 +1,5 @@
 const mongoose = require("mongoose");
+const Schema = mongoose.Schema;
 const commentSchema = new mongoose.Schema({
   username: {
     type: String
@@ -8,6 +9,9 @@ const commentSchema = new mongoose.Schema({
   },
   usercomment: {
     type: String
+  },
+  itineraryid: {
+    type: Schema.Types.ObjectId
   }
 });
 

@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import Loading from "../components/Loading";
+import Loading from "./Loading";
 
 export default class StoreToken extends Component {
   componentDidMount = () => {
@@ -11,6 +11,7 @@ export default class StoreToken extends Component {
   render() {
     return (
       <div>
+        TORNATO
         <Loading />
       </div>
     );

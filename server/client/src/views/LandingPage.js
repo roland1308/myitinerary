@@ -1,4 +1,5 @@
 import React from "react";
+
 import start from "../images/circled-right-2.png";
 import Carousel from "../views/Carousel";
 import Logo from "../components/Logo";

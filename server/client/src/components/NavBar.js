@@ -41,33 +41,36 @@ export class NavBar extends Component {
             </div>
           </div>
         ) : (
-          <div className="dropdown">
-            <AccountCircleTwoToneIcon
-              style={{ fontSize: 100 }}
-              className="colorPrimary"
-              data-toggle="dropdown"
-            />
-            <div className="dropdown-menu">
-              <Link
-                to={"/login"}
-                className="dropdown-item linkNoDecoration menuText"
-              >
-                Login <IoIosLogIn />
-              </Link>
-              <Link
-                to={"/createaccount"}
-                className="dropdown-item linkNoDecoration menuText"
-              >
-                Register <FaPenNib />
-              </Link>
+            <div className="dropdown">
+              <AccountCircleTwoToneIcon
+                style={{ fontSize: 100 }}
+                className="colorPrimary"
+                data-toggle="dropdown"
+              />
+              <div className="dropdown-menu">
+                <Link
+                  to={"/login"}
+                  className="dropdown-item linkNoDecoration menuText"
+                >
+                  Login <IoIosLogIn />
+                </Link>
+                <Link
+                  to={"/createaccount"}
+                  className="dropdown-item linkNoDecoration menuText"
+                >
+                  Register <FaPenNib />
+                </Link>
+              </div>
             </div>
-          </div>
-        )}
+          )}
         {loggedIn ? (
-          <div className="avatarName">{user.username}</div>
+          <div className="avatarName">
+            {user.username.charAt(0).toUpperCase() +
+              user.username.substr(1).toLowerCase()}
+          </div>
         ) : (
-          <div className="accessName">Access to travel!</div>
-        )}
+            <div className="accessName">Access to travel with us!</div>
+          )}
         {loggedIn && (
           <div className="dropdown">
             <MenuRoundedIcon
@@ -77,13 +80,13 @@ export class NavBar extends Component {
             />
             <div className="dropdown-menu menu-left">
               <Link
-                to={"/"}
+                to={"/managefavorites"}
                 className="dropdown-item linkNoDecoration menuText"
               >
                 MYFavorites <MdFavorite />
               </Link>
               <Link
-                to={"/"}
+                to={"/manageComments"}
                 className="dropdown-item linkNoDecoration menuText"
               >
                 MYComments <FaRegComment />

@@ -2,6 +2,7 @@ const express = require("express");
 const router = express.Router();
 const itineraryModel = require("../model/itineraryModel");
 const mongoose = require("mongoose");
+const passport = require("passport");
 
 mongoose.set("useFindAndModify", false);
 
@@ -57,7 +58,7 @@ router.get("/populate/:id", (req, res) => {
   itineraryModel
     .findOne({ _id: req.params.id })
     .populate("activities", "name address photo time cost comments")
-    .exec(function(err, itinerary) {
+    .exec(function (err, itinerary) {
       if (err) {
         console.log("errore", err);
         return;
@@ -99,7 +100,7 @@ router.put("/addcommentid", (req, res) => {
     req.body.itinerary_id,
     { $push: { comments: req.body.commentId } },
     { safe: true, upsert: true },
-    function(err, doc) {
+    function (err, doc) {
       if (err) {
         console.log(err);
       } else {
@@ -108,6 +109,25 @@ router.put("/addcommentid", (req, res) => {
     }
   );
 });
+
+// find one itinerary by id and update and pull comment in array
+router.put(
+  "/pullcommentid",
+  // passport.authenticate("jwt", { session: false }),
+  (req, res) => {
+    itineraryModel.findByIdAndUpdate(
+      req.body.itinerary_id,
+      { $pull: { comments: req.body.comment_Id } },
+      { safe: true, upsert: true },
+      function (err, doc) {
+        if (err) {
+          res.send(err);
+        } else {
+          res.send("OK");
+        }
+      }
+    );
+  });
 
 /*delete one itinerary by ID DELETE* STILL NOT IN PRODUCTION*/
 router.delete("/:id", (req, res) => {

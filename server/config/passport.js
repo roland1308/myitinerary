@@ -36,7 +36,8 @@ module.exports = passport.use(
     {
       clientID: process.env.google_ID_client,
       clientSecret: process.env.google_Client_Secret,
-      callbackURL: "http://localhost:5000/users/google/redirect"
+      callbackURL:
+        "https://agile-retreat-64885.herokuapp.com/users/google/redirect"
     },
     async function(accessToken, refreshToken, profile, done) {
       let payload = {};
@@ -77,7 +78,8 @@ module.exports = passport.use(
     {
       clientID: process.env.github_ID_client,
       clientSecret: process.env.github_Client_Secret,
-      callbackURL: "http://localhost:5000/users/github/redirect"
+      callbackURL:
+        "https://agile-retreat-64885.herokuapp.com/users/github/redirect"
     },
     async function(accessToken, refreshToken, profile, done) {
       let payload = {};

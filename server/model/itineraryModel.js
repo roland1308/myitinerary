@@ -39,9 +39,9 @@ const itinerarySchema = new mongoose.Schema({
     type: String
     // // required: true
   },
-  comments: {
-    type: Array
-  },
+  // comments: {
+  //   type: Array
+  // },
   hashtags: {
     type: String
   },
